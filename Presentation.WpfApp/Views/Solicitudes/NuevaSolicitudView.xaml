@@ -1,0 +1,52 @@
+﻿<controls:MetroWindow x:Class="Presentation.WpfApp.Views.Solicitudes.NuevaSolicitudView"
+                      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                      xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+                      xmlns:dialog="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
+                      xmlns:cal="clr-namespace:Caliburn.Micro;assembly=Caliburn.Micro.Platform"
+                      xmlns:viewModels="clr-namespace:Presentation.WpfApp.ViewModels.Solicitudes"
+                      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                      xmlns:local="clr-namespace:Presentation.WpfApp.Views.Solicitudes"
+                      mc:Ignorable="d"
+                      WindowStartupLocation="CenterOwner" Width="500" Height="500"
+                      d:DataContext="{d:DesignInstance Type=viewModels:NuevaSolicitudViewModel, IsDesignTimeCreatable=False}"
+                      cal:Bind.AtDesignTime="True"
+                      dialog:DialogParticipation.Register="{Binding}">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Row="0" Text="{Binding DisplayName}" FontWeight="Bold" FontSize="20" VerticalAlignment="Center"
+                   Margin="5" />
+        <StackPanel Grid.Row="1" Orientation="Horizontal">
+            <Button Content="Crear" cal:Message.Attach="CrearSolicitudAsync" Width="150" Margin="5"
+                    VerticalAlignment="Center"
+                    Style="{StaticResource AccentedSquareButtonStyle}" />
+            <Button Content="Cancelar" cal:Message.Attach="Cancelar" Width="150" Margin="5" VerticalAlignment="Center"
+                    Style="{DynamicResource SquareButtonStyle}" />
+        </StackPanel>
+        <Grid Grid.Row="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Label Grid.Row="0" Grid.Column="0" Content="Fecha Inicio:" FontWeight="Bold" VerticalAlignment="Center"
+                   HorizontalAlignment="Right" Margin="5" />
+            <DatePicker Grid.Row="0" Grid.Column="1"
+                        SelectedDate="{Binding FechaInicio, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        VerticalAlignment="Center" Margin="5" />
+            <Label Grid.Row="1" Grid.Column="0" Content="Fecha Fin:" FontWeight="Bold" VerticalAlignment="Center"
+                   HorizontalAlignment="Right" Margin="5" />
+            <DatePicker Grid.Row="1" Grid.Column="1"
+                        SelectedDate="{Binding FechaFin, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        VerticalAlignment="Center" Margin="5" />
+        </Grid>
+    </Grid>
+</controls:MetroWindow>
