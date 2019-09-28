@@ -1,0 +1,61 @@
+﻿<controls:MetroWindow x:Class="Presentation.WpfApp.Views.ConfiguracionGeneral.ConfiguracionGeneralView"
+                      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                      xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+                      xmlns:dialog="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
+                      xmlns:cal="clr-namespace:Caliburn.Micro;assembly=Caliburn.Micro.Platform"
+                      xmlns:viewModels="clr-namespace:Presentation.WpfApp.ViewModels.ConfiguracionGeneral"
+                      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                      xmlns:local="clr-namespace:Presentation.WpfApp.Views.ConfiguracionGeneral"
+                      mc:Ignorable="d"
+                      WindowStartupLocation="CenterOwner"
+                      Width="500"
+                      Height="350"
+                      d:DataContext="{d:DesignInstance Type=viewModels:ConfiguracionGeneralViewModel, IsDesignTimeCreatable=False}"
+                      cal:Bind.AtDesignTime="True"
+                      dialog:DialogParticipation.Register="{Binding}">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Row="0" Text="{Binding DisplayName}" FontWeight="Bold" FontSize="20" VerticalAlignment="Center"
+                   Margin="5" />
+        <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="5">
+            <Button Content="Actualizar" cal:Message.Attach="ActualizarConfiguracionGeneralAsync" Width="150"
+                    VerticalAlignment="Center" Margin="5"
+                    Style="{StaticResource AccentedSquareButtonStyle}" />
+            <Button Content="Cancelar" cal:Message.Attach="Cancelar" Width="150" VerticalAlignment="Center" Margin="5"
+                    Style="{DynamicResource SquareButtonStyle}" />
+        </StackPanel>
+        <Grid Grid.Row="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Label Grid.Row="0" Grid.Column="0" Content="Certificado:" FontWeight="Bold" VerticalAlignment="Center"
+                   HorizontalAlignment="Right" Margin="5" />
+            <TextBlock Grid.Row="0" Grid.Column="1" Text="" VerticalAlignment="Center" Margin="5" />
+            <Button Grid.Row="0" Grid.Column="2" Content="Buscar" cal:Message.Attach="BuscarArchivoCertificadoAsync"
+                    Width="100" VerticalAlignment="Center" Margin="5" />
+            <Label Grid.Row="1" Grid.Column="0" Content="RFC Emisor:" FontWeight="Bold" VerticalAlignment="Center"
+                   HorizontalAlignment="Right" Margin="5" />
+            <TextBox Grid.Row="1" Grid.Column="1"
+                     Text="{Binding ConfiguracionGeneral.CertificadoSat.RfcEmisor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                     VerticalAlignment="Center" Margin="5" />
+            <Label Grid.Row="2" Grid.Column="0" Content="Contrasena:" FontWeight="Bold" VerticalAlignment="Center"
+                   HorizontalAlignment="Right" Margin="5" />
+            <TextBox Grid.Row="2" Grid.Column="1"
+                     Text="{Binding ConfiguracionGeneral.CertificadoSat.Contrasena, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                     VerticalAlignment="Center" Margin="5" />
+        </Grid>
+    </Grid>
+</controls:MetroWindow>

@@ -52,8 +52,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Cfdis\CrearSolicitud\CrearSolicitudCommand.cs" />
-    <Compile Include="Cfdis\CrearSolicitud\CrearSolicitudCommandHandler.cs" />
+    <Compile Include="Solicitudes\Commands\CrearSolicitud\CrearSolicitudCommand.cs" />
+    <Compile Include="Solicitudes\Commands\CrearSolicitud\CrearSolicitudCommandHandler.cs" />
     <Compile Include="Cfdis\Queries\ObtenerCertificado\ObtenerCertificadoQuery.cs" />
     <Compile Include="Cfdis\Queries\ObtenerCertificado\ObtenerCertificadoQueryHandler.cs" />
     <Compile Include="ConfiguracionGeneral\Commands\ActualizarCertificadoSat\ActualizarCertificadoSatCommand.cs" />

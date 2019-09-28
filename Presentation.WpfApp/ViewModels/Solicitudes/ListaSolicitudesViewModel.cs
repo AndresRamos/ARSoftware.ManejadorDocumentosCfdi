@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Windows.Data;
 using Caliburn.Micro;
+using Core.Application.Solicitudes.Commands.AutenticarSolicitud;
 using Core.Application.Solicitudes.Models;
 using Core.Application.Solicitudes.Queries.BuscarSolicitudesPorRangoFecha;
 using MahApps.Metro.Controls.Dialogs;
@@ -10,13 +11,13 @@ using MediatR;
 
 namespace Presentation.WpfApp.ViewModels.Solicitudes
 {
-    public class ListaSolicitudesViewModel : Screen
+    public sealed class ListaSolicitudesViewModel : Screen
     {
-        private readonly IMediator _mediator;
-        private DateTime _fechaFin;
-        private DateTime _fechaInicio;
-        private readonly IWindowManager _windowManager;
         private readonly IDialogCoordinator _dialogCoordinator;
+        private readonly IMediator _mediator;
+        private readonly IWindowManager _windowManager;
+        private DateTime _fechaFin = DateTime.Today;
+        private DateTime _fechaInicio = DateTime.Today;
         private SolicitudDto _solicitudSeleccionada;
 
         public ListaSolicitudesViewModel(IMediator mediator, IWindowManager windowManager, IDialogCoordinator dialogCoordinator)
@@ -24,6 +25,7 @@ namespace Presentation.WpfApp.ViewModels.Solicitudes
             _mediator = mediator;
             _windowManager = windowManager;
             _dialogCoordinator = dialogCoordinator;
+            DisplayName = "Lista De Solicitudes";
             SolicitudesView = CollectionViewSource.GetDefaultView(Solicitudes);
         }
 
@@ -105,6 +107,14 @@ namespace Presentation.WpfApp.ViewModels.Solicitudes
 
         public async Task ProcesarSolicitudAsync()
         {
+            try
+            {
+                await _mediator.Send(new AutenticarSolicitudCommand(SolicitudSeleccionada.Id));
+            }
+            catch (Exception e)
+            {
+                await _dialogCoordinator.ShowMessageAsync(this, "Error", e.ToString());
+            }
         }
 
         private void RaiseGuards()

@@ -21,8 +21,10 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <Menu Grid.Row="0" IsMainMenu="True">
-          
+            <MenuItem Header="Configuracion">
+                <MenuItem Header="Configuracion General" cal:Message.Attach="MostrarConfiguracionGeneralAsync" />
+            </MenuItem>
         </Menu>
-        <TabControl x:Name="Items" />
+        <TabControl Grid.Row="1" x:Name="Items" />
     </Grid>
 </controls:MetroWindow>

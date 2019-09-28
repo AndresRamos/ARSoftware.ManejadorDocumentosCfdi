@@ -48,8 +48,10 @@
             </Grid>
         </GroupBox>
         <StackPanel Grid.Row="2" Orientation="Horizontal">
-            <Button Content="Crear" Width="150" Margin="5" Style="{StaticResource AccentedSquareButtonStyle}" />
-            <Button Content="Editar" Width="150" Margin="5" Style="{DynamicResource SquareButtonStyle}" />
+            <Button Content="Crear Nueva" cal:Message.Attach="CrearNuevaSolicitudAsync" Width="150" Margin="5"
+                    Style="{StaticResource AccentedSquareButtonStyle}" />
+            <Button Content="Procesar" cal:Message.Attach="ProcesarSolicitudAsync" Width="150" Margin="5"
+                    Style="{DynamicResource SquareButtonStyle}" />
         </StackPanel>
         <StackPanel Grid.Row="3" Orientation="Horizontal" Margin="5">
             <TextBox Text="{Binding Filtro, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="250"

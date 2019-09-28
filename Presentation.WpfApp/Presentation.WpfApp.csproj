@@ -90,9 +90,13 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ViewModels\ConfiguracionGeneral\ConfiguracionGeneralViewModel.cs" />
     <Compile Include="ViewModels\ShellViewModel.cs" />
     <Compile Include="ViewModels\Solicitudes\ListaSolicitudesViewModel.cs" />
     <Compile Include="ViewModels\Solicitudes\NuevaSolicitudViewModel.cs" />
+    <Compile Include="Views\ConfiguracionGeneral\ConfiguracionGeneralView.xaml.cs">
+      <DependentUpon>ConfiguracionGeneralView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\ShellView.xaml.cs">
       <DependentUpon>ShellView.xaml</DependentUpon>
     </Compile>
@@ -133,6 +137,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Views\ConfiguracionGeneral\ConfiguracionGeneralView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\ShellView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

@@ -9,7 +9,7 @@
                       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                       xmlns:local="clr-namespace:Presentation.WpfApp.Views.Solicitudes"
                       mc:Ignorable="d"
-                      WindowStartupLocation="CenterOwner" Width="500" Height="500"
+                      WindowStartupLocation="CenterOwner" Width="400" Height="350"
                       d:DataContext="{d:DesignInstance Type=viewModels:NuevaSolicitudViewModel, IsDesignTimeCreatable=False}"
                       cal:Bind.AtDesignTime="True"
                       dialog:DialogParticipation.Register="{Binding}">

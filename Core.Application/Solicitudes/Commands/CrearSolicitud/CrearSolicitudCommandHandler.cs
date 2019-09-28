@@ -5,7 +5,7 @@ using Core.Domain.Entities;
 using Infrastructure.Persistance;
 using MediatR;
 
-namespace Core.Application.Cfdis.CrearSolicitud
+namespace Core.Application.Solicitudes.Commands.CrearSolicitud
 {
     public class CrearSolicitudCommandHandler : IRequestHandler<CrearSolicitudCommand, int>
     {
@@ -18,9 +18,7 @@ namespace Core.Application.Cfdis.CrearSolicitud
 
         public async Task<int> Handle(CrearSolicitudCommand request, CancellationToken cancellationToken)
         {
-            var nuevaSolicitud = new Solicitud();
-            nuevaSolicitud.FechaInicio = request.FechaInicio;
-            nuevaSolicitud.FechaFin = request.FechaFin;
+            var nuevaSolicitud = Solicitud.CreateNew(request.FechaInicio, request.FechaFin);
 
             _context.Entry(nuevaSolicitud).State = EntityState.Added;
             await _context.SaveChangesAsync(cancellationToken);

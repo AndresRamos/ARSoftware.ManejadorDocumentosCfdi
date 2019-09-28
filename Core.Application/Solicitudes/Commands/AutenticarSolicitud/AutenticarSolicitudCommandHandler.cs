@@ -26,11 +26,11 @@ namespace Core.Application.Solicitudes.Commands.AutenticarSolicitud
             var service = new AutenticacionService(UrlsSat.UrlAutentica, UrlsSat.UrlAutenticaAction);
             var certificadoSat = CertificadoService.ObtenerCertificado(configuracionGeneral.CertificadoSat.Certificado, configuracionGeneral.CertificadoSat.Contrasena);
             var xml = service.Generate(certificadoSat);
-            var token = service.Send();
+            //var token = service.Send();
 
-            solicitud.Token = token;
-            solicitud.Autorizacion = $"WRAP access_token=\"{HttpUtility.UrlDecode(token)}\"";
-            await _context.SaveChangesAsync(cancellationToken);
+            //solicitud.Token = token;
+            //solicitud.Autorizacion = $"WRAP access_token=\"{HttpUtility.UrlDecode(token)}\"";
+            //await _context.SaveChangesAsync(cancellationToken);
 
             return Unit.Value;
         }
