@@ -11,5 +11,6 @@ namespace Core.Domain.Entities
 
         public int Id { get; set; }
         public CertificadoSat CertificadoSat { get; set; }
+        public string RutaDirectorioDescargas { get; set; }
     }
 }

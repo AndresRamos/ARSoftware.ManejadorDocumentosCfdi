@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Security.Cryptography.X509Certificates;
 using System.Xml;
+using Infrastructure.Sat.Models;
 
 namespace Infrastructure.Sat.Services
 {
@@ -16,10 +17,10 @@ namespace Infrastructure.Sat.Services
         public string Generate(X509Certificate2 certificate, string rfcEmisor, string rfcReceptor, string rfcSolicitante, string fechaInicial = "", string fechaFinal = "", string tipoSolicitud = "CFDI")
         {
             FixFecha(fechaInicial, fechaFinal, out fechaInicial, out fechaFinal);
-            var canonicalTimestamp = "<des:SolicitaDescarga xmlns:des=\"http://DescargaMasivaTerceros.sat.gob.mx\">"
-                                     + "<des:solicitud RfcEmisor=\"" + rfcEmisor + "\" RfcReceptor=\"" + rfcReceptor + "\" RfcSolicitante=\"" + rfcSolicitante + "\" FechaInicial=\"" + fechaInicial + "\" FechaFinal=\"" + fechaFinal + "\" TipoSolicitud=\"CFDI\">"
-                                     + "</des:solicitud>"
-                                     + "</des:SolicitaDescarga>";
+            var canonicalTimestamp = "<des:SolicitaDescarga xmlns:des=\"http://DescargaMasivaTerceros.sat.gob.mx\">" +
+                                     $"<des:solicitud RfcEmisor=\"{rfcEmisor}\" RfcReceptor=\"{rfcReceptor}\" RfcSolicitante=\"{rfcSolicitante}\" FechaInicial=\"{fechaInicial}\" FechaFinal=\"{fechaFinal}\" TipoSolicitud=\"CFDI\">" +
+                                     "</des:solicitud>" +
+                                     "</des:SolicitaDescarga>";
 
             var digest = CreateDigest(canonicalTimestamp);
 
@@ -75,7 +76,6 @@ namespace Infrastructure.Sat.Services
                                @"</des:SolicitaDescarga>" +
                                @"</s:Body>" +
                                @"</s:Envelope>";
-            xml = soap_request;
             return soap_request;
         }
 
@@ -87,10 +87,16 @@ namespace Infrastructure.Sat.Services
             fechaFinal = fechaFinal1 + "T23:59:59";
         }
 
-        public override string GetResult(XmlDocument xmlDoc)
+        public override SolicitudResult GetResult(string webResponse)
         {
-            var s = xmlDoc.GetElementsByTagName("SolicitaDescargaResult")[0].Attributes["IdSolicitud"].Value;
-            return s;
+            var xmlDocument = new XmlDocument();
+            xmlDocument.LoadXml(webResponse);
+            var element = xmlDocument.GetElementsByTagName("SolicitaDescargaResult")[0];
+            var codEstatus = element.Attributes.GetNamedItem("CodEstatus")?.Value;
+            var mensaje = element.Attributes.GetNamedItem("Mensaje")?.Value;
+            var idSolicitud = element.Attributes.GetNamedItem("IdSolicitud")?.Value;
+
+            return SolicitudResult.CrearGenerarSolicitudResult(codEstatus, idSolicitud, mensaje, webResponse);
         }
     }
 }

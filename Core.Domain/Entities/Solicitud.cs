@@ -1,4 +1,5 @@
 ﻿using System;
+using Core.Domain.Enums;
 
 namespace Core.Domain.Entities
 {
@@ -16,6 +17,7 @@ namespace Core.Domain.Entities
         public string Autorizacion { get; set; }
         public string SolicitudSatId { get; set; }
         public string PaqueteId { get; set; }
+        public EstatusSolicitud Estatus { get; set; }
 
         public static Solicitud CreateNew(DateTime fechaInicio, DateTime fechaFin)
         {

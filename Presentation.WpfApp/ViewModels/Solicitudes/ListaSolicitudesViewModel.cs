@@ -2,8 +2,13 @@
 using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Windows.Data;
+using System.Windows.Media.Animation;
 using Caliburn.Micro;
+using Core.Application.Cfdis.ExtraerCfdi;
 using Core.Application.Solicitudes.Commands.AutenticarSolicitud;
+using Core.Application.Solicitudes.Commands.DescargarSolicitud;
+using Core.Application.Solicitudes.Commands.GenerarSolicitud;
+using Core.Application.Solicitudes.Commands.VerificarSolicitud;
 using Core.Application.Solicitudes.Models;
 using Core.Application.Solicitudes.Queries.BuscarSolicitudesPorRangoFecha;
 using MahApps.Metro.Controls.Dialogs;
@@ -87,8 +92,25 @@ namespace Presentation.WpfApp.ViewModels.Solicitudes
 
         public async Task BuscarSolicitudesAsync()
         {
-            Solicitudes.Clear();
-            Solicitudes.AddRange(await _mediator.Send(new BuscarSolicitudesPorRangoFechaQuery(FechaInicio, FechaFin)));
+            var progressDialogController = await _dialogCoordinator.ShowProgressAsync(this, "Buscando Solicitudes", "Buscando solicitudes.");
+            progressDialogController.SetIndeterminate();
+            await Task.Delay(1000);
+
+            try
+            {
+                Solicitudes.Clear();
+                Solicitudes.AddRange(await _mediator.Send(new BuscarSolicitudesPorRangoFechaQuery(FechaInicio, FechaFin)));
+            }
+            catch (Exception e)
+            {
+                await _dialogCoordinator.ShowMessageAsync(this, "Error", e.ToString());
+            }
+            finally
+            {
+                RaiseGuards();
+            }
+
+            await progressDialogController.CloseAsync();
         }
 
         public async Task CrearNuevaSolicitudAsync()
@@ -103,18 +125,51 @@ namespace Presentation.WpfApp.ViewModels.Solicitudes
             {
                 await _dialogCoordinator.ShowMessageAsync(this, "Error", e.ToString());
             }
+            finally
+            {
+                RaiseGuards();
+            }
         }
 
         public async Task ProcesarSolicitudAsync()
         {
+            var progressDialogController = await _dialogCoordinator.ShowProgressAsync(this, "Procesando Solicitud", "Procesando solicitud.");
+            progressDialogController.SetIndeterminate();
+            await Task.Delay(1000);
+
             try
             {
-                await _mediator.Send(new AutenticarSolicitudCommand(SolicitudSeleccionada.Id));
+                var solicitudId = SolicitudSeleccionada.Id;
+
+                progressDialogController.SetMessage("Autenticando solicitud.");
+                await _mediator.Send(new AutenticarSolicitudCommand(solicitudId));
+
+                //await Task.Delay(10000);
+                //progressDialogController.SetMessage("Generando solicitud.");
+                //await _mediator.Send(new GenerarSolicitudCommand(solicitudId));
+
+                await Task.Delay(10000);
+                progressDialogController.SetMessage("Verificando solicitud.");
+                await _mediator.Send(new VerificarSolicitudCommand(solicitudId));
+
+                await Task.Delay(10000);
+                progressDialogController.SetMessage("Descargando solicitud.");
+                await _mediator.Send(new DescargarSolicitudCommand(solicitudId));
+
+                await BuscarSolicitudesAsync();
+
+                //await _mediator.Send(new ExtraerCfdiCommand());
             }
             catch (Exception e)
             {
                 await _dialogCoordinator.ShowMessageAsync(this, "Error", e.ToString());
             }
+            finally
+            {
+                RaiseGuards();
+            }
+
+            await progressDialogController.CloseAsync();
         }
 
         private void RaiseGuards()

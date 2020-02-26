@@ -64,6 +64,7 @@
                 <DataGridTextColumn Header="FechaCreacion" Binding="{Binding FechaCreacion}" />
                 <DataGridTextColumn Header="FechaInicio" Binding="{Binding FechaInicio}" />
                 <DataGridTextColumn Header="FechaFin" Binding="{Binding FechaFin}" />
+                <DataGridTextColumn Header="Estatus" Binding="{Binding Estatus}" />
             </DataGrid.Columns>
         </DataGrid>
     </Grid>

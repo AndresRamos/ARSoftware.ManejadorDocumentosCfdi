@@ -1,4 +1,5 @@
 ﻿using System;
+using Core.Domain.Enums;
 
 namespace Core.Application.Solicitudes.Models
 {
@@ -10,5 +11,6 @@ namespace Core.Application.Solicitudes.Models
         public DateTime FechaInicio { get; set; }
         public DateTime FechaFin { get; set; }
         public string Token { get; set; }
+        public EstatusSolicitud Estatus { get; set; }
     }
 }

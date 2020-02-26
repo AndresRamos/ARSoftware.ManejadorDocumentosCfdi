@@ -28,7 +28,8 @@ namespace Core.Application.Solicitudes.Queries.BuscarSolicitudesPorRangoFecha
                 FechaCreacion = s.FechaCreacion,
                 FechaInicio = s.FechaInicio,
                 FechaFin = s.FechaFin,
-                Token = s.Token
+                Token = s.Token,
+                Estatus = s.Estatus
             }).ToList();
         }
     }

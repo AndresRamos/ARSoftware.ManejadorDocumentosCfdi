@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Security.Cryptography.X509Certificates;
 using System.Xml;
+using Infrastructure.Sat.Models;
 
 namespace Infrastructure.Sat.Services
 {
@@ -73,16 +74,19 @@ namespace Infrastructure.Sat.Services
                                @"<Autentica xmlns=""http://DescargaMasivaTerceros.gob.mx""/>" +
                                @"</s:Body>" +
                                @"</s:Envelope>";
-            xml = soap_request;
             return soap_request;
         }
 
         #endregion
 
-        public override string GetResult(XmlDocument xmlDoc)
+        public override SolicitudResult GetResult(string webResponse)
         {
-            var s = xmlDoc.GetElementsByTagName("AutenticaResult")[0].InnerXml;
-            return s;
+            var xmlDocument = new XmlDocument();
+            xmlDocument.LoadXml(webResponse);
+
+            var token = xmlDocument.GetElementsByTagName("AutenticaResult")[0].InnerXml;
+            
+            return SolicitudResult.CrearAutenticaResult(token, webResponse);
         }
     }
 }

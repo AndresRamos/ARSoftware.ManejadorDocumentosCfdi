@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Security.Cryptography.X509Certificates;
 using System.Xml;
+using Infrastructure.Sat.Models;
 
 namespace Infrastructure.Sat.Services
 {
@@ -71,16 +72,25 @@ namespace Infrastructure.Sat.Services
                                @"</des:PeticionDescargaMasivaTercerosEntrada>" +
                                @"</s:Body>" +
                                @"</s:Envelope>";
-            xml = soap_request;
             return soap_request;
         }
 
         #endregion
 
-        public override string GetResult(XmlDocument xmlDoc)
+        public override SolicitudResult GetResult(string webResponse)
         {
-            var s = xmlDoc.GetElementsByTagName("Paquete")[0].InnerXml;
-            return s;
+            var xmlDocument = new XmlDocument();
+            xmlDocument.LoadXml(webResponse);
+
+            var element = xmlDocument.GetElementsByTagName("h:respuesta")[0];
+            var codEstatus = element.Attributes.GetNamedItem("CodEstatus").Value;
+            var mensaje = element.Attributes.GetNamedItem("Mensaje").Value;
+            var paqete = xmlDocument.GetElementsByTagName("Paquete")[0].InnerXml;
+
+            return SolicitudResult.CrearDescargaSolicitudResult(codEstatus, mensaje, paqete, webResponse);
+
+            //var s = xmlDoc.GetElementsByTagName("Paquete")[0].InnerXml;
+            //return s;
         }
     }
 }

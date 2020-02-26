@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Media.Animation;
 using Caliburn.Micro;
 using Core.Application.ConfiguracionGeneral.Commands.ActualizarCertificadoSat;
 using Core.Application.ConfiguracionGeneral.Models;
@@ -17,8 +13,8 @@ namespace Presentation.WpfApp.ViewModels.ConfiguracionGeneral
 {
     public sealed class ConfiguracionGeneralViewModel : Screen
     {
-        private readonly IMediator _mediator;
         private readonly IDialogCoordinator _dialogCoordinator;
+        private readonly IMediator _mediator;
 
         public ConfiguracionGeneralViewModel(IMediator mediator, IDialogCoordinator dialogCoordinator)
         {
@@ -60,9 +56,12 @@ namespace Presentation.WpfApp.ViewModels.ConfiguracionGeneral
         {
             try
             {
-                await _mediator.Send(new ActualizarCertificadoSatCommand(ConfiguracionGeneral.CertificadoSat.Certificado,
-                       ConfiguracionGeneral.CertificadoSat.Contrasena,
-                       ConfiguracionGeneral.CertificadoSat.RfcEmisor));
+                await _mediator.Send(new ActualizarCertificadoSatCommand(
+                    ConfiguracionGeneral.CertificadoSat.Certificado,
+                    ConfiguracionGeneral.CertificadoSat.Contrasena,
+                    ConfiguracionGeneral.CertificadoSat.RfcEmisor,
+                    ConfiguracionGeneral.RutaDirectorioDescargas));
+
                 TryClose();
             }
             catch (Exception e)

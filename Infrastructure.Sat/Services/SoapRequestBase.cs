@@ -4,78 +4,77 @@ using System.Net;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
-using System.Xml;
+using Infrastructure.Sat.Models;
+using NLog;
 
 namespace Infrastructure.Sat.Services
 {
     public abstract class SoapRequestBase
     {
-        protected HttpWebRequest webRequest;
-        protected string xml;
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+        private readonly string _soapAction;
+        private readonly string _url;
+        protected HttpStatusCode _httpStatusCode;
 
-        protected SoapRequestBase(string url, string SOAPAction)
+        protected SoapRequestBase(string url, string soapAction)
         {
-            xml = null;
-            webRequest = WebRequest(url, SOAPAction);
+            _url = url;
+            _soapAction = soapAction;
         }
 
-        protected SoapRequestBase(Uri URL, string SOAPAction)
+        public SolicitudResult Send(string xml, string autorization)
         {
-            xml = null;
-            webRequest = WebRequest(URL.ToString(), SOAPAction);
-        }
+            if (xml == null)
+            {
+                throw new ArgumentNullException(nameof(xml), "El xml no puede ser nulo.");
+            }
 
-        public string Send(string autorization = null)
-        {
             try
             {
-                if (xml == null)
-                {
-                    throw new Exception("No se ha proporcionado ningún valor a la propiedad \"xml\"");
-                }
+                var httpWebRequest = CrearHttpWebRequest();
 
-                var request = webRequest;
                 if (!string.IsNullOrEmpty(autorization))
                 {
-                    request.Headers.Add(HttpRequestHeader.Authorization, autorization);
+                    httpWebRequest.Headers.Add(HttpRequestHeader.Authorization, autorization);
                 }
 
-                using (var stream = request.GetRequestStream())
+                using (var stream = httpWebRequest.GetRequestStream())
+                using (var streamWriter = new StreamWriter(stream))
                 {
-                    using (var stmw = new StreamWriter(stream))
+                    streamWriter.Write(xml);
+                }
+
+                using (var httpWebResponse = (HttpWebResponse) httpWebRequest.GetResponse())
+                {
+                    using (var streamReader = new StreamReader(httpWebResponse.GetResponseStream()))
                     {
-                        stmw.Write(xml);
+                        _httpStatusCode = httpWebResponse.StatusCode;
+                        var requestResponse = streamReader.ReadToEnd();
+                        return GetResult(requestResponse);
                     }
                 }
-
-                var response = request.GetResponse();
-                var sr = new StreamReader(response.GetResponseStream());
-                var result = sr.ReadToEnd();
-                sr.Close();
-
-                var xmlDoc = new XmlDocument();
-                xmlDoc.LoadXml(result);
-                return GetResult(xmlDoc);
             }
             catch (WebException e)
             {
-                throw e;
+                Logger.Error(e);
+                throw;
             }
             catch (Exception e)
             {
-                throw new Exception(e.Message);
+                Logger.Error(e);
+                throw;
             }
         }
 
-        public abstract string GetResult(XmlDocument xmlDoc);
+        public abstract SolicitudResult GetResult(string webResponse);
 
-        private static HttpWebRequest WebRequest(string URL, string SOAPAction, int maxTimeMilliseconds = 120000)
+        private HttpWebRequest CrearHttpWebRequest()
         {
-            var webRequest = (HttpWebRequest) System.Net.WebRequest.Create(URL);
-            webRequest.Timeout = maxTimeMilliseconds; //Milisecons
+            var webRequest = (HttpWebRequest) WebRequest.Create(_url);
+            webRequest.Timeout = 180000;
             webRequest.Method = "POST";
             webRequest.ContentType = "text/xml; charset=utf-8";
-            webRequest.Headers.Add("SOAPAction: " + SOAPAction);
+            webRequest.Headers.Add("SOAPAction: " + _soapAction);
             return webRequest;
         }
 
@@ -88,7 +87,7 @@ namespace Infrastructure.Sat.Services
         public string Sign(string sourceData, X509Certificate2 certificate)
         {
             var data = GetBytes(sourceData);
-            byte[] signature = null;
+            byte[] signature;
 
             using (var rsaCryptoServiceProvider = certificate.GetRSAPrivateKey())
             {

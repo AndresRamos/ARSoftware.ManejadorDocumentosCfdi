@@ -35,6 +35,7 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
@@ -55,6 +56,11 @@
                    HorizontalAlignment="Right" Margin="5" />
             <TextBox Grid.Row="2" Grid.Column="1"
                      Text="{Binding ConfiguracionGeneral.CertificadoSat.Contrasena, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                     VerticalAlignment="Center" Margin="5" />
+            <Label Grid.Row="3" Grid.Column="0" Content="Ruta Directorio Descargas:" FontWeight="Bold" VerticalAlignment="Center"
+                   HorizontalAlignment="Right" Margin="5" />
+            <TextBox Grid.Row="3" Grid.Column="1"
+                     Text="{Binding ConfiguracionGeneral.RutaDirectorioDescargas, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                      VerticalAlignment="Center" Margin="5" />
         </Grid>
     </Grid>

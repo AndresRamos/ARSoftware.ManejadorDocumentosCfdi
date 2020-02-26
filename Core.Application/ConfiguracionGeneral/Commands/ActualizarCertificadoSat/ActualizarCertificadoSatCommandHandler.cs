@@ -22,6 +22,8 @@ namespace Core.Application.ConfiguracionGeneral.Commands.ActualizarCertificadoSa
 
             configuracionGeneral.CertificadoSat = new CertificadoSat(request.CertificadoSat, request.Contrasena, request.RfcEmisor);
 
+            configuracionGeneral.RutaDirectorioDescargas = request.RutaDirectorioDescargas;
+
             await _context.SaveChangesAsync(cancellationToken);
 
             return Unit.Value;

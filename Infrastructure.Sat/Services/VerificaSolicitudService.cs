@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Security.Cryptography.X509Certificates;
 using System.Xml;
+using Infrastructure.Sat.Models;
 
 namespace Infrastructure.Sat.Services
 {
@@ -71,23 +72,35 @@ namespace Infrastructure.Sat.Services
                                @"</des:VerificaSolicitudDescarga>" +
                                @"</s:Body>" +
                                @"</s:Envelope>";
-            xml = soap_request;
             return soap_request;
         }
 
         #endregion
 
-        public override string GetResult(XmlDocument xmlDoc)
+        public override SolicitudResult GetResult(string webResponse)
         {
-            var s = string.Empty;
+            var xmlDocument = new XmlDocument();
+            xmlDocument.LoadXml(webResponse);
 
-            int estado = Convert.ToInt16(xmlDoc.GetElementsByTagName("VerificaSolicitudDescargaResult")[0].Attributes["EstadoSolicitud"].Value);
-            if (estado != 1)
+            if (xmlDocument.GetElementsByTagName("VerificaSolicitudDescargaResult").Count > 0)
             {
-                s = xmlDoc.GetElementsByTagName("IdsPaquetes")[0].InnerXml;
+                var verificaXml = xmlDocument.GetElementsByTagName("VerificaSolicitudDescargaResult")[0];
+                var codigoEstadoSolicitud = verificaXml.Attributes.GetNamedItem("CodigoEstadoSolicitud")?.Value;
+                var estadoSolicitud = verificaXml.Attributes.GetNamedItem("EstadoSolicitud")?.Value;
+                var codEstatus = verificaXml.Attributes.GetNamedItem("CodEstatus")?.Value;
+                var numeroCfdis = verificaXml.Attributes.GetNamedItem("NumeroCFDIs")?.Value;
+                var mensaje = verificaXml.Attributes.GetNamedItem("Mensaje")?.Value;
+                string idsPaquetes = string.Empty;
+
+                if (estadoSolicitud == "3")
+                {
+                    idsPaquetes = xmlDocument.GetElementsByTagName("IdsPaquetes")[0]?.InnerXml;
+                }
+
+                return SolicitudResult.CrearVerificarSolicitudResult(codEstatus, codigoEstadoSolicitud, estadoSolicitud, numeroCfdis, mensaje, idsPaquetes, webResponse);
             }
 
-            return s;
+            throw new ArgumentNullException($"El resultado no contiene el nodo VerificaSolicitudDescargaResult");
         }
     }
 }

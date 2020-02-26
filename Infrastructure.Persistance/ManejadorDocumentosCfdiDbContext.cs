@@ -1,8 +1,8 @@
 ﻿using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration.Conventions;
-using System.Net.Configuration;
 using Core.Domain.Entities;
 using Core.Domain.ValueObjects;
+using Infrastructure.Persistance.Migrations;
 
 namespace Infrastructure.Persistance
 {
@@ -10,9 +10,11 @@ namespace Infrastructure.Persistance
     {
         public ManejadorDocumentosCfdiDbContext() : base("ManejadorDocumentosCfdiDbContext")
         {
+            Database.SetInitializer(new MigrateDatabaseToLatestVersion<ManejadorDocumentosCfdiDbContext, Configuration>());
         }
 
         public DbSet<ConfiguracionGeneral> ConfiguracionGeneral { get; set; }
+
         public DbSet<Solicitud> Solicitudes { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
