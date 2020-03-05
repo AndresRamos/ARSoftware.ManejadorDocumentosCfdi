@@ -7,13 +7,10 @@
                       xmlns:viewModels="clr-namespace:Presentation.WpfApp.ViewModels"
                       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-                      xmlns:local="clr-namespace:Presentation.WpfApp.Views"
-                      mc:Ignorable="d"
-                      WindowStartupLocation="CenterScreen"
-                      WindowState="Maximized"
+                      xmlns:local="clr-namespace:Presentation.WpfApp.Views" mc:Ignorable="d"
+                      WindowStartupLocation="CenterScreen" WindowState="Maximized"
                       d:DataContext="{d:DesignInstance Type=viewModels:ShellViewModel, IsDesignTimeCreatable=False}"
-                      cal:Bind.AtDesignTime="True"
-                      dialog:DialogParticipation.Register="{Binding}">
+                      cal:Bind.AtDesignTime="True" dialog:DialogParticipation.Register="{Binding}">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />

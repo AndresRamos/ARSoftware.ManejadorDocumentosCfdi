@@ -3,7 +3,9 @@ using System.IO;
 using System.Net;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
+using System.Security.Cryptography.Xml;
 using System.Text;
+using System.Xml;
 using Infrastructure.Sat.Models;
 using NLog;
 
@@ -101,5 +103,30 @@ namespace Infrastructure.Sat.Services
         {
             return Encoding.Default.GetBytes(sourceData);
         }
+
+        public static XmlElement FirmarXml(XmlElement xmlElement, X509Certificate2 varCertificado)
+        {
+            var varXMLFirmado = new SignedXml(xmlElement);
+            varXMLFirmado.SigningKey = varCertificado.GetRSAPrivateKey();
+            varXMLFirmado.SignedInfo.SignatureMethod = SignedXml.XmlDsigRSASHA1Url;
+
+            var varReferencia = new Reference();
+            varReferencia.Uri = "";
+            varReferencia.DigestMethod = SignedXml.XmlDsigSHA1Url;
+            varReferencia.AddTransform(new XmlDsigEnvelopedSignatureTransform());
+            varXMLFirmado.AddReference(varReferencia);
+
+            var keyData = new KeyInfoX509Data(varCertificado);
+            keyData.AddIssuerSerial(varCertificado.Issuer, varCertificado.SerialNumber);
+
+            var varKeyInfo = new KeyInfo();
+            varKeyInfo.AddClause(keyData);
+            //varKeyInfo.AddClause(new RSAKeyValue((RSA) varCertificado.PublicKey.Key));
+            varXMLFirmado.KeyInfo = varKeyInfo;
+            varXMLFirmado.ComputeSignature();
+
+            return varXMLFirmado.GetXml();
+        }
+
     }
 }

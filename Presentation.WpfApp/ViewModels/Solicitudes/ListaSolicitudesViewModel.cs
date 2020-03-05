@@ -2,13 +2,8 @@
 using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Windows.Data;
-using System.Windows.Media.Animation;
 using Caliburn.Micro;
-using Core.Application.Cfdis.ExtraerCfdi;
-using Core.Application.Solicitudes.Commands.AutenticarSolicitud;
-using Core.Application.Solicitudes.Commands.DescargarSolicitud;
-using Core.Application.Solicitudes.Commands.GenerarSolicitud;
-using Core.Application.Solicitudes.Commands.VerificarSolicitud;
+using Core.Application.Solicitudes.Commands.ProcesarSolicitud;
 using Core.Application.Solicitudes.Models;
 using Core.Application.Solicitudes.Queries.BuscarSolicitudesPorRangoFecha;
 using MahApps.Metro.Controls.Dialogs;
@@ -23,6 +18,7 @@ namespace Presentation.WpfApp.ViewModels.Solicitudes
         private readonly IWindowManager _windowManager;
         private DateTime _fechaFin = DateTime.Today;
         private DateTime _fechaInicio = DateTime.Today;
+        private string _filtro;
         private SolicitudDto _solicitudSeleccionada;
 
         public ListaSolicitudesViewModel(IMediator mediator, IWindowManager windowManager, IDialogCoordinator dialogCoordinator)
@@ -34,7 +30,21 @@ namespace Presentation.WpfApp.ViewModels.Solicitudes
             SolicitudesView = CollectionViewSource.GetDefaultView(Solicitudes);
         }
 
-        public string Filtro { get; set; }
+        public string Filtro
+        {
+            get => _filtro;
+            set
+            {
+                if (value == _filtro)
+                {
+                    return;
+                }
+
+                _filtro = value;
+                NotifyOfPropertyChange(() => Filtro);
+                SolicitudesView.Refresh();
+            }
+        }
 
         public DateTime FechaInicio
         {
@@ -88,7 +98,11 @@ namespace Presentation.WpfApp.ViewModels.Solicitudes
             }
         }
 
+        public bool CanBuscarSolicitudesAsync => FechaInicio <= FechaFin;
+
         public bool CanProcesarSolicitudAsync => SolicitudSeleccionada != null;
+
+        public bool CanVerDetallesSolicitudSeleccionadaAsync => SolicitudSeleccionada != null;
 
         public async Task BuscarSolicitudesAsync()
         {
@@ -118,6 +132,7 @@ namespace Presentation.WpfApp.ViewModels.Solicitudes
             try
             {
                 var viewModel = IoC.Get<NuevaSolicitudViewModel>();
+                await viewModel.InicializarAsync();
                 _windowManager.ShowDialog(viewModel);
                 await BuscarSolicitudesAsync();
             }
@@ -139,26 +154,9 @@ namespace Presentation.WpfApp.ViewModels.Solicitudes
 
             try
             {
-                var solicitudId = SolicitudSeleccionada.Id;
-
-                progressDialogController.SetMessage("Autenticando solicitud.");
-                await _mediator.Send(new AutenticarSolicitudCommand(solicitudId));
-
-                //await Task.Delay(10000);
-                //progressDialogController.SetMessage("Generando solicitud.");
-                //await _mediator.Send(new GenerarSolicitudCommand(solicitudId));
-
-                await Task.Delay(10000);
-                progressDialogController.SetMessage("Verificando solicitud.");
-                await _mediator.Send(new VerificarSolicitudCommand(solicitudId));
-
-                await Task.Delay(10000);
-                progressDialogController.SetMessage("Descargando solicitud.");
-                await _mediator.Send(new DescargarSolicitudCommand(solicitudId));
-
+                await _mediator.Send(new ProcesarSolicitudCommand(SolicitudSeleccionada.Id));
                 await BuscarSolicitudesAsync();
-
-                //await _mediator.Send(new ExtraerCfdiCommand());
+                await _dialogCoordinator.ShowMessageAsync(this, "Solicitud Procesada", "La solicitud termino de procesarse exitosamente.");
             }
             catch (Exception e)
             {
@@ -172,9 +170,29 @@ namespace Presentation.WpfApp.ViewModels.Solicitudes
             await progressDialogController.CloseAsync();
         }
 
+        public async Task VerDetallesSolicitudSeleccionadaAsync()
+        {
+            try
+            {
+                var viewModel = IoC.Get<DetalleSolicitudViewModel>();
+                await viewModel.InicializarAsync(SolicitudSeleccionada.Id);
+                _windowManager.ShowDialog(viewModel);
+            }
+            catch (Exception e)
+            {
+                await _dialogCoordinator.ShowMessageAsync(this, "Error", e.ToString());
+            }
+            finally
+            {
+                RaiseGuards();
+            }
+        }
+
         private void RaiseGuards()
         {
+            NotifyOfPropertyChange(() => CanBuscarSolicitudesAsync);
             NotifyOfPropertyChange(() => CanProcesarSolicitudAsync);
+            NotifyOfPropertyChange(() => CanVerDetallesSolicitudSeleccionadaAsync);
         }
     }
 }

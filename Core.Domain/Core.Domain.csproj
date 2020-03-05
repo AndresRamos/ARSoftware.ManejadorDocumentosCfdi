@@ -41,8 +41,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Entities\Paquete.cs" />
+    <Compile Include="Entities\PaqueteId.cs" />
+    <Compile Include="Entities\SolicitudAutenticacion.cs" />
     <Compile Include="Entities\ConfiguracionGeneral.cs" />
     <Compile Include="Entities\Solicitud.cs" />
+    <Compile Include="Entities\SolicitudDescarga.cs" />
+    <Compile Include="Entities\SolicitudSolicitud.cs" />
+    <Compile Include="Entities\SolicitudVerificacion.cs" />
+    <Compile Include="Entities\SolicitudWebBase.cs" />
     <Compile Include="Enums\EstatusSolicitud.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ValueObjects\CertificadoSat.cs" />

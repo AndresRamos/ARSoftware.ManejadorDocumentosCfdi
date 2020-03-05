@@ -1,7 +1,6 @@
 ﻿using System.Reflection;
 using Autofac;
 using Caliburn.Micro;
-using ControlzEx.Standard;
 using Core.Application.Cfdis.Queries.ObtenerCertificado;
 using Infrastructure.Persistance;
 using MahApps.Metro.Controls.Dialogs;
@@ -9,6 +8,7 @@ using MediatR;
 using Presentation.WpfApp.ViewModels;
 using Presentation.WpfApp.ViewModels.ConfiguracionGeneral;
 using Presentation.WpfApp.ViewModels.Solicitudes;
+using Presentation.WpfApp.ViewModels.Xmls;
 
 namespace Presentation.WpfApp.Config
 {
@@ -67,9 +67,20 @@ namespace Presentation.WpfApp.Config
         private static void RegisterViewModels(ContainerBuilder containerBuilder)
         {
             containerBuilder.RegisterType<ShellViewModel>();
-            containerBuilder.RegisterType<NuevaSolicitudViewModel>();
-            containerBuilder.RegisterType<ListaSolicitudesViewModel>();
+
             containerBuilder.RegisterType<ConfiguracionGeneralViewModel>();
+
+            containerBuilder.RegisterType<DetalleSolicitudViewModel>();
+            containerBuilder.RegisterType<ListaSolicitudesViewModel>();
+            containerBuilder.RegisterType<NuevaSolicitudViewModel>();
+            containerBuilder.RegisterType<SolicitudAutenticacionViewModel>();
+            containerBuilder.RegisterType<SolicitudDescargaViewModel>();
+            containerBuilder.RegisterType<SolicitudPaquetesViewModel>();
+            containerBuilder.RegisterType<SolicitudSolicitudViewModel>();
+            containerBuilder.RegisterType<SolicitudVerificacionViewModel>();
+            containerBuilder.RegisterType<SolicitudViewModel>();
+
+            containerBuilder.RegisterType<XmlViewerViewModel>();
         }
 
         private static void RegisterPersistanceModule(ContainerBuilder containerBuilder)

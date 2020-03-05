@@ -17,6 +17,10 @@ namespace Infrastructure.Persistance
 
         public DbSet<Solicitud> Solicitudes { get; set; }
 
+        public DbSet<SolicitudWebBase> SolicitudesWeb { get; set; }
+
+        public DbSet<Paquete> Paquetes { get; set; }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();

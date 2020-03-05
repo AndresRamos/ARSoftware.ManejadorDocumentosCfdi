@@ -116,19 +116,51 @@
     </Compile>
     <Compile Include="ViewModels\ConfiguracionGeneral\ConfiguracionGeneralViewModel.cs" />
     <Compile Include="ViewModels\ShellViewModel.cs" />
+    <Compile Include="ViewModels\Solicitudes\DetalleSolicitudViewModel.cs" />
     <Compile Include="ViewModels\Solicitudes\ListaSolicitudesViewModel.cs" />
     <Compile Include="ViewModels\Solicitudes\NuevaSolicitudViewModel.cs" />
+    <Compile Include="ViewModels\Solicitudes\SolicitudAutenticacionViewModel.cs" />
+    <Compile Include="ViewModels\Solicitudes\SolicitudDescargaViewModel.cs" />
+    <Compile Include="ViewModels\Solicitudes\SolicitudPaquetesViewModel.cs" />
+    <Compile Include="ViewModels\Solicitudes\SolicitudSolicitudViewModel.cs" />
+    <Compile Include="ViewModels\Solicitudes\SolicitudVerificacionViewModel.cs" />
+    <Compile Include="ViewModels\Solicitudes\SolicitudViewModel.cs" />
+    <Compile Include="ViewModels\Xmls\XmlViewerViewModel.cs" />
     <Compile Include="Views\ConfiguracionGeneral\ConfiguracionGeneralView.xaml.cs">
       <DependentUpon>ConfiguracionGeneralView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ShellView.xaml.cs">
       <DependentUpon>ShellView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Solicitudes\DetalleSolicitudView.xaml.cs">
+      <DependentUpon>DetalleSolicitudView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Solicitudes\ListaSolicitudesView.xaml.cs">
       <DependentUpon>ListaSolicitudesView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Solicitudes\NuevaSolicitudView.xaml.cs">
       <DependentUpon>NuevaSolicitudView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Solicitudes\SolicitudAutenticacionView.xaml.cs">
+      <DependentUpon>SolicitudAutenticacionView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Solicitudes\SolicitudDescargaView.xaml.cs">
+      <DependentUpon>SolicitudDescargaView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Solicitudes\SolicitudPaquetesView.xaml.cs">
+      <DependentUpon>SolicitudPaquetesView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Solicitudes\SolicitudSolicitudView.xaml.cs">
+      <DependentUpon>SolicitudSolicitudView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Solicitudes\SolicitudVerificacionView.xaml.cs">
+      <DependentUpon>SolicitudVerificacionView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Solicitudes\SolicitudView.xaml.cs">
+      <DependentUpon>SolicitudView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Xmls\XmlViewerView.xaml.cs">
+      <DependentUpon>XmlViewerView.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -175,11 +207,43 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\Solicitudes\DetalleSolicitudView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Solicitudes\ListaSolicitudesView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Solicitudes\NuevaSolicitudView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Solicitudes\SolicitudAutenticacionView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Solicitudes\SolicitudDescargaView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Solicitudes\SolicitudPaquetesView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Solicitudes\SolicitudSolicitudView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Solicitudes\SolicitudVerificacionView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Solicitudes\SolicitudView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Xmls\XmlViewerView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -194,6 +258,7 @@
       <Name>Infrastructure.Persistance</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

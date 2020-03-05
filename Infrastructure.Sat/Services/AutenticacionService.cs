@@ -14,12 +14,11 @@ namespace Infrastructure.Sat.Services
 
         #region Crea el XML para enviar
 
-        public string Generate(X509Certificate2 certificate)
+        public string Generate(X509Certificate2 certificate, DateTime fechaCreacion, DateTime fechaExpiracion)
         {
             var format = "yyyy-MM-ddTHH:mm:ss.fffZ";
-            var date = DateTime.UtcNow;
-            var created = date.ToString(format);
-            var expires = date.AddSeconds(300).ToString(format);
+            var created = fechaCreacion.ToString(format);
+            var expires = fechaExpiracion.ToString(format);
             var uuid = "uuid-" + Guid.NewGuid() + "-1";
 
             var canonicalTimestamp = @"<u:Timestamp xmlns:u=""http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd"" u:Id=""_0"">" +
@@ -84,9 +83,22 @@ namespace Infrastructure.Sat.Services
             var xmlDocument = new XmlDocument();
             xmlDocument.LoadXml(webResponse);
 
-            var token = xmlDocument.GetElementsByTagName("AutenticaResult")[0].InnerXml;
-            
-            return SolicitudResult.CrearAutenticaResult(token, webResponse);
+            var validElement = xmlDocument.GetElementsByTagName("AutenticaResult")[0];
+            if (validElement != null)
+            {
+                var token = xmlDocument.GetElementsByTagName("AutenticaResult")[0].InnerXml;
+                return SolicitudResult.CrearAutenticaResult(token, null, null, webResponse);
+            }
+
+            var errorElement = xmlDocument.GetElementsByTagName("s:Fault")[0];
+            if (errorElement != null)
+            {
+                var faultCode = xmlDocument.GetElementsByTagName("faultcode")[0].InnerXml;
+                var faultString = xmlDocument.GetElementsByTagName("faultstring")[0].InnerXml;
+                return SolicitudResult.CrearAutenticaResult(null, faultCode, faultString, webResponse);
+            }
+
+            throw new ArgumentException("La respuesta no es valida", nameof(webResponse));
         }
     }
 }

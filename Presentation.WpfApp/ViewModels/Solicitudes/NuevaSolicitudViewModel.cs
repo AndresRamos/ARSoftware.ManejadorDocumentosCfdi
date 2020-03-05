@@ -1,8 +1,7 @@
 ﻿using System;
-using System.IO;
 using System.Threading.Tasks;
 using Caliburn.Micro;
-using Core.Application.Cfdis.Queries.ObtenerCertificado;
+using Core.Application.ConfiguracionGeneral.Queries.BuscarConfiguracionGeneral;
 using Core.Application.Solicitudes.Commands.CrearSolicitud;
 using MahApps.Metro.Controls.Dialogs;
 using MediatR;
@@ -11,10 +10,14 @@ namespace Presentation.WpfApp.ViewModels.Solicitudes
 {
     public sealed class NuevaSolicitudViewModel : Screen
     {
-        private readonly IMediator _mediator;
         private readonly IDialogCoordinator _dialogCoordinator;
-        private DateTime _fechaInicio = DateTime.Today;
+        private readonly IMediator _mediator;
         private DateTime _fechaFin = DateTime.Today;
+        private DateTime _fechaInicio = DateTime.Today;
+        private string _rfcEmisor;
+        private string _rfcReceptor;
+        private string _rfcSolicitante;
+        private string _tipoSolicitud;
 
         public NuevaSolicitudViewModel(IMediator mediator, IDialogCoordinator dialogCoordinator)
         {
@@ -28,7 +31,11 @@ namespace Presentation.WpfApp.ViewModels.Solicitudes
             get => _fechaInicio;
             set
             {
-                if (value.Equals(_fechaInicio)) return;
+                if (value.Equals(_fechaInicio))
+                {
+                    return;
+                }
+
                 _fechaInicio = value;
                 NotifyOfPropertyChange(() => FechaInicio);
             }
@@ -39,17 +46,89 @@ namespace Presentation.WpfApp.ViewModels.Solicitudes
             get => _fechaFin;
             set
             {
-                if (value.Equals(_fechaFin)) return;
+                if (value.Equals(_fechaFin))
+                {
+                    return;
+                }
+
                 _fechaFin = value;
                 NotifyOfPropertyChange(() => FechaFin);
             }
+        }
+
+        public string RfcEmisor
+        {
+            get => _rfcEmisor;
+            set
+            {
+                if (value == _rfcEmisor)
+                {
+                    return;
+                }
+
+                _rfcEmisor = value;
+                NotifyOfPropertyChange(() => RfcEmisor);
+            }
+        }
+
+        public string RfcReceptor
+        {
+            get => _rfcReceptor;
+            set
+            {
+                if (value == _rfcReceptor)
+                {
+                    return;
+                }
+
+                _rfcReceptor = value;
+                NotifyOfPropertyChange(() => RfcReceptor);
+            }
+        }
+
+        public string RfcSolicitante
+        {
+            get => _rfcSolicitante;
+            set
+            {
+                if (value == _rfcSolicitante)
+                {
+                    return;
+                }
+
+                _rfcSolicitante = value;
+                NotifyOfPropertyChange(() => RfcSolicitante);
+            }
+        }
+
+        public string TipoSolicitud
+        {
+            get => _tipoSolicitud;
+            set
+            {
+                if (value == _tipoSolicitud)
+                {
+                    return;
+                }
+
+                _tipoSolicitud = value;
+                NotifyOfPropertyChange(() => TipoSolicitud);
+            }
+        }
+
+        public async Task InicializarAsync()
+        {
+            var configuracionGeneral = await _mediator.Send(new BuscarConfiguracionGeneralQuery());
+            RfcReceptor = configuracionGeneral.CertificadoSat.RfcEmisor;
+            RfcSolicitante = configuracionGeneral.CertificadoSat.RfcEmisor;
+            TipoSolicitud = "CFDI";
         }
 
         public async Task CrearSolicitudAsync()
         {
             try
             {
-                await _mediator.Send(new CrearSolicitudCommand(FechaInicio, FechaFin));
+                await _mediator.Send(new CrearSolicitudCommand(FechaInicio, FechaFin, RfcEmisor, RfcReceptor, RfcSolicitante, TipoSolicitud));
                 TryClose();
             }
             catch (Exception e)

@@ -7,12 +7,10 @@
              xmlns:viewModels="clr-namespace:Presentation.WpfApp.ViewModels.Solicitudes"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:local="clr-namespace:Presentation.WpfApp.Views.Solicitudes"
-             mc:Ignorable="d"
-             d:DesignHeight="450" d:DesignWidth="800"
+             xmlns:local="clr-namespace:Presentation.WpfApp.Views.Solicitudes" mc:Ignorable="d" d:DesignHeight="450"
+             d:DesignWidth="800"
              d:DataContext="{d:DesignInstance Type=viewModels:ListaSolicitudesViewModel, IsDesignTimeCreatable=False}"
-             cal:Bind.AtDesignTime="True"
-             dialog:DialogParticipation.Register="{Binding}">
+             cal:Bind.AtDesignTime="True" dialog:DialogParticipation.Register="{Binding}">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -52,6 +50,8 @@
                     Style="{StaticResource AccentedSquareButtonStyle}" />
             <Button Content="Procesar" cal:Message.Attach="ProcesarSolicitudAsync" Width="150" Margin="5"
                     Style="{DynamicResource SquareButtonStyle}" />
+            <Button Content="Ver Detalles" cal:Message.Attach="VerDetallesSolicitudSeleccionadaAsync" Width="150"
+                    Margin="5" Style="{DynamicResource SquareButtonStyle}" />
         </StackPanel>
         <StackPanel Grid.Row="3" Orientation="Horizontal" Margin="5">
             <TextBox Text="{Binding Filtro, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="250"
@@ -61,10 +61,12 @@
                   Margin="5" IsReadOnly="True" AutoGenerateColumns="False">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Id" Binding="{Binding Id}" />
-                <DataGridTextColumn Header="FechaCreacion" Binding="{Binding FechaCreacion}" />
-                <DataGridTextColumn Header="FechaInicio" Binding="{Binding FechaInicio}" />
-                <DataGridTextColumn Header="FechaFin" Binding="{Binding FechaFin}" />
-                <DataGridTextColumn Header="Estatus" Binding="{Binding Estatus}" />
+                <DataGridTextColumn Header="Fecha Creacion UTC" Binding="{Binding FechaCreacionUtc}" />
+                <DataGridTextColumn Header="Fecha Creacion Local" Binding="{Binding FechaCreacionLocal}" />
+                <DataGridTextColumn Header="Fecha Inicio" Binding="{Binding FechaInicio}" />
+                <DataGridTextColumn Header="Fecha Fin" Binding="{Binding FechaFin}" />
+                <DataGridTextColumn Header="RFC Emisor" Binding="{Binding RfcEmisor}" />
+                <DataGridTextColumn Header="RFC Receptor" Binding="{Binding RfcReceptor}" />
             </DataGrid.Columns>
         </DataGrid>
     </Grid>

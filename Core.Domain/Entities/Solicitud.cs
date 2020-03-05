@@ -1,5 +1,5 @@
 ﻿using System;
-using Core.Domain.Enums;
+using System.Collections.Generic;
 
 namespace Core.Domain.Entities
 {
@@ -7,24 +7,47 @@ namespace Core.Domain.Entities
     {
         public Solicitud()
         {
+            SolicitudesWeb = new HashSet<SolicitudWebBase>();
+            Paquetes = new HashSet<Paquete>();
         }
 
         public int Id { get; set; }
-        public DateTime FechaCreacion { get; set; }
+        public DateTime FechaCreacionUtc { get; set; }
         public DateTime FechaInicio { get; set; }
         public DateTime FechaFin { get; set; }
-        public string Token { get; set; }
-        public string Autorizacion { get; set; }
-        public string SolicitudSatId { get; set; }
-        public string PaqueteId { get; set; }
-        public EstatusSolicitud Estatus { get; set; }
+        public string RfcEmisor { get; set; }
+        public string RfcReceptor { get; set; }
+        public string RfcSolicitante { get; set; }
+        public string TipoSolicitud { get; set; }
 
-        public static Solicitud CreateNew(DateTime fechaInicio, DateTime fechaFin)
+        public int? SolicitudAutenticacionId { get; set; }
+        public SolicitudAutenticacion SolicitudAutenticacion { get; set; }
+
+        public int? SolicitudSolicitudId { get; set; }
+        public SolicitudSolicitud SolicitudSolicitud { get; set; }
+
+        public int? SolicitudVerificacionId { get; set; }
+        public SolicitudVerificacion SolicitudVerificacion { get; set; }
+
+        public int? SolicitudDescargaId { get; set; }
+        public SolicitudDescarga SolicitudDescarga { get; set; }
+
+        public ICollection<SolicitudWebBase> SolicitudesWeb { get; set; }
+
+        public ICollection<Paquete> Paquetes { get; set; }
+
+        public static Solicitud CreateNew(DateTime fechaInicio, DateTime fechaFin, string rfcEmisor, string rfcReceptor, string rfcSolicitante, string tipoSolicitud)
         {
-            var solicitud = new Solicitud();
-            solicitud.FechaCreacion = DateTime.Today;
-            solicitud.FechaInicio = fechaInicio;
-            solicitud.FechaFin = fechaFin;
+            var solicitud = new Solicitud
+            {
+                FechaCreacionUtc = DateTime.UtcNow,
+                FechaInicio = fechaInicio,
+                FechaFin = fechaFin,
+                RfcEmisor = rfcEmisor,
+                RfcReceptor = rfcReceptor,
+                RfcSolicitante = rfcSolicitante,
+                TipoSolicitud = tipoSolicitud
+            };
             return solicitud;
         }
     }

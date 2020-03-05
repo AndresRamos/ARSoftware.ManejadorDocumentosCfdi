@@ -92,5 +92,36 @@ namespace Infrastructure.Sat.Services
             //var s = xmlDoc.GetElementsByTagName("Paquete")[0].InnerXml;
             //return s;
         }
+
+        public string GenerarSoapRequestEnvelopeXml(string idPaquete, string rfcSolicitante, X509Certificate2 certificate)
+        {
+            var xmlDocument = new XmlDocument();
+
+            var envelopElement = xmlDocument.CreateElement("soapenv", "Envelope", "http://schemas.xmlsoap.org/soap/envelope/");
+            envelopElement.SetAttribute("xmlns:soapenv", "http://schemas.xmlsoap.org/soap/envelope/");
+            envelopElement.SetAttribute("xmlns:des", "http://DescargaMasivaTerceros.sat.gob.mx");
+            envelopElement.SetAttribute("xmlns:xd", "http://www.w3.org/2000/09/xmldsig#");
+            xmlDocument.AppendChild(envelopElement);
+
+            var headerElement = xmlDocument.CreateElement("soapenv", "Header", "http://schemas.xmlsoap.org/soap/envelope/");
+            envelopElement.AppendChild(headerElement);
+
+            var bodyElement = xmlDocument.CreateElement("soapenv", "Body", "http://schemas.xmlsoap.org/soap/envelope/");
+            envelopElement.AppendChild(bodyElement);
+
+            var peticionDescargaMasivaTercerosEntradaElement = xmlDocument.CreateElement("des", "PeticionDescargaMasivaTercerosEntrada", "http://DescargaMasivaTerceros.sat.gob.mx");
+            bodyElement.AppendChild(peticionDescargaMasivaTercerosEntradaElement);
+
+            var peticionDescargaElement = xmlDocument.CreateElement("des", "peticionDescarga", "http://DescargaMasivaTerceros.sat.gob.mx");
+            peticionDescargaElement.SetAttribute("IdPaquete", idPaquete);
+            peticionDescargaElement.SetAttribute("RfcSolicitante", rfcSolicitante);
+
+            var signatureElement = FirmarXml(peticionDescargaElement, certificate);
+            peticionDescargaElement.AppendChild(signatureElement);
+
+            peticionDescargaMasivaTercerosEntradaElement.AppendChild(peticionDescargaElement);
+
+            return xmlDocument.OuterXml;
+        }
     }
 }

@@ -12,7 +12,6 @@ namespace Infrastructure.Sat.Services
         {
         }
 
-        #region Crea el XML para enviar
 
         public string Generate(X509Certificate2 certificate, string rfcEmisor, string rfcReceptor, string rfcSolicitante, string fechaInicial = "", string fechaFinal = "", string tipoSolicitud = "CFDI")
         {
@@ -79,8 +78,6 @@ namespace Infrastructure.Sat.Services
             return soap_request;
         }
 
-        #endregion
-
         private void FixFecha(string fechaInicial1, string fechaFinal1, out string fechaInicial, out string fechaFinal)
         {
             fechaInicial = fechaInicial1 + "T00:00:00";
@@ -91,12 +88,52 @@ namespace Infrastructure.Sat.Services
         {
             var xmlDocument = new XmlDocument();
             xmlDocument.LoadXml(webResponse);
-            var element = xmlDocument.GetElementsByTagName("SolicitaDescargaResult")[0];
-            var codEstatus = element.Attributes.GetNamedItem("CodEstatus")?.Value;
-            var mensaje = element.Attributes.GetNamedItem("Mensaje")?.Value;
-            var idSolicitud = element.Attributes.GetNamedItem("IdSolicitud")?.Value;
 
-            return SolicitudResult.CrearGenerarSolicitudResult(codEstatus, idSolicitud, mensaje, webResponse);
+            var element = xmlDocument.GetElementsByTagName("SolicitaDescargaResult")[0];
+            if (element != null)
+            {
+                var codEstatus = element.Attributes.GetNamedItem("CodEstatus")?.Value;
+                var mensaje = element.Attributes.GetNamedItem("Mensaje")?.Value;
+                var idSolicitud = element.Attributes.GetNamedItem("IdSolicitud")?.Value;
+                return SolicitudResult.CrearGenerarSolicitudResult(codEstatus, idSolicitud, mensaje, webResponse);
+            }
+
+            throw new ArgumentException("El resultado no estan en un formato valido.", nameof(webResponse));
+        }
+                                                                                                                                                                                                                                                                                                                    
+        public static string GenerarSoapRequestXml(string fechaInicial, string fechaFinal, string tipoSolicitud, string rfcEmisor, string rfcReceptor, string rfcSolicitante, X509Certificate2 certificate)
+        {
+            var xmlDocument = new XmlDocument();
+
+            var envelopElement = xmlDocument.CreateElement("soapenv", "Envelope", "http://schemas.xmlsoap.org/soap/envelope/");
+            envelopElement.SetAttribute("xmlns:soapenv", "http://schemas.xmlsoap.org/soap/envelope/");
+            envelopElement.SetAttribute("xmlns:des", "http://DescargaMasivaTerceros.sat.gob.mx");
+            envelopElement.SetAttribute("xmlns:xd", "http://www.w3.org/2000/09/xmldsig#");
+            xmlDocument.AppendChild(envelopElement);
+
+            var headerElement = xmlDocument.CreateElement("soapenv", "Header", "http://schemas.xmlsoap.org/soap/envelope/");
+            envelopElement.AppendChild(headerElement);
+
+            var bodyElement = xmlDocument.CreateElement("soapenv", "Body", "http://schemas.xmlsoap.org/soap/envelope/");
+            envelopElement.AppendChild(bodyElement);
+
+            var solicitaDescargaElement = xmlDocument.CreateElement("des", "SolicitaDescarga", "http://DescargaMasivaTerceros.sat.gob.mx");
+            bodyElement.AppendChild(solicitaDescargaElement);
+
+            var solicitudElement = xmlDocument.CreateElement("des", "solicitud", "http://DescargaMasivaTerceros.sat.gob.mx");
+            solicitudElement.SetAttribute("FechaInicial", fechaInicial);
+            solicitudElement.SetAttribute("FechaFinal", fechaFinal);
+            solicitudElement.SetAttribute("RfcEmisor", rfcEmisor);
+            solicitudElement.SetAttribute("RfcReceptor", rfcReceptor);
+            solicitudElement.SetAttribute("RfcSolicitante", rfcSolicitante);
+            solicitudElement.SetAttribute("TipoSolicitud", tipoSolicitud);
+
+            var signatureElement = FirmarXml(solicitudElement, certificate);
+            solicitudElement.AppendChild(signatureElement);
+
+            solicitaDescargaElement.AppendChild(solicitudElement);
+
+            return xmlDocument.OuterXml;
         }
     }
 }

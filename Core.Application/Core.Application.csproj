@@ -69,6 +69,9 @@
   <ItemGroup>
     <Compile Include="Cfdis\ExtraerCfdi\ExtraerCfdiCommand.cs" />
     <Compile Include="Cfdis\ExtraerCfdi\ExtraerCfdiCommandHandler.cs" />
+    <Compile Include="Paquetes\Commands\ExportarArchivoZip\ExportarArchivoZipCommand.cs" />
+    <Compile Include="Paquetes\Commands\ExportarArchivoZip\ExportarArchivoZipCommandHandler.cs" />
+    <Compile Include="Paquetes\Models\PaqueteDto.cs" />
     <Compile Include="Solicitudes\Commands\CrearSolicitud\CrearSolicitudCommand.cs" />
     <Compile Include="Solicitudes\Commands\CrearSolicitud\CrearSolicitudCommandHandler.cs" />
     <Compile Include="Cfdis\Queries\ObtenerCertificado\ObtenerCertificadoQuery.cs" />
@@ -86,17 +89,29 @@
     <Compile Include="Solicitudes\Commands\DescargarSolicitud\DescargarSolicitudCommandHandler.cs" />
     <Compile Include="Solicitudes\Commands\GenerarSolicitud\GenerarSolicitudCommand.cs" />
     <Compile Include="Solicitudes\Commands\GenerarSolicitud\GenerarSolicitudCommandHandler.cs" />
+    <Compile Include="Solicitudes\Commands\ProcesarSolicitud\ProcesarSolicitudCommand.cs" />
+    <Compile Include="Solicitudes\Commands\ProcesarSolicitud\ProcesarSolicitudCommandHandler.cs" />
     <Compile Include="Solicitudes\Commands\VerificarSolicitud\VerificarSolicitudCommand.cs" />
     <Compile Include="Solicitudes\Commands\VerificarSolicitud\VerificarSolicitudCommandHandler.cs" />
+    <Compile Include="Solicitudes\Models\SolicitudAutenticacionDto.cs" />
+    <Compile Include="Solicitudes\Models\SolicitudDescargaDto.cs" />
     <Compile Include="Solicitudes\Models\SolicitudDto.cs" />
+    <Compile Include="Solicitudes\Models\SolicitudSolicitudDto.cs" />
+    <Compile Include="Solicitudes\Models\SolicitudVerificacionDto.cs" />
     <Compile Include="Solicitudes\Queries\BuscarSolicitudesPorRangoFecha\BuscarSolicitudesPorRangoFechaQuery.cs" />
     <Compile Include="Solicitudes\Queries\BuscarSolicitudesPorRangoFecha\BuscarSolicitudesPorRangoFechaQueryHandler.cs" />
+    <Compile Include="Solicitudes\Queries\BuscarSolicitudPorId\BuscarSolicitudPorIdQuery.cs" />
+    <Compile Include="Solicitudes\Queries\BuscarSolicitudPorId\BuscarSolicitudPorIdQueryHandler.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Common\Common.csproj">
+      <Project>{a4122ec4-b420-4238-b5e3-ecb62bae86c3}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Core.Domain\Core.Domain.csproj">
       <Project>{21a5d6dd-e68f-4cf7-b1f0-a66a47913ff5}</Project>
       <Name>Core.Domain</Name>
