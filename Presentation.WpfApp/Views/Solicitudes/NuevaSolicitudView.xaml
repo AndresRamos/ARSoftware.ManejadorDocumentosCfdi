@@ -9,7 +9,7 @@
                       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                       xmlns:local="clr-namespace:Presentation.WpfApp.Views.Solicitudes"
                       mc:Ignorable="d"
-                      WindowStartupLocation="CenterOwner" Width="400" Height="350"
+                      WindowStartupLocation="CenterOwner" Width="500" Height="350"
                       d:DataContext="{d:DesignInstance Type=viewModels:NuevaSolicitudViewModel, IsDesignTimeCreatable=False}"
                       cal:Bind.AtDesignTime="True"
                       dialog:DialogParticipation.Register="{Binding}">
@@ -68,9 +68,11 @@
                        VerticalAlignment="Center" Margin="5" />
             <Label Grid.Row="5" Grid.Column="0" Content="Tipo Solicitud:" FontWeight="Bold" VerticalAlignment="Center"
                    HorizontalAlignment="Right" Margin="5" />
-            <TextBlock Grid.Row="5" Grid.Column="1"
-                       Text="{Binding TipoSolicitud}"
-                       VerticalAlignment="Center" Margin="5" />
+            <ComboBox Grid.Row="5" Grid.Column="1"
+                      ItemsSource="{Binding TiposSolicitud}"
+                      SelectedItem="{Binding TipoSolicitudSeleccionado}"
+                      DisplayMemberPath="Name"
+                      VerticalAlignment="Center" Margin="5" />
         </Grid>
     </Grid>
 </controls:MetroWindow>

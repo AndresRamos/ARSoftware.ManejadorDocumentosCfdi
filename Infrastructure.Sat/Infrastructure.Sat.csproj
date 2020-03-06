@@ -53,7 +53,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Enumeration.cs" />
     <Compile Include="Models\SolicitudResult.cs" />
+    <Compile Include="NamespaceConstants.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\AutenticacionService.cs" />
     <Compile Include="Services\CertificadoService.cs" />
@@ -61,6 +63,7 @@
     <Compile Include="Services\SoapRequestBase.cs" />
     <Compile Include="Services\GenerarSolicitudService.cs" />
     <Compile Include="Services\VerificaSolicitudService.cs" />
+    <Compile Include="TipoSolicitud.cs" />
     <Compile Include="UrlsSat.cs" />
   </ItemGroup>
   <ItemGroup>

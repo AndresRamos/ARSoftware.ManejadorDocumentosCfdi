@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity;
+﻿using System.Data.Entity;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Common;
 using Infrastructure.Persistance;
 using MediatR;
 using NLog;
@@ -15,8 +10,8 @@ namespace Core.Application.Paquetes.Commands.ExportarArchivoZip
 {
     public class ExportarArchivoZipCommandHandler : IRequestHandler<ExportarArchivoZipCommand>
     {
-        private readonly ManejadorDocumentosCfdiDbContext _context;
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+        private readonly ManejadorDocumentosCfdiDbContext _context;
 
         public ExportarArchivoZipCommandHandler(ManejadorDocumentosCfdiDbContext context)
         {
@@ -32,6 +27,8 @@ namespace Core.Application.Paquetes.Commands.ExportarArchivoZip
             {
                 fileStream.Write(paquete.Contenido, 0, paquete.Contenido.Length);
             }
+
+            return Unit.Value;
         }
     }
 }

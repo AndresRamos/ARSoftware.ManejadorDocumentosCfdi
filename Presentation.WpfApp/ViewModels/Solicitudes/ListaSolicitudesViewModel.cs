@@ -78,7 +78,7 @@ namespace Presentation.WpfApp.ViewModels.Solicitudes
             }
         }
 
-        public BindableCollection<SolicitudDto> Solicitudes { get; set; } = new BindableCollection<SolicitudDto>();
+        public BindableCollection<SolicitudDto> Solicitudes { get; } = new BindableCollection<SolicitudDto>();
 
         public ICollectionView SolicitudesView { get; }
 
@@ -134,7 +134,6 @@ namespace Presentation.WpfApp.ViewModels.Solicitudes
                 var viewModel = IoC.Get<NuevaSolicitudViewModel>();
                 await viewModel.InicializarAsync();
                 _windowManager.ShowDialog(viewModel);
-                await BuscarSolicitudesAsync();
             }
             catch (Exception e)
             {
@@ -142,6 +141,7 @@ namespace Presentation.WpfApp.ViewModels.Solicitudes
             }
             finally
             {
+                await BuscarSolicitudesAsync();
                 RaiseGuards();
             }
         }

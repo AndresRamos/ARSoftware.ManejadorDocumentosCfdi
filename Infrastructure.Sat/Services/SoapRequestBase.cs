@@ -1,10 +1,14 @@
 ﻿using System;
 using System.IO;
 using System.Net;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Net.Mime;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Security.Cryptography.Xml;
 using System.Text;
+using System.Threading.Tasks;
 using System.Xml;
 using Infrastructure.Sat.Models;
 using NLog;
@@ -128,5 +132,100 @@ namespace Infrastructure.Sat.Services
             return varXMLFirmado.GetXml();
         }
 
+        public static XmlElement FirmarXmlWithReference(XmlElement xmlElement, X509Certificate2 varCertificado, string reference,  XmlElement refer)
+        {
+            var varXMLFirmado = new SignedXmlWithId(xmlElement);
+            varXMLFirmado.SigningKey = varCertificado.GetRSAPrivateKey();
+            varXMLFirmado.SignedInfo.SignatureMethod = SignedXml.XmlDsigRSASHA1Url;
+            varXMLFirmado.SignedInfo.CanonicalizationMethod = SignedXml.XmlDsigExcC14NTransformUrl;
+            var varReferencia = new Reference();
+            varReferencia.Uri = reference;
+            varReferencia.DigestMethod = SignedXml.XmlDsigSHA1Url;
+            varReferencia.AddTransform(new XmlDsigExcC14NTransform());
+            varXMLFirmado.AddReference(varReferencia);
+
+            //var keyData = new KeyInfoX509Data(varCertificado);
+            //keyData.AddIssuerSerial(varCertificado.Issuer, varCertificado.SerialNumber);
+
+            var varKeyInfo = new KeyInfo();
+            //varKeyInfo.AddClause(keyData);
+            //varKeyInfo.AddClause(new RSAKeyValue((RSA) varCertificado.PublicKey.Key));
+            var infoNode = new KeyInfoNode();
+            infoNode.Value = refer;
+            varKeyInfo.AddClause(infoNode);
+
+            varXMLFirmado.KeyInfo = varKeyInfo;
+            varXMLFirmado.ComputeSignature();
+
+            return varXMLFirmado.GetXml();
+        }
+
+        public async Task<SolicitudResult> SendHttpClient(string xml, string autorization)
+        {
+            if (xml == null)
+            {
+                throw new ArgumentNullException(nameof(xml), "El xml no puede ser nulo.");
+            }
+
+            try
+            {
+                var httpClient = new HttpClient();
+                var request = new HttpRequestMessage()
+                {
+                    RequestUri = new Uri(_url),
+                    Method = HttpMethod.Post,
+                };
+
+                request.Headers.Clear();
+                httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(MediaTypeNames.Text.Xml));
+                request.Headers.Add("SOAPAction", _soapAction);
+
+                request.Content = new StringContent(xml, Encoding.UTF8, MediaTypeNames.Text.Xml);
+                request.Content.Headers.ContentType = new MediaTypeHeaderValue(MediaTypeNames.Text.Xml);
+
+                var response = await httpClient.SendAsync(request);
+
+                var readAsStringAsync = await response.Content.ReadAsStringAsync();
+
+                return GetResult(readAsStringAsync);
+            }
+            catch (WebException e)
+            {
+                Logger.Error(e);
+                throw;
+            }
+            catch (Exception e)
+            {
+                Logger.Error(e);
+                throw;
+            }
+        }
+        public class SignedXmlWithId : SignedXml
+        {
+            public SignedXmlWithId(XmlDocument xml) : base(xml)
+            {
+            }
+
+            public SignedXmlWithId(XmlElement xmlElement)
+                : base(xmlElement)
+            {
+            }
+
+            public override XmlElement GetIdElement(XmlDocument doc, string id)
+            {
+                // check to see if it's a standard ID reference
+                XmlElement idElem = base.GetIdElement(doc, id);
+
+                if (idElem == null)
+                {
+                    XmlNamespaceManager nsManager = new XmlNamespaceManager(doc.NameTable);
+                    nsManager.AddNamespace("u", "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd");
+
+                    idElem = doc.SelectSingleNode("//*[@u:Id=\"" + id + "\"]", nsManager) as XmlElement;
+                }
+
+                return idElem;
+            }
+        }
     }
 }

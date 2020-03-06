@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
+using Core.Application.Paquetes.Models;
 
 namespace Core.Application.Solicitudes.Models
 {
     public class SolicitudVerificacionDto
     {
-        public SolicitudVerificacionDto(int id, DateTime fechaCreacionUtc, string codEstatus, string mensaje, string codigoEstadoSolicitud, string estadoSolicitud, string numeroCfdis, string idsPaquetes, string error, string solicitud, string respuesta)
+        public SolicitudVerificacionDto(int id, DateTime fechaCreacionUtc, string codEstatus, string mensaje, string codigoEstadoSolicitud, string estadoSolicitud, string numeroCfdis, IEnumerable<PaqueteIdDto> paqueteIds, string error, string solicitud, string respuesta)
         {
             Id = id;
             FechaCreacionUtc = fechaCreacionUtc;
@@ -14,7 +16,7 @@ namespace Core.Application.Solicitudes.Models
             CodigoEstadoSolicitud = codigoEstadoSolicitud;
             EstadoSolicitud = estadoSolicitud;
             NumeroCfdis = numeroCfdis;
-            IdsPaquetes = idsPaquetes;
+            PaqueteIds = new List<PaqueteIdDto>(paqueteIds);
             Error = error;
             Solicitud = solicitud;
             Respuesta = respuesta;
@@ -28,7 +30,7 @@ namespace Core.Application.Solicitudes.Models
         public string CodigoEstadoSolicitud { get; set; }
         public string EstadoSolicitud { get; set; }
         public string NumeroCfdis { get; set; }
-        public string IdsPaquetes { get; set; }
+        public List<PaqueteIdDto> PaqueteIds { get; set; }
         public string Error { get; set; }
         public string Solicitud { get; set; }
         public string Respuesta { get; set; }

@@ -7,10 +7,12 @@
              xmlns:viewModels="clr-namespace:Presentation.WpfApp.ViewModels.Solicitudes"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:local="clr-namespace:Presentation.WpfApp.Views.Solicitudes" mc:Ignorable="d" d:DesignHeight="450"
-             d:DesignWidth="800"
+             mc:Ignorable="d"
+             d:DesignHeight="500"
+             d:DesignWidth="1000"
              d:DataContext="{d:DesignInstance Type=viewModels:ListaSolicitudesViewModel, IsDesignTimeCreatable=False}"
-             cal:Bind.AtDesignTime="True" dialog:DialogParticipation.Register="{Binding}">
+             cal:Bind.AtDesignTime="True" 
+             dialog:DialogParticipation.Register="{Binding}">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -67,6 +69,8 @@
                 <DataGridTextColumn Header="Fecha Fin" Binding="{Binding FechaFin}" />
                 <DataGridTextColumn Header="RFC Emisor" Binding="{Binding RfcEmisor}" />
                 <DataGridTextColumn Header="RFC Receptor" Binding="{Binding RfcReceptor}" />
+                <DataGridTextColumn Header="RFC Solicitante" Binding="{Binding RfcSolicitante}" />
+                <DataGridTextColumn Header="Tipo Solicitud" Binding="{Binding TipoSolicitud}" />
             </DataGrid.Columns>
         </DataGrid>
     </Grid>

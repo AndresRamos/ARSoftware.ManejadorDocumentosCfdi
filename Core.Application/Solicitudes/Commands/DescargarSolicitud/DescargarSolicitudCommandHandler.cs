@@ -4,6 +4,7 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using Common;
+using Core.Application.Paquetes.Commands.ExportarArchivoZip;
 using Core.Domain.Entities;
 using Infrastructure.Persistance;
 using Infrastructure.Sat;
@@ -18,10 +19,12 @@ namespace Core.Application.Solicitudes.Commands.DescargarSolicitud
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private readonly ManejadorDocumentosCfdiDbContext _context;
+        private readonly IMediator _mediator;
 
-        public DescargarSolicitudCommandHandler(ManejadorDocumentosCfdiDbContext context)
+        public DescargarSolicitudCommandHandler(ManejadorDocumentosCfdiDbContext context, IMediator mediator)
         {
             _context = context;
+            _mediator = mediator;
         }
 
         public async Task<Unit> Handle(DescargarSolicitudCommand request, CancellationToken cancellationToken)
@@ -93,7 +96,7 @@ namespace Core.Application.Solicitudes.Commands.DescargarSolicitud
                         null,
                         null,
                         null,
-                        null,
+                        paqueteId.IdPaquete,
                         null,
                         e.ToString());
 
@@ -112,7 +115,7 @@ namespace Core.Application.Solicitudes.Commands.DescargarSolicitud
                     descargaSolicitudResult.response,
                     descargaSolicitudResult.codEstatus,
                     descargaSolicitudResult.mensaje,
-                    solicitud.SolicitudVerificacion.IdsPaquetes,
+                    paqueteId.IdPaquete,
                     descargaSolicitudResult.paquete,
                     null);
 
@@ -130,10 +133,7 @@ namespace Core.Application.Solicitudes.Commands.DescargarSolicitud
                 Directory.CreateDirectory(configuracionGeneral.RutaDirectorioDescargas);
 
                 Logger.WithProperty(LogPropertyConstants.SolicitudId, solicitud.Id).Info("Creando archivo .zip");
-                using (var fs = File.Create(Path.Combine(configuracionGeneral.RutaDirectorioDescargas, $"{paquete.IdSat}.zip"), paquete.Contenido.Length))
-                {
-                    fs.Write(paquete.Contenido, 0, paquete.Contenido.Length);
-                }
+                await _mediator.Send(new ExportarArchivoZipCommand(paquete.Id, Path.Combine(configuracionGeneral.RutaDirectorioDescargas, $"{paquete.IdSat}.zip")), cancellationToken);
             }
 
             return Unit.Value;

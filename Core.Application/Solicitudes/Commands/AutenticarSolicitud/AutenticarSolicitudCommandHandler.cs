@@ -49,7 +49,8 @@ namespace Core.Application.Solicitudes.Commands.AutenticarSolicitud
             var fechaTokenExpiracionUtc = fechaTokenCreacionUtc.AddMinutes(5);
 
             Logger.WithProperty(LogPropertyConstants.SolicitudId, solicitud.Id).Info("Generando XML SOAP de solicitud.");
-            var soapRequestEnvelopeXml = autenticacionService.Generate(certificadoSat, fechaTokenCreacionUtc, fechaTokenExpiracionUtc);
+            var format = "yyyy-MM-ddTHH:mm:ss.fffZ";
+            var soapRequestEnvelopeXml = AutenticacionService.GenerarSoapRequestXml(certificadoSat, fechaTokenCreacionUtc.ToString(format), fechaTokenExpiracionUtc.ToString(format), Guid.NewGuid().ToString());
             Logger.WithProperty(LogPropertyConstants.SolicitudId, solicitud.Id).Info("SoapRequestEnvelopeXml: {0}", soapRequestEnvelopeXml);
 
             SolicitudResult solicitudResult;

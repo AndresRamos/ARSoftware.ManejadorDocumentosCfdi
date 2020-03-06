@@ -37,7 +37,7 @@ namespace Infrastructure.Sat.Services
                 if (estadoSolicitud == "3")
                 {
                     var idsPaquetesElements = xmlDocument.GetElementsByTagName("IdsPaquetes");
-                   
+
                     foreach (XmlNode idPaqueteElement in idsPaquetesElements)
                     {
                         idsPaquetesList.Add(idPaqueteElement.InnerText);
@@ -54,22 +54,22 @@ namespace Infrastructure.Sat.Services
         {
             var xmlDocument = new XmlDocument();
 
-            var envelopElement = xmlDocument.CreateElement("soapenv", "Envelope", "http://schemas.xmlsoap.org/soap/envelope/");
-            envelopElement.SetAttribute("xmlns:soapenv", "http://schemas.xmlsoap.org/soap/envelope/");
-            envelopElement.SetAttribute("xmlns:des", "http://DescargaMasivaTerceros.sat.gob.mx");
-            envelopElement.SetAttribute("xmlns:xd", "http://www.w3.org/2000/09/xmldsig#");
+            var envelopElement = xmlDocument.CreateElement(NamespaceConstants.S11_Prefix, "Envelope", NamespaceConstants.S11_Namespace);
+            envelopElement.SetAttribute($"xmlns:{NamespaceConstants.S11_Prefix}", NamespaceConstants.S11_Namespace);
+            envelopElement.SetAttribute($"xmlns:{NamespaceConstants.des_Prefix}", NamespaceConstants.des_Namespace);
+            envelopElement.SetAttribute($"xmlns:{NamespaceConstants.xd_Prefix}", NamespaceConstants.xd_Namespace);
             xmlDocument.AppendChild(envelopElement);
 
-            var headerElement = xmlDocument.CreateElement("soapenv", "Header", "http://schemas.xmlsoap.org/soap/envelope/");
+            var headerElement = xmlDocument.CreateElement(NamespaceConstants.S11_Prefix, "Header", NamespaceConstants.S11_Namespace);
             envelopElement.AppendChild(headerElement);
 
-            var bodyElement = xmlDocument.CreateElement("soapenv", "Body", "http://schemas.xmlsoap.org/soap/envelope/");
+            var bodyElement = xmlDocument.CreateElement(NamespaceConstants.S11_Prefix, "Body", NamespaceConstants.S11_Namespace);
             envelopElement.AppendChild(bodyElement);
 
-            var verificaSolicitudDescargaElement = xmlDocument.CreateElement("des", "VerificaSolicitudDescarga", "http://DescargaMasivaTerceros.sat.gob.mx");
+            var verificaSolicitudDescargaElement = xmlDocument.CreateElement(NamespaceConstants.des_Prefix, "VerificaSolicitudDescarga", NamespaceConstants.des_Namespace);
             bodyElement.AppendChild(verificaSolicitudDescargaElement);
 
-            var solicitudElement = xmlDocument.CreateElement("des", "solicitud", "http://DescargaMasivaTerceros.sat.gob.mx");
+            var solicitudElement = xmlDocument.CreateElement(NamespaceConstants.des_Prefix, "solicitud", NamespaceConstants.des_Namespace);
             solicitudElement.SetAttribute("IdSolicitud", idSolicitud);
             solicitudElement.SetAttribute("RfcSolicitante", rfcSolicitante);
 

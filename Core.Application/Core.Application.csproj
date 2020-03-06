@@ -72,6 +72,7 @@
     <Compile Include="Paquetes\Commands\ExportarArchivoZip\ExportarArchivoZipCommand.cs" />
     <Compile Include="Paquetes\Commands\ExportarArchivoZip\ExportarArchivoZipCommandHandler.cs" />
     <Compile Include="Paquetes\Models\PaqueteDto.cs" />
+    <Compile Include="Paquetes\Models\PaqueteIdDto.cs" />
     <Compile Include="Solicitudes\Commands\CrearSolicitud\CrearSolicitudCommand.cs" />
     <Compile Include="Solicitudes\Commands\CrearSolicitud\CrearSolicitudCommandHandler.cs" />
     <Compile Include="Cfdis\Queries\ObtenerCertificado\ObtenerCertificadoQuery.cs" />
@@ -102,6 +103,9 @@
     <Compile Include="Solicitudes\Queries\BuscarSolicitudesPorRangoFecha\BuscarSolicitudesPorRangoFechaQueryHandler.cs" />
     <Compile Include="Solicitudes\Queries\BuscarSolicitudPorId\BuscarSolicitudPorIdQuery.cs" />
     <Compile Include="Solicitudes\Queries\BuscarSolicitudPorId\BuscarSolicitudPorIdQueryHandler.cs" />
+    <Compile Include="TiposSolicitud\Models\TipoSolicitudDto.cs" />
+    <Compile Include="TiposSolicitud\Queries\BuscarTiposSolicitud\BuscarTiposSolicitudQuery.cs" />
+    <Compile Include="TiposSolicitud\Queries\BuscarTiposSolicitud\BuscarTiposSolicitudQueryHandler.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

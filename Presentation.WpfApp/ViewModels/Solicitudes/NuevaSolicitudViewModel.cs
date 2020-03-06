@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Caliburn.Micro;
 using Core.Application.ConfiguracionGeneral.Queries.BuscarConfiguracionGeneral;
 using Core.Application.Solicitudes.Commands.CrearSolicitud;
+using Core.Application.TiposSolicitud.Models;
+using Core.Application.TiposSolicitud.Queries.BuscarTiposSolicitud;
 using MahApps.Metro.Controls.Dialogs;
 using MediatR;
 
@@ -17,7 +20,7 @@ namespace Presentation.WpfApp.ViewModels.Solicitudes
         private string _rfcEmisor;
         private string _rfcReceptor;
         private string _rfcSolicitante;
-        private string _tipoSolicitud;
+        private TipoSolicitudDto _tipoSolicitudSeleccionado;
 
         public NuevaSolicitudViewModel(IMediator mediator, IDialogCoordinator dialogCoordinator)
         {
@@ -101,18 +104,20 @@ namespace Presentation.WpfApp.ViewModels.Solicitudes
             }
         }
 
-        public string TipoSolicitud
+        public BindableCollection<TipoSolicitudDto> TiposSolicitud { get; } = new BindableCollection<TipoSolicitudDto>();
+
+        public TipoSolicitudDto TipoSolicitudSeleccionado
         {
-            get => _tipoSolicitud;
+            get => _tipoSolicitudSeleccionado;
             set
             {
-                if (value == _tipoSolicitud)
+                if (value == _tipoSolicitudSeleccionado)
                 {
                     return;
                 }
 
-                _tipoSolicitud = value;
-                NotifyOfPropertyChange(() => TipoSolicitud);
+                _tipoSolicitudSeleccionado = value;
+                NotifyOfPropertyChange(() => TipoSolicitudSeleccionado);
             }
         }
 
@@ -121,14 +126,21 @@ namespace Presentation.WpfApp.ViewModels.Solicitudes
             var configuracionGeneral = await _mediator.Send(new BuscarConfiguracionGeneralQuery());
             RfcReceptor = configuracionGeneral.CertificadoSat.RfcEmisor;
             RfcSolicitante = configuracionGeneral.CertificadoSat.RfcEmisor;
-            TipoSolicitud = "CFDI";
+            await CargarTiposSolicitudAsync();
+        }
+
+        private async Task CargarTiposSolicitudAsync()
+        {
+            TiposSolicitud.Clear();
+            TiposSolicitud.AddRange(await _mediator.Send(new BuscarTiposSolicitudQuery()));
+            TipoSolicitudSeleccionado = TiposSolicitud.FirstOrDefault();
         }
 
         public async Task CrearSolicitudAsync()
         {
             try
             {
-                await _mediator.Send(new CrearSolicitudCommand(FechaInicio, FechaFin, RfcEmisor, RfcReceptor, RfcSolicitante, TipoSolicitud));
+                await _mediator.Send(new CrearSolicitudCommand(FechaInicio, FechaFin, RfcEmisor, RfcReceptor, RfcSolicitante, TipoSolicitudSeleccionado.Name));
                 TryClose();
             }
             catch (Exception e)

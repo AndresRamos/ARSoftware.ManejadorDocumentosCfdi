@@ -1,9 +1,8 @@
 ﻿<UserControl x:Class="Presentation.WpfApp.Views.Solicitudes.SolicitudPaquetesView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:local="clr-namespace:Presentation.WpfApp.Views.Solicitudes"
              xmlns:cal="clr-namespace:Caliburn.Micro;assembly=Caliburn.Micro.Platform"
              xmlns:dialog="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
              xmlns:viewModels="clr-namespace:Presentation.WpfApp.ViewModels.Solicitudes"
@@ -18,7 +17,8 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <StackPanel Grid.Row="1" Orientation="Horizontal">
-            <Button Content="Guardar" cal:Message.Attach="GuardarPaqueteAsync" VerticalAlignment="Center" Width="150" Margin="5"
+            <Button Content="Guardar" cal:Message.Attach="GuardarPaqueteAsync" VerticalAlignment="Center" Width="150"
+                    Margin="5"
                     Style="{StaticResource AccentedSquareButtonStyle}" />
         </StackPanel>
         <DataGrid Grid.Row="2" ItemsSource="{Binding Paquetes}" SelectedItem="{Binding PaqueteSeleccionado}"

@@ -25,9 +25,10 @@ namespace Core.Application.Solicitudes.Queries.BuscarSolicitudPorId
             var solicitud = await _context.Solicitudes
                 .Include(s => s.SolicitudAutenticacion)
                 .Include(s => s.SolicitudSolicitud)
-                .Include(s => s.SolicitudVerificacion)
+                .Include(s => s.SolicitudVerificacion.PaquetesIds)
                 .Include(s => s.SolicitudDescarga)
                 .Include(s => s.SolicitudesWeb)
+                .Include(s => s.Paquetes)
                 .SingleOrDefaultAsync(s => s.Id == request.SolicitudId, cancellationToken);
 
             if (solicitud == null)
@@ -84,7 +85,7 @@ namespace Core.Application.Solicitudes.Queries.BuscarSolicitudPorId
                         solicitud.SolicitudVerificacion.CodigoEstadoSolicitud,
                         solicitud.SolicitudVerificacion.EstadoSolicitud,
                         solicitud.SolicitudVerificacion.NumeroCfdis,
-                        solicitud.SolicitudVerificacion.IdsPaquetes,
+                        solicitud.SolicitudVerificacion.PaquetesIds.Select(p=>new PaqueteIdDto(p.Id, p.IdPaquete, p.IsDescargado)).ToList(),
                         solicitud.SolicitudVerificacion.Error,
                         solicitud.SolicitudVerificacion.Solicitud,
                         solicitud.SolicitudVerificacion.Respuesta)
@@ -141,7 +142,7 @@ namespace Core.Application.Solicitudes.Queries.BuscarSolicitudPorId
                         s.CodigoEstadoSolicitud,
                         s.EstadoSolicitud,
                         s.NumeroCfdis,
-                        s.IdsPaquetes,
+                        s.PaquetesIds.Select(p=>new PaqueteIdDto(p.Id, p.IdPaquete, p.IsDescargado)).ToList(),
                         s.Error,
                         s.Solicitud,
                         s.Respuesta))

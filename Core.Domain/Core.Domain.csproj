@@ -50,7 +50,6 @@
     <Compile Include="Entities\SolicitudSolicitud.cs" />
     <Compile Include="Entities\SolicitudVerificacion.cs" />
     <Compile Include="Entities\SolicitudWebBase.cs" />
-    <Compile Include="Enums\EstatusSolicitud.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ValueObjects\CertificadoSat.cs" />
     <Compile Include="ValueObjects\ValueObject.cs" />

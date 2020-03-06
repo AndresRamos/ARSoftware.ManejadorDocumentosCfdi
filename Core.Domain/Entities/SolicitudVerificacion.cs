@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -20,7 +19,9 @@ namespace Core.Domain.Entities
             CodigoEstadoSolicitud = codigoEstadoSolicitud;
             EstadoSolicitud = estadoSolicitud;
             NumeroCfdis = numeroCfdis;
+            Error = error;
 
+            PaquetesIds = new HashSet<PaqueteId>();
             foreach (var idsPaquete in idsPaquetes)
             {
                 PaquetesIds.Add(idsPaquete);
@@ -33,7 +34,6 @@ namespace Core.Domain.Entities
         public string CodigoEstadoSolicitud { get; private set; }
         public string EstadoSolicitud { get; private set; }
         public string NumeroCfdis { get; private set; }
-        public string IdsPaquetes { get; private set; }
         public string Error { get; private set; }
         public ICollection<PaqueteId> PaquetesIds { get; private set; }
 
