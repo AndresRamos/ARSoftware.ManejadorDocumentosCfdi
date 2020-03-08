@@ -14,51 +14,64 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
-        <Label Grid.Row="0" Grid.Column="0" Content="Id:" FontWeight="Bold" VerticalAlignment="Center"
-               HorizontalAlignment="Right" Margin="5" />
-        <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding Solicitud.Id}" VerticalAlignment="Center" Margin="5" />
-        <Label Grid.Row="1" Grid.Column="0" Content="Fecha Creacion:" FontWeight="Bold" VerticalAlignment="Center"
-               HorizontalAlignment="Right" Margin="5" />
-        <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal">
-            <Label Content="UTC:" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="5" />
-            <TextBlock Text="{Binding Solicitud.FechaCreacionUtc}" VerticalAlignment="Center" Margin="5" />
-            <Label Content="Local:" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="5" />
-            <TextBlock Text="{Binding Solicitud.FechaCreacionLocal}" VerticalAlignment="Center" Margin="5" />
-        </StackPanel>
-        <Label Grid.Row="2" Grid.Column="0" Content="Fecha Inicio:" FontWeight="Bold" VerticalAlignment="Center"
-               HorizontalAlignment="Right" Margin="5" />
-        <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding Solicitud.FechaInicio}" VerticalAlignment="Center"
+        <TextBlock Grid.Row="0" Text="{Binding DisplayName}" FontWeight="Bold" FontSize="20" VerticalAlignment="Center"
                    Margin="5" />
-        <Label Grid.Row="3" Grid.Column="0" Content="Fecha Fin:" FontWeight="Bold" VerticalAlignment="Center"
-               HorizontalAlignment="Right" Margin="5" />
-        <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding Solicitud.FechaFin}" VerticalAlignment="Center"
-                   Margin="5" />
-        <Label Grid.Row="4" Grid.Column="0" Content="RFC Emisor:" FontWeight="Bold" VerticalAlignment="Center"
-               HorizontalAlignment="Right" Margin="5" />
-        <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding Solicitud.RfcEmisor}" VerticalAlignment="Center"
-                   Margin="5" />
-        <Label Grid.Row="5" Grid.Column="0" Content="RFC Receptor:" FontWeight="Bold" VerticalAlignment="Center"
-               HorizontalAlignment="Right" Margin="5" />
-        <TextBlock Grid.Row="5" Grid.Column="1" Text="{Binding Solicitud.RfcReceptor}" VerticalAlignment="Center"
-                   Margin="5" />
-        <Label Grid.Row="6" Grid.Column="0" Content="RFC Solicitante:" FontWeight="Bold" VerticalAlignment="Center"
-               HorizontalAlignment="Right" Margin="5" />
-        <TextBlock Grid.Row="6" Grid.Column="1" Text="{Binding Solicitud.RfcSolicitante}" VerticalAlignment="Center"
-                   Margin="5" />
-        <Label Grid.Row="7" Grid.Column="0" Content="Tipo Solicitud:" FontWeight="Bold" VerticalAlignment="Center"
-               HorizontalAlignment="Right" Margin="5" />
-        <TextBlock Grid.Row="7" Grid.Column="1" Text="{Binding Solicitud.TipoSolicitud}" VerticalAlignment="Center"
-                   Margin="5" />
+        <Grid Grid.Row="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Label Grid.Row="0" Grid.Column="0" Content="Id:" FontWeight="Bold" VerticalAlignment="Center"
+                   HorizontalAlignment="Right" Margin="5" />
+            <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding Solicitud.Id}" VerticalAlignment="Center" Margin="5" />
+            <Label Grid.Row="1" Grid.Column="0" Content="Fecha Creacion:" FontWeight="Bold" VerticalAlignment="Center"
+                   HorizontalAlignment="Right" Margin="5" />
+            <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal">
+                <Label Content="UTC:" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Right"
+                       Margin="5" />
+                <TextBlock Text="{Binding Solicitud.FechaCreacionUtc}" VerticalAlignment="Center" Margin="5" />
+                <Label Content="Local:" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Right"
+                       Margin="5" />
+                <TextBlock Text="{Binding Solicitud.FechaCreacionLocal}" VerticalAlignment="Center" Margin="5" />
+            </StackPanel>
+            <Label Grid.Row="2" Grid.Column="0" Content="Fecha Inicio:" FontWeight="Bold" VerticalAlignment="Center"
+                   HorizontalAlignment="Right" Margin="5" />
+            <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding Solicitud.FechaInicio}" VerticalAlignment="Center"
+                       Margin="5" />
+            <Label Grid.Row="3" Grid.Column="0" Content="Fecha Fin:" FontWeight="Bold" VerticalAlignment="Center"
+                   HorizontalAlignment="Right" Margin="5" />
+            <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding Solicitud.FechaFin}" VerticalAlignment="Center"
+                       Margin="5" />
+            <Label Grid.Row="4" Grid.Column="0" Content="RFC Emisor:" FontWeight="Bold" VerticalAlignment="Center"
+                   HorizontalAlignment="Right" Margin="5" />
+            <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding Solicitud.RfcEmisor}" VerticalAlignment="Center"
+                       Margin="5" />
+            <Label Grid.Row="5" Grid.Column="0" Content="RFC Receptor:" FontWeight="Bold" VerticalAlignment="Center"
+                   HorizontalAlignment="Right" Margin="5" />
+            <TextBlock Grid.Row="5" Grid.Column="1" Text="{Binding Solicitud.RfcReceptor}" VerticalAlignment="Center"
+                       Margin="5" />
+            <Label Grid.Row="6" Grid.Column="0" Content="RFC Solicitante:" FontWeight="Bold" VerticalAlignment="Center"
+                   HorizontalAlignment="Right" Margin="5" />
+            <TextBlock Grid.Row="6" Grid.Column="1" Text="{Binding Solicitud.RfcSolicitante}"
+                       VerticalAlignment="Center"
+                       Margin="5" />
+            <Label Grid.Row="7" Grid.Column="0" Content="Tipo Solicitud:" FontWeight="Bold" VerticalAlignment="Center"
+                   HorizontalAlignment="Right" Margin="5" />
+            <TextBlock Grid.Row="7" Grid.Column="1" Text="{Binding Solicitud.TipoSolicitud}" VerticalAlignment="Center"
+                       Margin="5" />
+        </Grid>
+
     </Grid>
 </UserControl>

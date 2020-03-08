@@ -27,7 +27,7 @@ namespace Core.Application.ConfiguracionGeneral.Queries.BuscarConfiguracionGener
                 {
                     Certificado = configuracionGeneral.CertificadoSat.Certificado,
                     Contrasena = configuracionGeneral.CertificadoSat.Contrasena,
-                    RfcEmisor = configuracionGeneral.CertificadoSat.RfcEmisor
+                    Rfc = configuracionGeneral.CertificadoSat.Rfc
                 },
                 RutaDirectorioDescargas = configuracionGeneral.RutaDirectorioDescargas
             };

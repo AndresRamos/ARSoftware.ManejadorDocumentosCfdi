@@ -1,4 +1,4 @@
-﻿namespace Infrastructure.Sat
+﻿namespace Infrastructure.Sat.Models
 {
     public class TipoSolicitud : Enumeration
     {

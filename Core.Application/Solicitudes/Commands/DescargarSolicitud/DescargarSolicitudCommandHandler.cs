@@ -7,9 +7,10 @@ using Common;
 using Core.Application.Paquetes.Commands.ExportarArchivoZip;
 using Core.Domain.Entities;
 using Infrastructure.Persistance;
-using Infrastructure.Sat;
-using Infrastructure.Sat.Models;
-using Infrastructure.Sat.Services;
+using ARSoftware.Cfdi.DescargaMasiva.Constants;
+using ARSoftware.Cfdi.DescargaMasiva.Helpers;
+using ARSoftware.Cfdi.DescargaMasiva.Models;
+using ARSoftware.Cfdi.DescargaMasiva.Services;
 using MediatR;
 using NLog;
 
@@ -68,9 +69,9 @@ namespace Core.Application.Solicitudes.Commands.DescargarSolicitud
 
             Logger.WithProperty(LogPropertyConstants.SolicitudId, solicitud.Id)
                 .Info("Obteniendo certificado.");
-            var certificadoSat = CertificadoService.ObtenerCertificado(configuracionGeneral.CertificadoSat.Certificado, configuracionGeneral.CertificadoSat.Contrasena);
+            var certificadoSat = X509Certificate2Helper.GetCertificate(configuracionGeneral.CertificadoSat.Certificado, configuracionGeneral.CertificadoSat.Contrasena);
 
-            var descargarSolicitudService = new DescargarSolicitudService(UrlsSat.UrlDescargarSolicitud, UrlsSat.UrlDescargarSolicitudAction);
+            var descargarSolicitudService = new DescargaService(CfdiDescargaMasivaWebServiceUrls.DescargaUrl, CfdiDescargaMasivaWebServiceUrls.DescargaSoapActionUrl);
 
             Logger.WithProperty(LogPropertyConstants.SolicitudId, solicitud.Id)
                 .Info("# de paquetes a descargar = {0}", solicitud.SolicitudVerificacion.PaquetesIds.Count);
@@ -78,14 +79,15 @@ namespace Core.Application.Solicitudes.Commands.DescargarSolicitud
             {
                 Logger.WithProperty(LogPropertyConstants.SolicitudId, solicitud.Id).Info("Descargando paquete {0}", paqueteId.IdPaquete);
                 Logger.WithProperty(LogPropertyConstants.SolicitudId, solicitud.Id).Info("Generando XML SOAP de solicitud.");
-                var soapRequestEnvelopeXml = descargarSolicitudService.GenerarSoapRequestEnvelopeXml(paqueteId.IdPaquete, solicitud.SolicitudSolicitud.RfcSolicitante, certificadoSat);
+                var descargaRequest = DescargaRequest.CreateInstace(paqueteId.IdPaquete, solicitud.SolicitudSolicitud.RfcSolicitante);
+                var soapRequestEnvelopeXml = descargarSolicitudService.GenerateSoapRequestEnvelopeXmlContent(descargaRequest, certificadoSat);
                 Logger.WithProperty(LogPropertyConstants.SolicitudId, solicitud.Id).Info("SoapRequestEnvelopeXml: {0}", soapRequestEnvelopeXml);
 
-                SolicitudResult solicitudResult;
+                DescargaResult descargaResult;
                 try
                 {
                     Logger.WithProperty(LogPropertyConstants.SolicitudId, solicitud.Id).Info("Enviando solicitud SOAP.");
-                    solicitudResult = descargarSolicitudService.Send(soapRequestEnvelopeXml, solicitud.SolicitudAutenticacion.Autorizacion);
+                    descargaResult = descargarSolicitudService.SendSoapRequest(soapRequestEnvelopeXml, solicitud.SolicitudAutenticacion.Autorizacion);
                 }
                 catch (Exception e)
                 {
@@ -107,16 +109,15 @@ namespace Core.Application.Solicitudes.Commands.DescargarSolicitud
                     throw;
                 }
 
-                var descargaSolicitudResult = solicitudResult.GetDescargaSolicitudResult();
-                Logger.WithProperty(LogPropertyConstants.SolicitudId, solicitud.Id).Info("DescargaSolicitudResult: {@DescargaSolicitudResult}", descargaSolicitudResult);
+                Logger.WithProperty(LogPropertyConstants.SolicitudId, solicitud.Id).Info("DescargaSolicitudResult: {@DescargaSolicitudResult}", descargaResult);
 
                 var solicitudDescarga = SolicitudDescarga.CreateInstance(
                     soapRequestEnvelopeXml,
-                    descargaSolicitudResult.response,
-                    descargaSolicitudResult.codEstatus,
-                    descargaSolicitudResult.mensaje,
+                    descargaResult.WebResponse,
+                    descargaResult.CodEstatus,
+                    descargaResult.Mensaje,
                     paqueteId.IdPaquete,
-                    descargaSolicitudResult.paquete,
+                    descargaResult.Paquete,
                     null);
 
                 solicitud.SolicitudesWeb.Add(solicitudDescarga);
@@ -134,6 +135,8 @@ namespace Core.Application.Solicitudes.Commands.DescargarSolicitud
 
                 Logger.WithProperty(LogPropertyConstants.SolicitudId, solicitud.Id).Info("Creando archivo .zip");
                 await _mediator.Send(new ExportarArchivoZipCommand(paquete.Id, Path.Combine(configuracionGeneral.RutaDirectorioDescargas, $"{paquete.IdSat}.zip")), cancellationToken);
+
+             
             }
 
             return Unit.Value;

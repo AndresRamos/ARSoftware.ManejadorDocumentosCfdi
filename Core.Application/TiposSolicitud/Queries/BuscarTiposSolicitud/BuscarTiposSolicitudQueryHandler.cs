@@ -2,8 +2,8 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using ARSoftware.Cfdi.DescargaMasiva.Models;
 using Core.Application.TiposSolicitud.Models;
-using Infrastructure.Sat;
 using MediatR;
 
 namespace Core.Application.TiposSolicitud.Queries.BuscarTiposSolicitud

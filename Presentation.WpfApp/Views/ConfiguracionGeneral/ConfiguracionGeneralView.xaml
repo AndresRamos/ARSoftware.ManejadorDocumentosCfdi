@@ -8,6 +8,7 @@
                       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                       xmlns:local="clr-namespace:Presentation.WpfApp.Views.ConfiguracionGeneral"
+                      xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
                       mc:Ignorable="d"
                       WindowStartupLocation="CenterOwner"
                       Width="500"
@@ -45,19 +46,22 @@
             <Label Grid.Row="0" Grid.Column="0" Content="Certificado:" FontWeight="Bold" VerticalAlignment="Center"
                    HorizontalAlignment="Right" Margin="5" />
             <TextBlock Grid.Row="0" Grid.Column="1" Text="" VerticalAlignment="Center" Margin="5" />
-            <Button Grid.Row="0" Grid.Column="2" Content="Buscar" cal:Message.Attach="BuscarArchivoCertificadoAsync"
-                    Width="100" VerticalAlignment="Center" Margin="5" />
-            <Label Grid.Row="1" Grid.Column="0" Content="RFC Emisor:" FontWeight="Bold" VerticalAlignment="Center"
+            <Button Grid.Row="0" Grid.Column="2" cal:Message.Attach="BuscarArchivoCertificadoAsync"
+                    ToolTip="Buscar" VerticalAlignment="Center" Margin="5">
+                <iconPacks:FontAwesome Kind="SearchSolid" />
+            </Button>
+            <Label Grid.Row="1" Grid.Column="0" Content="RFC:" FontWeight="Bold" VerticalAlignment="Center"
                    HorizontalAlignment="Right" Margin="5" />
             <TextBox Grid.Row="1" Grid.Column="1"
-                     Text="{Binding ConfiguracionGeneral.CertificadoSat.RfcEmisor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                     Text="{Binding ConfiguracionGeneral.CertificadoSat.Rfc, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                      VerticalAlignment="Center" Margin="5" />
             <Label Grid.Row="2" Grid.Column="0" Content="Contrasena:" FontWeight="Bold" VerticalAlignment="Center"
                    HorizontalAlignment="Right" Margin="5" />
             <TextBox Grid.Row="2" Grid.Column="1"
                      Text="{Binding ConfiguracionGeneral.CertificadoSat.Contrasena, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                      VerticalAlignment="Center" Margin="5" />
-            <Label Grid.Row="3" Grid.Column="0" Content="Ruta Directorio Descargas:" FontWeight="Bold" VerticalAlignment="Center"
+            <Label Grid.Row="3" Grid.Column="0" Content="Directorio Descargas:" FontWeight="Bold"
+                   VerticalAlignment="Center"
                    HorizontalAlignment="Right" Margin="5" />
             <TextBox Grid.Row="3" Grid.Column="1"
                      Text="{Binding ConfiguracionGeneral.RutaDirectorioDescargas, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"

@@ -3,12 +3,13 @@ using System.Data.Entity;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
+using ARSoftware.Cfdi.DescargaMasiva.Constants;
+using ARSoftware.Cfdi.DescargaMasiva.Helpers;
+using ARSoftware.Cfdi.DescargaMasiva.Models;
+using ARSoftware.Cfdi.DescargaMasiva.Services;
 using Common;
 using Core.Domain.Entities;
 using Infrastructure.Persistance;
-using Infrastructure.Sat;
-using Infrastructure.Sat.Models;
-using Infrastructure.Sat.Services;
 using MediatR;
 using NLog;
 
@@ -41,23 +42,20 @@ namespace Core.Application.Solicitudes.Commands.AutenticarSolicitud
             }
 
             Logger.WithProperty(LogPropertyConstants.SolicitudId, request.SolicitudId).Info("Obteniendo certificado.");
-            var certificadoSat = CertificadoService.ObtenerCertificado(configuracionGeneral.CertificadoSat.Certificado, configuracionGeneral.CertificadoSat.Contrasena);
+            var certificadoSat = X509Certificate2Helper.GetCertificate(configuracionGeneral.CertificadoSat.Certificado, configuracionGeneral.CertificadoSat.Contrasena);
 
-            var autenticacionService = new AutenticacionService(UrlsSat.UrlAutentica, UrlsSat.UrlAutenticaAction);
-
-            var fechaTokenCreacionUtc = DateTime.UtcNow;
-            var fechaTokenExpiracionUtc = fechaTokenCreacionUtc.AddMinutes(5);
+            var autenticacionService = new AutenticacionService(CfdiDescargaMasivaWebServiceUrls.AutenticacionUrl, CfdiDescargaMasivaWebServiceUrls.AutenticacionSoapActionUrl);
 
             Logger.WithProperty(LogPropertyConstants.SolicitudId, solicitud.Id).Info("Generando XML SOAP de solicitud.");
-            var format = "yyyy-MM-ddTHH:mm:ss.fffZ";
-            var soapRequestEnvelopeXml = AutenticacionService.GenerarSoapRequestXml(certificadoSat, fechaTokenCreacionUtc.ToString(format), fechaTokenExpiracionUtc.ToString(format), Guid.NewGuid().ToString());
+            var autenticacionRequest = AutenticacionRequest.CreateInstance();
+            var soapRequestEnvelopeXml = autenticacionService.GenerateSoapRequestEnvelopeXmlContent(autenticacionRequest, certificadoSat);
             Logger.WithProperty(LogPropertyConstants.SolicitudId, solicitud.Id).Info("SoapRequestEnvelopeXml: {0}", soapRequestEnvelopeXml);
 
-            SolicitudResult solicitudResult;
+            AutenticacionResult autenticacionResult;
             try
             {
                 Logger.WithProperty(LogPropertyConstants.SolicitudId, solicitud.Id).Info("Enviando solicitud SOAP de autenticacion.");
-                solicitudResult = autenticacionService.Send(soapRequestEnvelopeXml, null);
+                autenticacionResult = autenticacionService.SendSoapRequest(soapRequestEnvelopeXml);
             }
             catch (Exception e)
             {
@@ -66,8 +64,8 @@ namespace Core.Application.Solicitudes.Commands.AutenticarSolicitud
                 var solicitudAutenticacionError = SolicitudAutenticacion.CreateInstance(
                     soapRequestEnvelopeXml,
                     null,
-                    fechaTokenCreacionUtc,
-                    fechaTokenExpiracionUtc,
+                    autenticacionRequest.TokenCreatedDateUtc,
+                    autenticacionRequest.TokenExpiresDateUtc,
                     null,
                     null,
                     null,
@@ -81,19 +79,18 @@ namespace Core.Application.Solicitudes.Commands.AutenticarSolicitud
                 throw;
             }
 
-            var autenticaResult = solicitudResult.GetAutenticaResult();
-            Logger.WithProperty(LogPropertyConstants.SolicitudId, solicitud.Id).Info("AutenticaResult: {@AutenticaResult}", autenticaResult);
+            Logger.WithProperty(LogPropertyConstants.SolicitudId, solicitud.Id).Info("AutenticaResult: {@AutenticaResult}", autenticacionResult);
 
             Logger.WithProperty(LogPropertyConstants.SolicitudId, solicitud.Id).Info("Creando registro de solicitud de autenticacion.");
             var solicitudAutenticacion = SolicitudAutenticacion.CreateInstance(
                 soapRequestEnvelopeXml,
-                autenticaResult.response,
-                fechaTokenCreacionUtc,
-                fechaTokenExpiracionUtc,
-                autenticaResult.token,
-                autenticaResult.token != null ? $"WRAP access_token=\"{HttpUtility.UrlDecode(autenticaResult.token)}\"" : null,
-                autenticaResult.faultCode,
-                autenticaResult.faultString,
+                autenticacionResult.WebResponse,
+                autenticacionRequest.TokenCreatedDateUtc,
+                autenticacionRequest.TokenExpiresDateUtc,
+                autenticacionResult.Token,
+                autenticacionResult.Token != null ? $"WRAP access_token=\"{HttpUtility.UrlDecode(autenticacionResult.Token)}\"" : null,
+                autenticacionResult.FaultCode,
+                autenticacionResult.FaultString,
                 null);
 
             Logger.WithProperty(LogPropertyConstants.SolicitudId, solicitud.Id).Info("SolicitudAutenticacion: {@SolicitudAutenticacion}", solicitudAutenticacion);

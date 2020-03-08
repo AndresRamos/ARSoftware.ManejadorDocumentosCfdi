@@ -4,6 +4,6 @@
     {
         public byte[] Certificado { get; set; }
         public string Contrasena { get; set; }
-        public string RfcEmisor { get; set; }
+        public string Rfc { get; set; }
     }
 }

@@ -6,6 +6,7 @@ using Infrastructure.Persistance;
 using MahApps.Metro.Controls.Dialogs;
 using MediatR;
 using Presentation.WpfApp.ViewModels;
+using Presentation.WpfApp.ViewModels.Actualizaciones;
 using Presentation.WpfApp.ViewModels.ConfiguracionGeneral;
 using Presentation.WpfApp.ViewModels.Solicitudes;
 using Presentation.WpfApp.ViewModels.Xmls;
@@ -67,6 +68,9 @@ namespace Presentation.WpfApp.Config
         private static void RegisterViewModels(ContainerBuilder containerBuilder)
         {
             containerBuilder.RegisterType<ShellViewModel>();
+            containerBuilder.RegisterType<AcercaDeViewModel>();
+
+            containerBuilder.RegisterType<ActualizacionAplicacionViewModel>();
 
             containerBuilder.RegisterType<ConfiguracionGeneralViewModel>();
 

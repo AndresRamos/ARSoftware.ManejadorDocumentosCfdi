@@ -28,6 +28,7 @@ namespace Presentation.WpfApp.ViewModels.Solicitudes
             _dialogCoordinator = dialogCoordinator;
             DisplayName = "Lista De Solicitudes";
             SolicitudesView = CollectionViewSource.GetDefaultView(Solicitudes);
+            SolicitudesView.Filter = SolicitudesView_Filter;
         }
 
         public string Filtro
@@ -156,7 +157,9 @@ namespace Presentation.WpfApp.ViewModels.Solicitudes
             {
                 await _mediator.Send(new ProcesarSolicitudCommand(SolicitudSeleccionada.Id));
                 await BuscarSolicitudesAsync();
-                await _dialogCoordinator.ShowMessageAsync(this, "Solicitud Procesada", "La solicitud termino de procesarse exitosamente.");
+                var viewModel = IoC.Get<DetalleSolicitudViewModel>();
+                await viewModel.InicializarAsync(SolicitudSeleccionada.Id);
+                _windowManager.ShowWindow(viewModel);
             }
             catch (Exception e)
             {
@@ -176,7 +179,7 @@ namespace Presentation.WpfApp.ViewModels.Solicitudes
             {
                 var viewModel = IoC.Get<DetalleSolicitudViewModel>();
                 await viewModel.InicializarAsync(SolicitudSeleccionada.Id);
-                _windowManager.ShowDialog(viewModel);
+                _windowManager.ShowWindow(viewModel);
             }
             catch (Exception e)
             {
@@ -193,6 +196,21 @@ namespace Presentation.WpfApp.ViewModels.Solicitudes
             NotifyOfPropertyChange(() => CanBuscarSolicitudesAsync);
             NotifyOfPropertyChange(() => CanProcesarSolicitudAsync);
             NotifyOfPropertyChange(() => CanVerDetallesSolicitudSeleccionadaAsync);
+        }
+
+        private bool SolicitudesView_Filter(object obj)
+        {
+            if (!(obj is SolicitudDto solicitud))
+            {
+                throw new ArgumentNullException(nameof(obj));
+            }
+
+            return string.IsNullOrEmpty(Filtro) ||
+                   solicitud.Id.ToString().IndexOf(Filtro, StringComparison.OrdinalIgnoreCase) >= 0 ||
+                   solicitud.RfcEmisor?.IndexOf(Filtro, StringComparison.OrdinalIgnoreCase) >= 0 ||
+                   solicitud.RfcReceptor?.IndexOf(Filtro, StringComparison.OrdinalIgnoreCase) >= 0 ||
+                   solicitud.RfcSolicitante?.IndexOf(Filtro, StringComparison.OrdinalIgnoreCase) >= 0 ||
+                   solicitud.TipoSolicitud?.IndexOf(Filtro, StringComparison.OrdinalIgnoreCase) >= 0;
         }
     }
 }

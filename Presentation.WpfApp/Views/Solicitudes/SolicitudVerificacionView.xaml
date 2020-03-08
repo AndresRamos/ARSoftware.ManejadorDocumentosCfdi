@@ -7,132 +7,156 @@
              xmlns:cal="clr-namespace:Caliburn.Micro;assembly=Caliburn.Micro.Platform"
              xmlns:dialog="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
              xmlns:viewModels="clr-namespace:Presentation.WpfApp.ViewModels.Solicitudes"
+             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              mc:Ignorable="d"
              d:DesignHeight="700" d:DesignWidth="800"
              d:DataContext="{d:DesignInstance Type=viewModels:SolicitudVerificacionViewModel, IsDesignTimeCreatable=False}"
              cal:Bind.AtDesignTime="True" dialog:DialogParticipation.Register="{Binding}">
-    <TabControl>
-        <TabItem Header="Solicitud">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="Auto" />
-                </Grid.ColumnDefinitions>
-                <Label Grid.Row="0" Grid.Column="0" Content="Id:" FontWeight="Bold" VerticalAlignment="Center"
-                       HorizontalAlignment="Right" Margin="5" />
-                <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding Solicitud.Id}" VerticalAlignment="Center"
-                           Margin="5" />
-                <Label Grid.Row="1" Grid.Column="0" Content="Fecha Creacion:" FontWeight="Bold"
-                       VerticalAlignment="Center" HorizontalAlignment="Right" Margin="5" />
-                <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal">
-                    <Label Content="UTC:" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Right"
-                           Margin="5" />
-                    <TextBlock Text="{Binding Solicitud.FechaCreacionUtc}" VerticalAlignment="Center" Margin="5" />
-                    <Label Content="Local:" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Right"
-                           Margin="5" />
-                    <TextBlock Text="{Binding Solicitud.FechaCreacionLocal}" VerticalAlignment="Center" Margin="5" />
-                </StackPanel>
-                <Label Grid.Row="2" Grid.Column="0" Content="Cod Estatus:" FontWeight="Bold" VerticalAlignment="Center"
-                       HorizontalAlignment="Right" Margin="5" />
-                <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding Solicitud.CodEstatus}"
-                           VerticalAlignment="Center" Margin="5" />
-                <Label Grid.Row="3" Grid.Column="0" Content="Mensaje:" FontWeight="Bold" VerticalAlignment="Center"
-                       HorizontalAlignment="Right" Margin="5" />
-                <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding Solicitud.Mensaje}" VerticalAlignment="Center"
-                           Margin="5" />
-                <Label Grid.Row="4" Grid.Column="0" Content="Codigo Estado Solicitud:" FontWeight="Bold"
-                       VerticalAlignment="Center" HorizontalAlignment="Right" Margin="5" />
-                <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding Solicitud.CodigoEstadoSolicitud}"
-                           VerticalAlignment="Center" Margin="5" />
-                <Label Grid.Row="5" Grid.Column="0" Content="Estado Solicitud:" FontWeight="Bold"
-                       VerticalAlignment="Center" HorizontalAlignment="Right" Margin="5" />
-                <TextBlock Grid.Row="5" Grid.Column="1" Text="{Binding Solicitud.EstadoSolicitud}"
-                           VerticalAlignment="Center" Margin="5" />
-                <Label Grid.Row="6" Grid.Column="0" Content="Numero CFDIs:" FontWeight="Bold"
-                       VerticalAlignment="Center" HorizontalAlignment="Right" Margin="5" />
-                <TextBlock Grid.Row="6" Grid.Column="1" Text="{Binding Solicitud.NumeroCfdis}"
-                           VerticalAlignment="Center" Margin="5" />
-                <Label Grid.Row="7" Grid.Column="0" Content="Paquetes Ids:" FontWeight="Bold"
-                       VerticalAlignment="Top" HorizontalAlignment="Right" Margin="5" />
-                <DataGrid Grid.Row="7" Grid.Column="1" ItemsSource="{Binding Solicitud.PaqueteIds}" IsReadOnly="True"
-                          Margin="5" Height="100"/>
-                <Label Grid.Row="8" Grid.Column="0" Content="Error:" FontWeight="Bold" VerticalAlignment="Center"
-                       HorizontalAlignment="Right" Margin="5" />
-                <TextBlock Grid.Row="8" Grid.Column="1" Text="{Binding Solicitud.Error}" VerticalAlignment="Center"
-                           Margin="5" />
-                <Label Grid.Row="9" Grid.Column="0" Content="Solicitud:" FontWeight="Bold" VerticalAlignment="Center"
-                       HorizontalAlignment="Right" Margin="5" />
-                <TextBlock Grid.Row="9" Grid.Column="1" Text="{Binding Solicitud.Solicitud}"
-                           VerticalAlignment="Center" Margin="5" />
-                <Button Grid.Row="9" Grid.Column="2" Content="Ver" VerticalAlignment="Center" Margin="5">
-                    <i:Interaction.Triggers>
-                        <i:EventTrigger EventName="Click">
-                            <cal:ActionMessage MethodName="VerSolicitudXmlAsync">
-                                <cal:Parameter Value="{Binding Solicitud}" />
-                            </cal:ActionMessage>
-                        </i:EventTrigger>
-                    </i:Interaction.Triggers>
-                </Button>
-                <Label Grid.Row="10" Grid.Column="0" Content="Respuesta:" FontWeight="Bold" VerticalAlignment="Center"
-                       HorizontalAlignment="Right" Margin="5" />
-                <TextBlock Grid.Row="10" Grid.Column="1" Text="{Binding Solicitud.Respuesta}"
-                           VerticalAlignment="Center" Margin="5" />
-                <Button Grid.Row="10" Grid.Column="2" Content="Ver" Margin="5">
-                    <i:Interaction.Triggers>
-                        <i:EventTrigger EventName="Click">
-                            <cal:ActionMessage MethodName="VerRespuestaXmlAsync">
-                                <cal:Parameter Value="{Binding Solicitud}" />
-                            </cal:ActionMessage>
-                        </i:EventTrigger>
-                    </i:Interaction.Triggers>
-                </Button>
-            </Grid>
-        </TabItem>
-        <TabItem Header="Solicitudes">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
-                <StackPanel Grid.Row="0" Orientation="Horizontal">
-                    <Button Content="Ver Solicitud XML" Width="150" Margin="5" VerticalAlignment="Center"
-                            Style="{DynamicResource SquareButtonStyle}">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Row="0" Text="{Binding DisplayName}" FontWeight="Bold" FontSize="20" VerticalAlignment="Center"
+                   Margin="5" />
+        <StackPanel Grid.Row="1" Orientation="Horizontal">
+            <Button Content="Enviar Solicitud" cal:Message.Attach="EnviarSolicitudAsync" Width="150"
+                    VerticalAlignment="Center" Margin="5"
+                    Style="{StaticResource AccentedSquareButtonStyle}" />
+        </StackPanel>
+        <TabControl Grid.Row="2">
+            <TabItem Header="Solicitud">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Row="0" Grid.Column="0" Content="Id:" FontWeight="Bold" VerticalAlignment="Center"
+                           HorizontalAlignment="Right" Margin="5" />
+                    <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding Solicitud.Id}" VerticalAlignment="Center"
+                               Margin="5" />
+                    <Label Grid.Row="1" Grid.Column="0" Content="Fecha Creacion:" FontWeight="Bold"
+                           VerticalAlignment="Center" HorizontalAlignment="Right" Margin="5" />
+                    <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal">
+                        <Label Content="UTC:" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Right"
+                               Margin="5" />
+                        <TextBlock Text="{Binding Solicitud.FechaCreacionUtc}" VerticalAlignment="Center" Margin="5" />
+                        <Label Content="Local:" FontWeight="Bold" VerticalAlignment="Center"
+                               HorizontalAlignment="Right"
+                               Margin="5" />
+                        <TextBlock Text="{Binding Solicitud.FechaCreacionLocal}" VerticalAlignment="Center" Margin="5" />
+                    </StackPanel>
+                    <Label Grid.Row="2" Grid.Column="0" Content="Cod Estatus:" FontWeight="Bold"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Right" Margin="5" />
+                    <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding Solicitud.CodEstatus}"
+                               VerticalAlignment="Center" Margin="5" />
+                    <Label Grid.Row="3" Grid.Column="0" Content="Mensaje:" FontWeight="Bold" VerticalAlignment="Center"
+                           HorizontalAlignment="Right" Margin="5" />
+                    <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding Solicitud.Mensaje}"
+                               VerticalAlignment="Center"
+                               Margin="5" />
+                    <Label Grid.Row="4" Grid.Column="0" Content="Codigo Estado Solicitud:" FontWeight="Bold"
+                           VerticalAlignment="Center" HorizontalAlignment="Right" Margin="5" />
+                    <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding Solicitud.CodigoEstadoSolicitud}"
+                               VerticalAlignment="Center" Margin="5" />
+                    <Label Grid.Row="5" Grid.Column="0" Content="Estado Solicitud:" FontWeight="Bold"
+                           VerticalAlignment="Center" HorizontalAlignment="Right" Margin="5" />
+                    <TextBlock Grid.Row="5" Grid.Column="1" Text="{Binding Solicitud.EstadoSolicitud}"
+                               VerticalAlignment="Center" Margin="5" />
+                    <Label Grid.Row="6" Grid.Column="0" Content="Numero CFDIs:" FontWeight="Bold"
+                           VerticalAlignment="Center" HorizontalAlignment="Right" Margin="5" />
+                    <TextBlock Grid.Row="6" Grid.Column="1" Text="{Binding Solicitud.NumeroCfdis}"
+                               VerticalAlignment="Center" Margin="5" />
+                    <Label Grid.Row="7" Grid.Column="0" Content="Paquetes Ids:" FontWeight="Bold"
+                           VerticalAlignment="Top" HorizontalAlignment="Right" Margin="5" />
+                    <DataGrid Grid.Row="7" Grid.Column="1" ItemsSource="{Binding Solicitud.PaqueteIds}"
+                              IsReadOnly="True"
+                              Margin="5" Height="100" />
+                    <Label Grid.Row="8" Grid.Column="0" Content="Error:" FontWeight="Bold" VerticalAlignment="Center"
+                           HorizontalAlignment="Right" Margin="5" />
+                    <TextBlock Grid.Row="8" Grid.Column="1" Text="{Binding Solicitud.Error}" VerticalAlignment="Center"
+                               Margin="5" />
+                    <Label Grid.Row="9" Grid.Column="0" Content="Solicitud:" FontWeight="Bold"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Right" Margin="5" />
+                    <TextBlock Grid.Row="9" Grid.Column="1" Text="{Binding Solicitud.Solicitud}"
+                               VerticalAlignment="Center" Margin="5" />
+                    <Button Grid.Row="9" Grid.Column="2" VerticalAlignment="Center" Margin="5">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="Click">
                                 <cal:ActionMessage MethodName="VerSolicitudXmlAsync">
-                                    <cal:Parameter Value="{Binding SolicitudSeleccionada}" />
+                                    <cal:Parameter Value="{Binding Solicitud}" />
                                 </cal:ActionMessage>
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
+                        <iconPacks:FontAwesome Kind="FileRegular" />
                     </Button>
-                    <Button Content="Ver Respuesta XML" Width="150" Margin="5" VerticalAlignment="Center"
-                            Style="{DynamicResource SquareButtonStyle}">
+                    <Label Grid.Row="10" Grid.Column="0" Content="Respuesta:" FontWeight="Bold"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Right" Margin="5" />
+                    <TextBlock Grid.Row="10" Grid.Column="1" Text="{Binding Solicitud.Respuesta}"
+                               VerticalAlignment="Center" Margin="5" />
+                    <Button Grid.Row="10" Grid.Column="2" Margin="5">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="Click">
                                 <cal:ActionMessage MethodName="VerRespuestaXmlAsync">
-                                    <cal:Parameter Value="{Binding SolicitudSeleccionada}" />
+                                    <cal:Parameter Value="{Binding Solicitud}" />
                                 </cal:ActionMessage>
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
+                        <iconPacks:FontAwesome Kind="FileRegular" />
                     </Button>
-                </StackPanel>
-                <DataGrid Grid.Row="1" ItemsSource="{Binding Solicitudes}"
-                          SelectedItem="{Binding SolicitudSeleccionada}" IsReadOnly="True" Margin="5" ColumnWidth="150" />
-            </Grid>
-        </TabItem>
-    </TabControl>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Solicitudes">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <StackPanel Grid.Row="0" Orientation="Horizontal">
+                        <Button Content="Ver Solicitud XML" Width="150" Margin="5" VerticalAlignment="Center"
+                                Style="{DynamicResource SquareButtonStyle}">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="Click">
+                                    <cal:ActionMessage MethodName="VerSolicitudXmlAsync">
+                                        <cal:Parameter Value="{Binding SolicitudSeleccionada}" />
+                                    </cal:ActionMessage>
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </Button>
+                        <Button Content="Ver Respuesta XML" Width="150" Margin="5" VerticalAlignment="Center"
+                                Style="{DynamicResource SquareButtonStyle}">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="Click">
+                                    <cal:ActionMessage MethodName="VerRespuestaXmlAsync">
+                                        <cal:Parameter Value="{Binding SolicitudSeleccionada}" />
+                                    </cal:ActionMessage>
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </Button>
+                    </StackPanel>
+                    <DataGrid Grid.Row="1" ItemsSource="{Binding Solicitudes}"
+                              SelectedItem="{Binding SolicitudSeleccionada}" IsReadOnly="True" Margin="5"
+                              ColumnWidth="150" />
+                </Grid>
+            </TabItem>
+        </TabControl>
+    </Grid>
 </UserControl>

@@ -31,9 +31,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <HintPath>..\packages\NLog.4.6.8\lib\net45\NLog.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
@@ -42,9 +39,6 @@
     <Reference Include="System.Security" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Transactions" />
-    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net47\System.ValueTuple.dll</HintPath>
-    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -53,21 +47,28 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Enumeration.cs" />
+    <Compile Include="Helpers\SoapRequestHelper.cs" />
+    <Compile Include="Models\AutenticacionRequest.cs" />
+    <Compile Include="Models\DescargaRequest.cs" />
+    <Compile Include="Models\Enumeration.cs" />
+    <Compile Include="Models\AutenticacionResult.cs" />
+    <Compile Include="Models\DescargaResult.cs" />
+    <Compile Include="Models\SoapRequestResult.cs" />
+    <Compile Include="Models\SolicitudRequest.cs" />
     <Compile Include="Models\SolicitudResult.cs" />
-    <Compile Include="NamespaceConstants.cs" />
+    <Compile Include="Constants\CfdiDescargaMasivaNamespaces.cs" />
+    <Compile Include="Models\VerificacionRequest.cs" />
+    <Compile Include="Models\VerificacionResult.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\AutenticacionService.cs" />
-    <Compile Include="Services\CertificadoService.cs" />
-    <Compile Include="Services\DescargarSolicitudService.cs" />
-    <Compile Include="Services\SoapRequestBase.cs" />
-    <Compile Include="Services\GenerarSolicitudService.cs" />
-    <Compile Include="Services\VerificaSolicitudService.cs" />
-    <Compile Include="TipoSolicitud.cs" />
-    <Compile Include="UrlsSat.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
+    <Compile Include="Helpers\X509Certificate2Helper.cs" />
+    <Compile Include="Services\DescargaService.cs" />
+    <Compile Include="Services\SolicitudService.cs" />
+    <Compile Include="Services\HttpWebRequestSoapService.cs" />
+    <Compile Include="Services\VerificacionService.cs" />
+    <Compile Include="Helpers\SignedXmlHelper.cs" />
+    <Compile Include="Models\TipoSolicitud.cs" />
+    <Compile Include="Constants\CfdiDescargaMasivaWebServiceUrls.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -5,9 +5,10 @@ using System.Threading.Tasks;
 using Common;
 using Core.Domain.Entities;
 using Infrastructure.Persistance;
-using Infrastructure.Sat;
-using Infrastructure.Sat.Models;
-using Infrastructure.Sat.Services;
+using ARSoftware.Cfdi.DescargaMasiva.Constants;
+using ARSoftware.Cfdi.DescargaMasiva.Helpers;
+using ARSoftware.Cfdi.DescargaMasiva.Models;
+using ARSoftware.Cfdi.DescargaMasiva.Services;
 using MediatR;
 using NLog;
 
@@ -47,26 +48,28 @@ namespace Core.Application.Solicitudes.Commands.GenerarSolicitud
             }
 
             Logger.WithProperty(LogPropertyConstants.SolicitudId, request.SolicitudId).Info("Obteniendo certificado.");
-            var certificadoSat = CertificadoService.ObtenerCertificado(configuracionGeneral.CertificadoSat.Certificado, configuracionGeneral.CertificadoSat.Contrasena);
+            var certificadoSat = X509Certificate2Helper.GetCertificate(configuracionGeneral.CertificadoSat.Certificado, configuracionGeneral.CertificadoSat.Contrasena);
 
-            var generarSolicitudService = new GenerarSolicitudService(UrlsSat.UrlSolicitud, UrlsSat.UrlSolicitudAction);
+            var solicitudService = new SolicitudService(CfdiDescargaMasivaWebServiceUrls.SolicitudUrl, CfdiDescargaMasivaWebServiceUrls.SolicitudSoapActionUrl);
 
             Logger.WithProperty(LogPropertyConstants.SolicitudId, solicitud.Id).Info("Generando XML SOAP de solicitud.");
-            var soapRequestEnvelopeXml = GenerarSolicitudService.GenerarSoapRequestXml(
-                solicitud.FechaInicio.ToString("yyyy-MM-dd") + "T00:00:00",
-                solicitud.FechaFin.ToString("yyyy-MM-dd") + "T23:59:59",
-                solicitud.TipoSolicitud,
+
+            var solicitudRequest = SolicitudRequest.CreateInstance(
+                solicitud.FechaInicio,
+                solicitud.FechaFin,
+                solicitud.TipoSolicitud == TipoSolicitud.Cfdi.Name ? TipoSolicitud.Cfdi : solicitud.TipoSolicitud == TipoSolicitud.Metadata.Name ? TipoSolicitud.Metadata : throw new ArgumentException("El tipo de solicitud no es un tipo valido."),
                 solicitud.RfcEmisor,
                 solicitud.RfcReceptor,
-                solicitud.RfcSolicitante,
-                certificadoSat);
+                solicitud.RfcSolicitante);
+
+            var soapRequestEnvelopeXml = SolicitudService.GenerateSoapRequestEnvelopeXmlContent(solicitudRequest, certificadoSat);
             Logger.WithProperty(LogPropertyConstants.SolicitudId, solicitud.Id).Info("SoapRequestEnvelopeXml: {0}", soapRequestEnvelopeXml);
 
             SolicitudResult solicitudResult;
             try
             {
                 Logger.WithProperty(LogPropertyConstants.SolicitudId, solicitud.Id).Info("Enviando solicitud SOAP de generacion.");
-                solicitudResult = generarSolicitudService.Send(soapRequestEnvelopeXml, solicitud.SolicitudAutenticacion.Autorizacion);
+                solicitudResult = solicitudService.SendSoapRequest(soapRequestEnvelopeXml, solicitud.SolicitudAutenticacion.Autorizacion);
             }
             catch (Exception e)
             {
@@ -93,22 +96,21 @@ namespace Core.Application.Solicitudes.Commands.GenerarSolicitud
                 throw;
             }
 
-            var generarSolicitudResult = solicitudResult.GetGenerarSolicitudResult();
-            Logger.WithProperty(LogPropertyConstants.SolicitudId, solicitud.Id).Info("GenerarSolicitudResult: {@GenerarSolicitudResult}", generarSolicitudResult);
+            Logger.WithProperty(LogPropertyConstants.SolicitudId, solicitud.Id).Info("GenerarSolicitudResult: {@GenerarSolicitudResult}", solicitudResult);
 
             Logger.WithProperty(LogPropertyConstants.SolicitudId, solicitud.Id).Info("Creando registro de solicitud de solicitud.");
             var solicitudSolicitud = SolicitudSolicitud.CreateInstance(
                 soapRequestEnvelopeXml,
-                generarSolicitudResult.response,
+                solicitudResult.WebResponse,
                 solicitud.FechaInicio,
                 solicitud.FechaFin,
                 solicitud.RfcEmisor,
                 solicitud.RfcReceptor,
                 solicitud.RfcSolicitante,
                 solicitud.TipoSolicitud,
-                generarSolicitudResult.codEstatus,
-                generarSolicitudResult.mensaje,
-                generarSolicitudResult.idSolicitud,
+                solicitudResult.CodEstatus,
+                solicitudResult.Mensaje,
+                solicitudResult.IdSolicitud,
                 null);
 
             Logger.WithProperty(LogPropertyConstants.SolicitudId, solicitud.Id).Info("SolicitudSolicitud: {@SolicitudSolicitud}", solicitudSolicitud);

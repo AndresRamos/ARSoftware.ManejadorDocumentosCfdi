@@ -48,19 +48,19 @@ namespace Presentation.WpfApp.ViewModels.Solicitudes
             Items.Add(solicitudViewModel);
 
             var solicitudAutenticacionViewModel = IoC.Get<SolicitudAutenticacionViewModel>();
-            solicitudAutenticacionViewModel.Inicializar(Solicitud.SolicitudAutenticacion, Solicitud.SolicitudesAutenticacion);
+            solicitudAutenticacionViewModel.Inicializar(Solicitud.Id, Solicitud.SolicitudAutenticacion, Solicitud.SolicitudesAutenticacion);
             Items.Add(solicitudAutenticacionViewModel);
 
             var solicitudSolicitudViewModel = IoC.Get<SolicitudSolicitudViewModel>();
-            solicitudSolicitudViewModel.Inicializar(Solicitud.SolicitudSolicitud, Solicitud.SolicitudesSolicitud);
+            solicitudSolicitudViewModel.Inicializar(Solicitud.Id, Solicitud.SolicitudSolicitud, Solicitud.SolicitudesSolicitud);
             Items.Add(solicitudSolicitudViewModel);
 
             var solicitudVerificacionViewModel = IoC.Get<SolicitudVerificacionViewModel>();
-            solicitudVerificacionViewModel.Inicializar(Solicitud.SolicitudVerificacion, Solicitud.SolicitudesVerificacion);
+            solicitudVerificacionViewModel.Inicializar(Solicitud.Id, Solicitud.SolicitudVerificacion, Solicitud.SolicitudesVerificacion);
             Items.Add(solicitudVerificacionViewModel);
 
             var solicitudDescargaViewModel = IoC.Get<SolicitudDescargaViewModel>();
-            solicitudDescargaViewModel.Inicializar(Solicitud.SolicitudDescarga, Solicitud.SolicitudesDescarga);
+            solicitudDescargaViewModel.Inicializar(Solicitud.Id, Solicitud.SolicitudDescarga, Solicitud.SolicitudesDescarga);
             Items.Add(solicitudDescargaViewModel);
 
             var solicitudPaquetesViewModel = IoC.Get<SolicitudPaquetesViewModel>();

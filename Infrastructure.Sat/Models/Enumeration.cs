@@ -2,24 +2,30 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Infrastructure.Sat
+namespace Infrastructure.Sat.Models
 {
     public abstract class Enumeration : IComparable
     {
-        public string Name { get; private set; }
-
-        public int Id { get; private set; }
-
         protected Enumeration(int id, string name)
         {
             Id = id;
             Name = name;
         }
 
-        public override string ToString() => Name;
+        public string Name { get; }
+
+        public int Id { get; }
+
+        public int CompareTo(object other)
+        {
+            return Id.CompareTo(((Enumeration) other).Id);
+        }
+
+        public override string ToString()
+        {
+            return Name;
+        }
 
         public static IEnumerable<T> GetAll<T>() where T : Enumeration
         {
@@ -35,15 +41,15 @@ namespace Infrastructure.Sat
             var otherValue = obj as Enumeration;
 
             if (otherValue == null)
+            {
                 return false;
+            }
 
             var typeMatches = GetType().Equals(obj.GetType());
             var valueMatches = Id.Equals(otherValue.Id);
 
             return typeMatches && valueMatches;
         }
-
-        public int CompareTo(object other) => Id.CompareTo(((Enumeration)other).Id);
 
         // Other utility methods ...
     }

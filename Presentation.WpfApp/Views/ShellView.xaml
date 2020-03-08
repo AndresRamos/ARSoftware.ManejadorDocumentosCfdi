@@ -7,7 +7,7 @@
                       xmlns:viewModels="clr-namespace:Presentation.WpfApp.ViewModels"
                       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-                      xmlns:local="clr-namespace:Presentation.WpfApp.Views" 
+                      xmlns:local="clr-namespace:Presentation.WpfApp.Views"
                       mc:Ignorable="d"
                       WindowStartupLocation="CenterScreen"
                       WindowState="Maximized"
@@ -20,8 +20,16 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <Menu Grid.Row="0" IsMainMenu="True">
+            <MenuItem Header="Archivo">
+                <MenuItem Header="Salir" cal:Message.Attach="Salir"></MenuItem>
+            </MenuItem>
             <MenuItem Header="Configuracion">
                 <MenuItem Header="Configuracion General" cal:Message.Attach="MostrarConfiguracionGeneralAsync" />
+            </MenuItem>
+            <MenuItem Header="Ayuda">
+                <MenuItem Header="Soporte Remoto" cal:Message.Attach="IniciarSoporteRemotoAsync" />
+                <MenuItem Header="Buscar Actualizaciones" cal:Message.Attach="BuscarActualizacionesAsync" />
+                <MenuItem Header="Acerca De" cal:Message.Attach="VerAcercaDeViewAsync" />
             </MenuItem>
         </Menu>
         <TabControl Grid.Row="1" x:Name="Items" />

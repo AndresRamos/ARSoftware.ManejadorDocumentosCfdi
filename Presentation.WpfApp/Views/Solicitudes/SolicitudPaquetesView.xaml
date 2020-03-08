@@ -16,6 +16,8 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
+        <TextBlock Grid.Row="0" Text="{Binding DisplayName}" FontWeight="Bold" FontSize="20" VerticalAlignment="Center"
+                   Margin="5" />
         <StackPanel Grid.Row="1" Orientation="Horizontal">
             <Button Content="Guardar" cal:Message.Attach="GuardarPaqueteAsync" VerticalAlignment="Center" Width="150"
                     Margin="5"

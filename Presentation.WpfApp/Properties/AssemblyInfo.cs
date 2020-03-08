@@ -8,12 +8,12 @@ using System.Windows;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Presentation.WpfApp")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("AR Software Manejador Documentos CFDI")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("AR Software")]
 [assembly: AssemblyProduct("Presentation.WpfApp")]
-[assembly: AssemblyCopyright("Copyright ©  2019")]
-[assembly: AssemblyTrademark("")]
+[assembly: AssemblyCopyright("Copyright © AR Software 2020")]
+[assembly: AssemblyTrademark("AR Software Manejador Documentos CFDI")]
 [assembly: AssemblyCulture("")]
 
 // Setting ComVisible to false makes the types in this assembly not visible

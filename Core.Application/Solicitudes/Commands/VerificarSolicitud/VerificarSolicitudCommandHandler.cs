@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 using Common;
 using Core.Domain.Entities;
 using Infrastructure.Persistance;
-using Infrastructure.Sat;
-using Infrastructure.Sat.Models;
-using Infrastructure.Sat.Services;
+using ARSoftware.Cfdi.DescargaMasiva.Constants;
+using ARSoftware.Cfdi.DescargaMasiva.Helpers;
+using ARSoftware.Cfdi.DescargaMasiva.Models;
+using ARSoftware.Cfdi.DescargaMasiva.Services;
 using MediatR;
 using NLog;
 
@@ -55,19 +56,20 @@ namespace Core.Application.Solicitudes.Commands.VerificarSolicitud
             }
 
             Logger.WithProperty(LogPropertyConstants.SolicitudId, request.SolicitudId).Info("Obteniendo certificado.");
-            var certificadoSat = CertificadoService.ObtenerCertificado(configuracionGeneral.CertificadoSat.Certificado, configuracionGeneral.CertificadoSat.Contrasena);
+            var certificadoSat = X509Certificate2Helper.GetCertificate(configuracionGeneral.CertificadoSat.Certificado, configuracionGeneral.CertificadoSat.Contrasena);
 
-            var verificaSolicitudService = new VerificaSolicitudService(UrlsSat.UrlVerificarSolicitud, UrlsSat.UrlVerificarSolicitudAction);
+            var verificaSolicitudService = new VerificacionService(CfdiDescargaMasivaWebServiceUrls.VerificacionUrl, CfdiDescargaMasivaWebServiceUrls.VerificacionSoapActionUrl);
 
             Logger.WithProperty(LogPropertyConstants.SolicitudId, solicitud.Id).Info("Generando XML SOAP de solicitud.");
-            var soapRequestEnvelopeXml = verificaSolicitudService.Generate(certificadoSat, solicitud.RfcSolicitante, solicitud.SolicitudSolicitud.IdSolicitud);
+            var verificacionRequest = VerificacionRequest.CreateInstance(solicitud.SolicitudSolicitud.IdSolicitud, solicitud.RfcSolicitante);
+            var soapRequestEnvelopeXml = verificaSolicitudService.GenerateSoapRequestEnvelopeXmlContent(verificacionRequest, certificadoSat);
             Logger.WithProperty(LogPropertyConstants.SolicitudId, solicitud.Id).Info("SoapRequestEnvelopeXml: {0}", soapRequestEnvelopeXml);
 
-            SolicitudResult solicitudResult;
+            VerificacionResult verificacionResult;
             try
             {
                 Logger.WithProperty(LogPropertyConstants.SolicitudId, solicitud.Id).Info("Enviando solicitud SOAP de verificacion.");
-                solicitudResult = verificaSolicitudService.Send(soapRequestEnvelopeXml, solicitud.SolicitudAutenticacion.Autorizacion);
+                verificacionResult = verificaSolicitudService.SendSoapRequest(soapRequestEnvelopeXml, solicitud.SolicitudAutenticacion.Autorizacion);
             }
             catch (Exception e)
             {
@@ -87,24 +89,22 @@ namespace Core.Application.Solicitudes.Commands.VerificarSolicitud
                 solicitud.SolicitudesWeb.Add(solicitudVerificacionError);
                 solicitud.SolicitudVerificacion = solicitudVerificacionError;
                 await _context.SaveChangesAsync(cancellationToken);
-                
+
                 throw;
             }
 
-            var verificarSolicitudResult = solicitudResult.GetVerificarSolicitudResult();
-            Logger.WithProperty(LogPropertyConstants.SolicitudId, solicitud.Id).Info("VerificarSolicitudResult: {@VerificarSolicitudResult}", verificarSolicitudResult);
-
+            Logger.WithProperty(LogPropertyConstants.SolicitudId, solicitud.Id).Info("VerificarSolicitudResult: {@VerificarSolicitudResult}", verificacionResult);
 
             Logger.WithProperty(LogPropertyConstants.SolicitudId, solicitud.Id).Info("Creando registro de solicitud de verificacion.");
             var solicitudVerificacion = SolicitudVerificacion.CreateInstance(
                 soapRequestEnvelopeXml,
-                verificarSolicitudResult.response,
-                verificarSolicitudResult.codEstatus,
-                verificarSolicitudResult.mensaje,
-                verificarSolicitudResult.codigoEstadoSolicitud,
-                verificarSolicitudResult.estadoSolicitud,
-                verificarSolicitudResult.numeroCfdis,
-                verificarSolicitudResult.idsPaquetes.Select(idPaquete => PaqueteId.Crear(idPaquete)).ToList(),
+                verificacionResult.WebResponse,
+                verificacionResult.CodEstatus,
+                verificacionResult.Mensaje,
+                verificacionResult.CodigoEstadoSolicitud,
+                verificacionResult.EstadoSolicitud,
+                verificacionResult.NumeroCfdis,
+                verificacionResult.IdsPaquetes.Select(idPaquete => PaqueteId.Crear(idPaquete)).ToList(),
                 null);
 
             Logger.WithProperty(LogPropertyConstants.SolicitudId, solicitud.Id).Info("SolicitudVerificacion: {@SolicitudVerificacion}", solicitudVerificacion);

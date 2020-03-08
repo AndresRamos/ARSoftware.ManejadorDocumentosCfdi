@@ -124,8 +124,8 @@ namespace Presentation.WpfApp.ViewModels.Solicitudes
         public async Task InicializarAsync()
         {
             var configuracionGeneral = await _mediator.Send(new BuscarConfiguracionGeneralQuery());
-            RfcReceptor = configuracionGeneral.CertificadoSat.RfcEmisor;
-            RfcSolicitante = configuracionGeneral.CertificadoSat.RfcEmisor;
+            RfcReceptor = configuracionGeneral.CertificadoSat.Rfc;
+            RfcSolicitante = configuracionGeneral.CertificadoSat.Rfc;
             await CargarTiposSolicitudAsync();
         }
 

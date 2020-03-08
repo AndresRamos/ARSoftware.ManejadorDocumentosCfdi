@@ -59,7 +59,7 @@ namespace Presentation.WpfApp.ViewModels.ConfiguracionGeneral
                 await _mediator.Send(new ActualizarCertificadoSatCommand(
                     ConfiguracionGeneral.CertificadoSat.Certificado,
                     ConfiguracionGeneral.CertificadoSat.Contrasena,
-                    ConfiguracionGeneral.CertificadoSat.RfcEmisor,
+                    ConfiguracionGeneral.CertificadoSat.Rfc,
                     ConfiguracionGeneral.RutaDirectorioDescargas));
 
                 TryClose();
