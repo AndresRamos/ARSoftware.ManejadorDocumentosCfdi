@@ -87,6 +87,18 @@ namespace Presentation.WpfApp.ViewModels
             }
         }
 
+        public async Task VerDocumentacionAsync()
+        {
+            try
+            {
+                Process.Start("https://www.arsoft.net/mdcfdi-acerca-de");
+            }
+            catch (Exception e)
+            {
+                await _dialogCoordinator.ShowMessageAsync(this, "Error", e.ToString());
+            }
+        }
+
         protected override async void OnViewLoaded(object view)
         {
             base.OnViewLoaded(view);

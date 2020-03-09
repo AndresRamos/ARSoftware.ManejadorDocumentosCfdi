@@ -21,12 +21,13 @@
         </Grid.RowDefinitions>
         <Menu Grid.Row="0" IsMainMenu="True">
             <MenuItem Header="Archivo">
-                <MenuItem Header="Salir" cal:Message.Attach="Salir"></MenuItem>
+                <MenuItem Header="Salir" cal:Message.Attach="Salir" />
             </MenuItem>
             <MenuItem Header="Configuracion">
                 <MenuItem Header="Configuracion General" cal:Message.Attach="MostrarConfiguracionGeneralAsync" />
             </MenuItem>
             <MenuItem Header="Ayuda">
+                <MenuItem Header="Documentacion" cal:Message.Attach="VerDocumentacionAsync" />
                 <MenuItem Header="Soporte Remoto" cal:Message.Attach="IniciarSoporteRemotoAsync" />
                 <MenuItem Header="Buscar Actualizaciones" cal:Message.Attach="BuscarActualizacionesAsync" />
                 <MenuItem Header="Acerca De" cal:Message.Attach="VerAcercaDeViewAsync" />

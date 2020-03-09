@@ -149,6 +149,12 @@ namespace Presentation.WpfApp.ViewModels.Solicitudes
 
         public async Task ProcesarSolicitudAsync()
         {
+            var messageDialogResult = await _dialogCoordinator.ShowMessageAsync(this, "Procesar Solicitud", $"Esta seguro de querer procesar la solicitud {SolicitudSeleccionada.Id}?", MessageDialogStyle.AffirmativeAndNegative);
+            if (messageDialogResult != MessageDialogResult.Affirmative)
+            {
+                return;
+            }
+
             var progressDialogController = await _dialogCoordinator.ShowProgressAsync(this, "Procesando Solicitud", "Procesando solicitud.");
             progressDialogController.SetIndeterminate();
             await Task.Delay(1000);
