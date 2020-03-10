@@ -65,6 +65,7 @@
                            VerticalAlignment="Center"
                            HorizontalAlignment="Right" Margin="5" />
                     <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding Solicitud.CodEstatus}"
+                               ToolTip="{Binding Solicitud.CodigoEstatusSolicitudEnum}"
                                VerticalAlignment="Center" Margin="5" />
                     <Label Grid.Row="3" Grid.Column="0" Content="Mensaje:" FontWeight="Bold" VerticalAlignment="Center"
                            HorizontalAlignment="Right" Margin="5" />
@@ -74,10 +75,12 @@
                     <Label Grid.Row="4" Grid.Column="0" Content="Codigo Estado Solicitud:" FontWeight="Bold"
                            VerticalAlignment="Center" HorizontalAlignment="Right" Margin="5" />
                     <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding Solicitud.CodigoEstadoSolicitud}"
+                               ToolTip="{Binding Solicitud.CodigoEstadoSolicitdEnum}"
                                VerticalAlignment="Center" Margin="5" />
                     <Label Grid.Row="5" Grid.Column="0" Content="Estado Solicitud:" FontWeight="Bold"
                            VerticalAlignment="Center" HorizontalAlignment="Right" Margin="5" />
                     <TextBlock Grid.Row="5" Grid.Column="1" Text="{Binding Solicitud.EstadoSolicitud}"
+                               ToolTip="{Binding Solicitud.EstadoSolicitudEnum}"
                                VerticalAlignment="Center" Margin="5" />
                     <Label Grid.Row="6" Grid.Column="0" Content="Numero CFDIs:" FontWeight="Bold"
                            VerticalAlignment="Center" HorizontalAlignment="Right" Margin="5" />

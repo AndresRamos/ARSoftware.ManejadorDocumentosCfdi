@@ -56,6 +56,10 @@
     <Compile Include="Migrations\202003091037280_Initial.designer.cs">
       <DependentUpon>202003091037280_Initial.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202003100522209_AddConfiguracioSistemasContpaqi.cs" />
+    <Compile Include="Migrations\202003100522209_AddConfiguracioSistemasContpaqi.designer.cs">
+      <DependentUpon>202003100522209_AddConfiguracioSistemasContpaqi.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -72,6 +76,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\202003091037280_Initial.resx">
       <DependentUpon>202003091037280_Initial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003100522209_AddConfiguracioSistemasContpaqi.resx">
+      <DependentUpon>202003100522209_AddConfiguracioSistemasContpaqi.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

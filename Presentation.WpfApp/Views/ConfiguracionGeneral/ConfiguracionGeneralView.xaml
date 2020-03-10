@@ -11,8 +11,8 @@
                       xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
                       mc:Ignorable="d"
                       WindowStartupLocation="CenterOwner"
-                      Width="500"
-                      Height="350"
+                      Width="700"
+                      Height="450"
                       d:DataContext="{d:DesignInstance Type=viewModels:ConfiguracionGeneralViewModel, IsDesignTimeCreatable=False}"
                       cal:Bind.AtDesignTime="True"
                       dialog:DialogParticipation.Register="{Binding}">
@@ -31,41 +31,109 @@
             <Button Content="Cancelar" cal:Message.Attach="Cancelar" Width="150" VerticalAlignment="Center" Margin="5"
                     Style="{DynamicResource SquareButtonStyle}" />
         </StackPanel>
-        <Grid Grid.Row="2">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="Auto" />
-            </Grid.ColumnDefinitions>
-            <Label Grid.Row="0" Grid.Column="0" Content="Certificado:" FontWeight="Bold" VerticalAlignment="Center"
-                   HorizontalAlignment="Right" Margin="5" />
-            <TextBlock Grid.Row="0" Grid.Column="1" Text="" VerticalAlignment="Center" Margin="5" />
-            <Button Grid.Row="0" Grid.Column="2" cal:Message.Attach="BuscarArchivoCertificadoAsync"
-                    ToolTip="Buscar" VerticalAlignment="Center" Margin="5">
-                <iconPacks:FontAwesome Kind="SearchSolid" />
-            </Button>
-            <Label Grid.Row="1" Grid.Column="0" Content="RFC:" FontWeight="Bold" VerticalAlignment="Center"
-                   HorizontalAlignment="Right" Margin="5" />
-            <TextBox Grid.Row="1" Grid.Column="1"
-                     Text="{Binding ConfiguracionGeneral.CertificadoSat.Rfc, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                     VerticalAlignment="Center" Margin="5" />
-            <Label Grid.Row="2" Grid.Column="0" Content="Contrasena:" FontWeight="Bold" VerticalAlignment="Center"
-                   HorizontalAlignment="Right" Margin="5" />
-            <TextBox Grid.Row="2" Grid.Column="1"
-                     Text="{Binding ConfiguracionGeneral.CertificadoSat.Contrasena, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                     VerticalAlignment="Center" Margin="5" />
-            <Label Grid.Row="3" Grid.Column="0" Content="Directorio Descargas:" FontWeight="Bold"
-                   VerticalAlignment="Center"
-                   HorizontalAlignment="Right" Margin="5" />
-            <TextBox Grid.Row="3" Grid.Column="1"
-                     Text="{Binding ConfiguracionGeneral.RutaDirectorioDescargas, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                     VerticalAlignment="Center" Margin="5" />
-        </Grid>
+        <TabControl Grid.Row="2">
+            <TabItem Header="General">
+                <Grid Grid.Row="2">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Row="0" Grid.Column="0" Content="Certificado:" FontWeight="Bold"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Right" Margin="5" />
+                    <TextBlock Grid.Row="0" Grid.Column="1" Text="" VerticalAlignment="Center" Margin="5" />
+                    <Button Grid.Row="0" Grid.Column="2" cal:Message.Attach="BuscarArchivoCertificadoAsync"
+                            ToolTip="Buscar" VerticalAlignment="Center" Margin="5">
+                        <iconPacks:FontAwesome Kind="SearchSolid" />
+                    </Button>
+                    <Label Grid.Row="1" Grid.Column="0" Content="RFC:" FontWeight="Bold" VerticalAlignment="Center"
+                           HorizontalAlignment="Right" Margin="5" />
+                    <TextBox Grid.Row="1" Grid.Column="1"
+                             Text="{Binding ConfiguracionGeneral.CertificadoSat.Rfc, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             VerticalAlignment="Center" Margin="5" />
+                    <Label Grid.Row="2" Grid.Column="0" Content="Contrasena:" FontWeight="Bold"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Right" Margin="5" />
+                    <TextBox Grid.Row="2" Grid.Column="1"
+                             Text="{Binding ConfiguracionGeneral.CertificadoSat.Contrasena, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             VerticalAlignment="Center" Margin="5" />
+                    <Label Grid.Row="3" Grid.Column="0" Content="Directorio Descargas:" FontWeight="Bold"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Right" Margin="5" />
+                    <TextBox Grid.Row="3" Grid.Column="1"
+                             Text="{Binding ConfiguracionGeneral.RutaDirectorioDescargas, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             VerticalAlignment="Center" Margin="5" />
+                </Grid>
+            </TabItem>
+            <TabItem Header="CONTPAQi Comercial">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Row="0" Grid.Column="0" Content="Sql Connection String:" FontWeight="Bold"
+                           VerticalAlignment="Center" HorizontalAlignment="Right" Margin="5" />
+                    <TextBox Grid.Row="0" Grid.Column="1"
+                             Text="{Binding ConfiguracionGeneral.ConfiguracionContpaqiComercial.ContpaqiSqlConnectionString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             VerticalAlignment="Center" Margin="5"
+                             controls:TextBoxHelper.ClearTextButton="True" />
+                    <Label Grid.Row="1" Grid.Column="0" Content="Empresa" FontWeight="Bold" VerticalAlignment="Center"
+                           HorizontalAlignment="Right" Margin="5" />
+                    <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                        <TextBlock Text="{Binding ConfiguracionGeneral.ConfiguracionContpaqiComercial.Empresa.Nombre}" />
+                        <TextBlock Text="|" Margin="5,0" />
+                        <TextBlock
+                            Text="{Binding ConfiguracionGeneral.ConfiguracionContpaqiComercial.Empresa.BaseDatos}" />
+                    </StackPanel>
+                    <Button Grid.Row="1" Grid.Column="2" cal:Message.Attach="BuscarEmpresaComercialAsync"
+                            ToolTip="Buscar Empresa" VerticalAlignment="Center" Margin="5">
+                        <iconPacks:FontAwesome Kind="SearchSolid" />
+                    </Button>
+                </Grid>
+            </TabItem>
+            <TabItem Header="CONTPAQi Contabilidad">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Row="0" Grid.Column="0" Content="Sql Connection String:" FontWeight="Bold"
+                           VerticalAlignment="Center" HorizontalAlignment="Right" Margin="5" />
+                    <TextBox Grid.Row="0" Grid.Column="1"
+                             Text="{Binding ConfiguracionGeneral.ConfiguracionContpaqiContabilidad.ContpaqiSqlConnectionString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             VerticalAlignment="Center" Margin="5"
+                             controls:TextBoxHelper.ClearTextButton="True" />
+                    <Label Grid.Row="1" Grid.Column="0" Content="Empresa" FontWeight="Bold" VerticalAlignment="Center"
+                           HorizontalAlignment="Right" Margin="5" />
+                    <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                        <TextBlock Text="{Binding ConfiguracionGeneral.ConfiguracionContpaqiContabilidad.Empresa.Nombre}" />
+                        <TextBlock Text="|" Margin="5,0" />
+                        <TextBlock
+                            Text="{Binding ConfiguracionGeneral.ConfiguracionContpaqiContabilidad.Empresa.BaseDatos}" />
+                    </StackPanel>
+                    <Button Grid.Row="1" Grid.Column="2" cal:Message.Attach="BuscarEmpresaContabilidadAsync"
+                            ToolTip="Buscar Empresa" VerticalAlignment="Center" Margin="5">
+                        <iconPacks:FontAwesome Kind="SearchSolid" />
+                    </Button>
+                </Grid>
+            </TabItem>
+        </TabControl>
     </Grid>
 </controls:MetroWindow>

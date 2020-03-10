@@ -53,6 +53,18 @@
     <Reference Include="Caliburn.Micro.Platform.Core, Version=3.2.0.0, Culture=neutral, PublicKeyToken=8e5891231f2ed21f, processorArchitecture=MSIL">
       <HintPath>..\packages\Caliburn.Micro.3.2.0\lib\net45\Caliburn.Micro.Platform.Core.dll</HintPath>
     </Reference>
+    <Reference Include="Contpaqi.Sql.Comercial.Empresa, Version=1.0.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Contpaqi.Sql.Comercial.Empresa.1.0.4\lib\net452\Contpaqi.Sql.Comercial.Empresa.dll</HintPath>
+    </Reference>
+    <Reference Include="Contpaqi.Sql.Comercial.Generales, Version=1.0.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Contpaqi.Sql.Comercial.Generales.1.0.4\lib\net452\Contpaqi.Sql.Comercial.Generales.dll</HintPath>
+    </Reference>
+    <Reference Include="Contpaqi.Sql.Contabilidad.Empresa, Version=1.0.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Contpaqi.Sql.Contabilidad.Empresa.1.0.2\lib\net452\Contpaqi.Sql.Contabilidad.Empresa.dll</HintPath>
+    </Reference>
+    <Reference Include="Contpaqi.Sql.Contabilidad.Generales, Version=1.0.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Contpaqi.Sql.Contabilidad.Generales.1.0.2\lib\net452\Contpaqi.Sql.Contabilidad.Generales.dll</HintPath>
+    </Reference>
     <Reference Include="ControlzEx, Version=3.0.2.4, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\ControlzEx.3.0.2.4\lib\net462\ControlzEx.dll</HintPath>
     </Reference>
@@ -145,9 +157,12 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Models\ActualizacionAplicacion.cs" />
+    <Compile Include="Models\ConfiguracionAplicacion.cs" />
     <Compile Include="ViewModels\AcercaDeViewModel.cs" />
     <Compile Include="ViewModels\Actualizaciones\ActualizacionAplicacionViewModel.cs" />
     <Compile Include="ViewModels\ConfiguracionGeneral\ConfiguracionGeneralViewModel.cs" />
+    <Compile Include="ViewModels\Empresas\SeleccionarEmpresaContpaqiViewModel.cs" />
+    <Compile Include="ViewModels\Rfcs\SeleccionarRfcViewModel.cs" />
     <Compile Include="ViewModels\ShellViewModel.cs" />
     <Compile Include="ViewModels\Solicitudes\DetalleSolicitudViewModel.cs" />
     <Compile Include="ViewModels\Solicitudes\ListaSolicitudesViewModel.cs" />
@@ -167,6 +182,12 @@
     </Compile>
     <Compile Include="Views\ConfiguracionGeneral\ConfiguracionGeneralView.xaml.cs">
       <DependentUpon>ConfiguracionGeneralView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Empresas\SeleccionarEmpresaContpaqiView.xaml.cs">
+      <DependentUpon>SeleccionarEmpresaContpaqiView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Rfcs\SeleccionarRfcView.xaml.cs">
+      <DependentUpon>SeleccionarRfcView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ShellView.xaml.cs">
       <DependentUpon>ShellView.xaml</DependentUpon>
@@ -256,6 +277,14 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\Empresas\SeleccionarEmpresaContpaqiView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Rfcs\SeleccionarRfcView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\ShellView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -302,9 +331,21 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Common\Common.csproj">
+      <Project>{a4122ec4-b420-4238-b5e3-ecb62bae86c3}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Core.Application\Core.Application.csproj">
       <Project>{7512d690-55fc-496d-a1c4-ed2cc05ff1d0}</Project>
       <Name>Core.Application</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Infrastructure.ContpaqiComercial\Infrastructure.ContpaqiComercial.csproj">
+      <Project>{7868fa1f-fc3c-4d6c-977c-69da5a465ba6}</Project>
+      <Name>Infrastructure.ContpaqiComercial</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Infrastructure.ContpaqiContabilidad\Infrastructure.ContpaqiContabilidad.csproj">
+      <Project>{d20be0c8-527b-47d8-ab90-bee9527bef5a}</Project>
+      <Name>Infrastructure.ContpaqiContabilidad</Name>
     </ProjectReference>
     <ProjectReference Include="..\Infrastructure.Persistance\Infrastructure.Persistance.csproj">
       <Project>{9d31259c-aa7a-46c5-88a6-25b2a3e97194}</Project>

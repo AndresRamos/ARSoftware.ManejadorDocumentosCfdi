@@ -26,6 +26,9 @@ namespace Infrastructure.Persistance
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
 
             modelBuilder.ComplexType<CertificadoSat>();
+            modelBuilder.ComplexType<ConfiguracionContpaqiComercial>();
+            modelBuilder.ComplexType<ConfiguracionContpaqiContabilidad>();
+            modelBuilder.ComplexType<EmpresaContpaqi>();
         }
     }
 }

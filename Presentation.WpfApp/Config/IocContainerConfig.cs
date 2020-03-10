@@ -2,12 +2,21 @@
 using Autofac;
 using Caliburn.Micro;
 using Core.Application.Cfdis.Queries.ObtenerCertificado;
+using Core.Application.Empresas.Interfaces;
+using Core.Application.Rfcs.Interfaces;
+using Infrastructure.ContpaqiComercial.Factories;
+using Infrastructure.ContpaqiComercial.Repositories;
+using Infrastructure.ContpaqiContabilidad.Factories;
+using Infrastructure.ContpaqiContabilidad.Repositories;
 using Infrastructure.Persistance;
 using MahApps.Metro.Controls.Dialogs;
 using MediatR;
+using Presentation.WpfApp.Models;
 using Presentation.WpfApp.ViewModels;
 using Presentation.WpfApp.ViewModels.Actualizaciones;
 using Presentation.WpfApp.ViewModels.ConfiguracionGeneral;
+using Presentation.WpfApp.ViewModels.Empresas;
+using Presentation.WpfApp.ViewModels.Rfcs;
 using Presentation.WpfApp.ViewModels.Solicitudes;
 using Presentation.WpfApp.ViewModels.Xmls;
 
@@ -22,8 +31,11 @@ namespace Presentation.WpfApp.Config
             RegisterCaliburnMicroModule(containerBuilder);
             RegisterMahappsModule(containerBuilder);
             RegisterMediatr(containerBuilder);
+            RegisterModels(containerBuilder);
             RegisterViewModels(containerBuilder);
             RegisterPersistanceModule(containerBuilder);
+            RegisterContpaqiComercialModule(containerBuilder);
+            RegisterContpaqiContabilidadModule(containerBuilder);
 
             return containerBuilder.Build();
         }
@@ -65,6 +77,11 @@ namespace Presentation.WpfApp.Config
             containerBuilder.RegisterInstance(DialogCoordinator.Instance).ExternallyOwned();
         }
 
+        private static void RegisterModels(ContainerBuilder containerBuilder)
+        {
+            containerBuilder.RegisterType<ConfiguracionAplicacion>().SingleInstance();
+        }
+
         private static void RegisterViewModels(ContainerBuilder containerBuilder)
         {
             containerBuilder.RegisterType<ShellViewModel>();
@@ -73,6 +90,10 @@ namespace Presentation.WpfApp.Config
             containerBuilder.RegisterType<ActualizacionAplicacionViewModel>();
 
             containerBuilder.RegisterType<ConfiguracionGeneralViewModel>();
+
+            containerBuilder.RegisterType<SeleccionarEmpresaContpaqiViewModel>();
+
+            containerBuilder.RegisterType<SeleccionarRfcViewModel>();
 
             containerBuilder.RegisterType<DetalleSolicitudViewModel>();
             containerBuilder.RegisterType<ListaSolicitudesViewModel>();
@@ -90,6 +111,48 @@ namespace Presentation.WpfApp.Config
         private static void RegisterPersistanceModule(ContainerBuilder containerBuilder)
         {
             containerBuilder.RegisterType<ManejadorDocumentosCfdiDbContext>();
+        }
+
+        private static void RegisterContpaqiComercialModule(ContainerBuilder containerBuilder)
+        {
+            containerBuilder.Register(c =>
+            {
+                var configuracionAplicacion = c.Resolve<ConfiguracionAplicacion>();
+                return ComercialGeneralesDbContextFactory.Crear(
+                    configuracionAplicacion.ConfiguracionGeneral.ConfiguracionContpaqiComercial.ContpaqiSqlConnectionString);
+            });
+
+            containerBuilder.Register(c =>
+            {
+                var configuracionAplicacion = c.Resolve<ConfiguracionAplicacion>();
+                return ComercialEmpresaDbContextFactory.Crear(
+                    configuracionAplicacion.ConfiguracionGeneral.ConfiguracionContpaqiComercial.ContpaqiSqlConnectionString,
+                    configuracionAplicacion.ConfiguracionGeneral.ConfiguracionContpaqiComercial.Empresa.BaseDatos);
+            });
+
+            containerBuilder.RegisterType<EmpresaComercialRepository>().As<IEmpresaComercialRepository>();
+            containerBuilder.RegisterType<RfcComercialRepository>().As<IRfcComercialRepository>();
+        }
+
+        private static void RegisterContpaqiContabilidadModule(ContainerBuilder containerBuilder)
+        {
+            containerBuilder.Register(c =>
+            {
+                var configuracionAplicacion = c.Resolve<ConfiguracionAplicacion>();
+                return ContabilidadGeneralesDbContextFactory.Crear(
+                    configuracionAplicacion.ConfiguracionGeneral.ConfiguracionContpaqiContabilidad.ContpaqiSqlConnectionString);
+            });
+
+            containerBuilder.Register(c =>
+            {
+                var configuracionAplicacion = c.Resolve<ConfiguracionAplicacion>();
+                return ContabilidadEmpresaDbContextFactory.Crear(
+                    configuracionAplicacion.ConfiguracionGeneral.ConfiguracionContpaqiContabilidad.ContpaqiSqlConnectionString,
+                    configuracionAplicacion.ConfiguracionGeneral.ConfiguracionContpaqiContabilidad.Empresa.BaseDatos);
+            });
+
+            containerBuilder.RegisterType<EmpresaContabilidadRepository>().As<IEmpresaContabilidadRepository>();
+            containerBuilder.RegisterType<RfcContabilidadRepository>().As<IRfcContabilidadRepository>();
         }
     }
 }

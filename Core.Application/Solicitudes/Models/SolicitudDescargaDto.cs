@@ -4,7 +4,7 @@ namespace Core.Application.Solicitudes.Models
 {
     public class SolicitudDescargaDto
     {
-        public SolicitudDescargaDto(int id, DateTime fechaCreacionUtc, string codEstatus, string mensaje, string paqueteId, string paquete, string error, string solicitud, string respuesta)
+        public SolicitudDescargaDto(int id, DateTime fechaCreacionUtc, string codEstatus, string mensaje, string paqueteId, string paquete, string error, string solicitud, string respuesta, CodigoEstatusSolicitudDto codigoEstatusSolicitudEnum)
         {
             Id = id;
             FechaCreacionUtc = fechaCreacionUtc;
@@ -16,6 +16,7 @@ namespace Core.Application.Solicitudes.Models
             Error = error;
             Solicitud = solicitud;
             Respuesta = respuesta;
+            CodigoEstatusSolicitudEnum = codigoEstatusSolicitudEnum;
         }
 
         public int Id { get; set; }
@@ -28,5 +29,7 @@ namespace Core.Application.Solicitudes.Models
         public string Error { get; set; }
         public string Solicitud { get; set; }
         public string Respuesta { get; set; }
+        public CodigoEstatusSolicitudDto CodigoEstatusSolicitudEnum { get; set; }
+
     }
 }

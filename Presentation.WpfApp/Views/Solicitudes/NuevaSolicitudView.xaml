@@ -9,7 +9,7 @@
                       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                       xmlns:local="clr-namespace:Presentation.WpfApp.Views.Solicitudes"
                       mc:Ignorable="d"
-                      WindowStartupLocation="CenterOwner" Width="500" Height="350"
+                      WindowStartupLocation="CenterOwner" Width="600" Height="350"
                       d:DataContext="{d:DesignInstance Type=viewModels:NuevaSolicitudViewModel, IsDesignTimeCreatable=False}"
                       cal:Bind.AtDesignTime="True"
                       dialog:DialogParticipation.Register="{Binding}">
@@ -40,6 +40,7 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition />
+                <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
             <Label Grid.Row="0" Grid.Column="0" Content="Fecha Inicio:" FontWeight="Bold" VerticalAlignment="Center"
                    HorizontalAlignment="Right" Margin="5" />
@@ -56,11 +57,27 @@
             <TextBox Grid.Row="2" Grid.Column="1"
                      Text="{Binding RfcEmisor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                      VerticalAlignment="Center" Margin="5" />
+            <StackPanel Grid.Row="2" Grid.Column="2" Orientation="Horizontal">
+                <Button Content="COM" cal:Message.Attach="BuscarRfcEmisorComercialAsync"
+                        ToolTip="Buscar RFC del catalogo de CONTPAQi Comercial" VerticalAlignment="Center"
+                        Margin="5" />
+                <Button Content="CONT" cal:Message.Attach="BuscarRfcEmisorContabilidadAsync"
+                        ToolTip="Buscar RFC del catalogo de CONTPAQi Contabilidad" VerticalAlignment="Center"
+                        Margin="5" />
+            </StackPanel>
             <Label Grid.Row="3" Grid.Column="0" Content="RFC Receptor:" FontWeight="Bold" VerticalAlignment="Center"
                    HorizontalAlignment="Right" Margin="5" />
             <TextBox Grid.Row="3" Grid.Column="1"
                      Text="{Binding RfcReceptor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                      VerticalAlignment="Center" Margin="5" />
+            <StackPanel Grid.Row="3" Grid.Column="2" Orientation="Horizontal">
+                <Button Content="COM" cal:Message.Attach="BuscarRfcReceptorComercialAsync"
+                        ToolTip="Buscar RFC del catalogo de CONTPAQi Comercial" VerticalAlignment="Center"
+                        Margin="5" />
+                <Button Content="CONT" cal:Message.Attach="BuscarRfcReceptorContabilidadAsync"
+                        ToolTip="Buscar RFC del catalogo de CONTPAQi Contabilidad" VerticalAlignment="Center"
+                        Margin="5" />
+            </StackPanel>
             <Label Grid.Row="4" Grid.Column="0" Content="RFC Solicitante:" FontWeight="Bold" VerticalAlignment="Center"
                    HorizontalAlignment="Right" Margin="5" />
             <TextBlock Grid.Row="4" Grid.Column="1"

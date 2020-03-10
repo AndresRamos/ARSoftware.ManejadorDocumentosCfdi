@@ -2,6 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Core.Application.ConfiguracionGeneral.Models;
+using Core.Application.Empresas.Models;
 using Infrastructure.Persistance;
 using MediatR;
 
@@ -20,17 +21,25 @@ namespace Core.Application.ConfiguracionGeneral.Queries.BuscarConfiguracionGener
         {
             var configuracionGeneral = await _context.ConfiguracionGeneral.FirstAsync(cancellationToken);
 
-            return new ConfiguracionGeneralDto
-            {
-                Id = configuracionGeneral.Id,
-                CertificadoSat = new CertificadoSatDto
+            return new ConfiguracionGeneralDto(
+                configuracionGeneral.Id,
+                new CertificadoSatDto
                 {
                     Certificado = configuracionGeneral.CertificadoSat.Certificado,
                     Contrasena = configuracionGeneral.CertificadoSat.Contrasena,
                     Rfc = configuracionGeneral.CertificadoSat.Rfc
                 },
-                RutaDirectorioDescargas = configuracionGeneral.RutaDirectorioDescargas
-            };
+                configuracionGeneral.RutaDirectorioDescargas,
+                new ConfiguracionContpaqiComercialDto(
+                    configuracionGeneral.ConfiguracionContpaqiComercial.ContpaqiSqlConnectionString,
+                    new EmpresaContpaqiDto(
+                        configuracionGeneral.ConfiguracionContpaqiComercial.Empresa.Nombre,
+                        configuracionGeneral.ConfiguracionContpaqiComercial.Empresa.BaseDatos)),
+                new ConfiguracionContpaqiContabilidadDto(
+                    configuracionGeneral.ConfiguracionContpaqiContabilidad.ContpaqiSqlConnectionString,
+                    new EmpresaContpaqiDto(
+                        configuracionGeneral.ConfiguracionContpaqiContabilidad.Empresa.Nombre,
+                        configuracionGeneral.ConfiguracionContpaqiContabilidad.Empresa.BaseDatos)));
         }
     }
 }

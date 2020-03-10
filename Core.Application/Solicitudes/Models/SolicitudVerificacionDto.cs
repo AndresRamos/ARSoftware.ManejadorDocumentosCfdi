@@ -6,7 +6,7 @@ namespace Core.Application.Solicitudes.Models
 {
     public class SolicitudVerificacionDto
     {
-        public SolicitudVerificacionDto(int id, DateTime fechaCreacionUtc, string codEstatus, string mensaje, string codigoEstadoSolicitud, string estadoSolicitud, string numeroCfdis, IEnumerable<PaqueteIdDto> paqueteIds, string error, string solicitud, string respuesta)
+        public SolicitudVerificacionDto(int id, DateTime fechaCreacionUtc, string codEstatus, string mensaje, string codigoEstadoSolicitud, string estadoSolicitud, string numeroCfdis, IEnumerable<PaqueteIdDto> paqueteIds, string error, string solicitud, string respuesta, CodigoEstatusSolicitudDto codigoEstatusSolicitudEnum, EstadoSolicitudDto estadoSolicitudEnum, CodigoEstadoSolicitudDto codigoEstadoSolicitdEnum)
         {
             Id = id;
             FechaCreacionUtc = fechaCreacionUtc;
@@ -20,6 +20,9 @@ namespace Core.Application.Solicitudes.Models
             Error = error;
             Solicitud = solicitud;
             Respuesta = respuesta;
+            CodigoEstatusSolicitudEnum = codigoEstatusSolicitudEnum;
+            EstadoSolicitudEnum = estadoSolicitudEnum;
+            CodigoEstadoSolicitdEnum = codigoEstadoSolicitdEnum;
         }
 
         public int Id { get; set; }
@@ -34,5 +37,8 @@ namespace Core.Application.Solicitudes.Models
         public string Error { get; set; }
         public string Solicitud { get; set; }
         public string Respuesta { get; set; }
+        public CodigoEstatusSolicitudDto CodigoEstatusSolicitudEnum { get; set; }
+        public EstadoSolicitudDto EstadoSolicitudEnum { get; set; }
+        public CodigoEstadoSolicitudDto CodigoEstadoSolicitdEnum { get; set; }
     }
 }

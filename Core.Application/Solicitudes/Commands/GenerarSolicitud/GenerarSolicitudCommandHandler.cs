@@ -2,13 +2,14 @@
 using System.Data.Entity;
 using System.Threading;
 using System.Threading.Tasks;
-using Common;
-using Core.Domain.Entities;
-using Infrastructure.Persistance;
 using ARSoftware.Cfdi.DescargaMasiva.Constants;
+using ARSoftware.Cfdi.DescargaMasiva.Enumerations;
 using ARSoftware.Cfdi.DescargaMasiva.Helpers;
 using ARSoftware.Cfdi.DescargaMasiva.Models;
 using ARSoftware.Cfdi.DescargaMasiva.Services;
+using Common;
+using Core.Domain.Entities;
+using Infrastructure.Persistance;
 using MediatR;
 using NLog;
 

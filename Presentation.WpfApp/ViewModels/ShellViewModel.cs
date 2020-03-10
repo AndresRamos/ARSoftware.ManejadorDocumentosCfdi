@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Caliburn.Micro;
 using MahApps.Metro.Controls.Dialogs;
 using MediatR;
+using Presentation.WpfApp.Models;
 using Presentation.WpfApp.ViewModels.Actualizaciones;
 using Presentation.WpfApp.ViewModels.ConfiguracionGeneral;
 using Presentation.WpfApp.ViewModels.Solicitudes;
@@ -16,14 +17,17 @@ namespace Presentation.WpfApp.ViewModels
         private readonly IMediator _mediator;
         private readonly IWindowManager _windowManager;
 
-        public ShellViewModel(IMediator mediator, IWindowManager windowManager, ListaSolicitudesViewModel listaSolicitudesViewModel, IDialogCoordinator dialogCoordinator)
+        public ShellViewModel(IMediator mediator, IWindowManager windowManager, ListaSolicitudesViewModel listaSolicitudesViewModel, IDialogCoordinator dialogCoordinator, ConfiguracionAplicacion configuracionAplicacion)
         {
             _mediator = mediator;
             _windowManager = windowManager;
             _dialogCoordinator = dialogCoordinator;
+            ConfiguracionAplicacion = configuracionAplicacion;
             DisplayName = "AR Software - Manejador Documentos CFDI";
             Items.Add(listaSolicitudesViewModel);
         }
+
+        public ConfiguracionAplicacion ConfiguracionAplicacion { get; }
 
         public void Salir()
         {
@@ -108,6 +112,8 @@ namespace Presentation.WpfApp.ViewModels
             {
                 _windowManager.ShowWindow(viewModel);
             }
+
+            await ConfiguracionAplicacion.CargarConfiguracionAsync();
         }
 
         private void RaiseGuards()

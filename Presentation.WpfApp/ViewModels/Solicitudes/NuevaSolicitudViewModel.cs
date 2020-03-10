@@ -3,11 +3,14 @@ using System.Linq;
 using System.Threading.Tasks;
 using Caliburn.Micro;
 using Core.Application.ConfiguracionGeneral.Queries.BuscarConfiguracionGeneral;
+using Core.Application.Rfcs.Queries.BuscarRfcsComercial;
+using Core.Application.Rfcs.Queries.BuscarRfcsContabilidad;
 using Core.Application.Solicitudes.Commands.CrearSolicitud;
 using Core.Application.TiposSolicitud.Models;
 using Core.Application.TiposSolicitud.Queries.BuscarTiposSolicitud;
 using MahApps.Metro.Controls.Dialogs;
 using MediatR;
+using Presentation.WpfApp.ViewModels.Rfcs;
 
 namespace Presentation.WpfApp.ViewModels.Solicitudes
 {
@@ -15,6 +18,8 @@ namespace Presentation.WpfApp.ViewModels.Solicitudes
     {
         private readonly IDialogCoordinator _dialogCoordinator;
         private readonly IMediator _mediator;
+
+        private readonly IWindowManager _windowManager;
         private DateTime _fechaFin = DateTime.Today;
         private DateTime _fechaInicio = DateTime.Today;
         private string _rfcEmisor;
@@ -22,10 +27,11 @@ namespace Presentation.WpfApp.ViewModels.Solicitudes
         private string _rfcSolicitante;
         private TipoSolicitudDto _tipoSolicitudSeleccionado;
 
-        public NuevaSolicitudViewModel(IMediator mediator, IDialogCoordinator dialogCoordinator)
+        public NuevaSolicitudViewModel(IMediator mediator, IDialogCoordinator dialogCoordinator, IWindowManager windowManager)
         {
             _mediator = mediator;
             _dialogCoordinator = dialogCoordinator;
+            _windowManager = windowManager;
             DisplayName = "Nueva Solicitud";
         }
 
@@ -142,6 +148,78 @@ namespace Presentation.WpfApp.ViewModels.Solicitudes
             {
                 await _mediator.Send(new CrearSolicitudCommand(FechaInicio, FechaFin, RfcEmisor, RfcReceptor, RfcSolicitante, TipoSolicitudSeleccionado.Name));
                 TryClose();
+            }
+            catch (Exception e)
+            {
+                await _dialogCoordinator.ShowMessageAsync(this, "Error", e.ToString());
+            }
+        }
+
+        public async Task BuscarRfcEmisorComercialAsync()
+        {
+            try
+            {
+                var viewModel = IoC.Get<SeleccionarRfcViewModel>();
+                viewModel.Inicializar(await _mediator.Send(new BuscarRfcsComercialQuery()));
+                _windowManager.ShowDialog(viewModel);
+                if (viewModel.SeleccionoRfc)
+                {
+                    RfcEmisor = viewModel.RfcSeleccionado.Rfc;
+                }
+            }
+            catch (Exception e)
+            {
+                await _dialogCoordinator.ShowMessageAsync(this, "Error", e.ToString());
+            }
+        }
+
+        public async Task BuscarRfcReceptorComercialAsync()
+        {
+            try
+            {
+                var viewModel = IoC.Get<SeleccionarRfcViewModel>();
+                viewModel.Inicializar(await _mediator.Send(new BuscarRfcsComercialQuery()));
+                _windowManager.ShowDialog(viewModel);
+                if (viewModel.SeleccionoRfc)
+                {
+                    RfcReceptor = viewModel.RfcSeleccionado.Rfc;
+                }
+            }
+            catch (Exception e)
+            {
+                await _dialogCoordinator.ShowMessageAsync(this, "Error", e.ToString());
+            }
+        }
+
+        public async Task BuscarRfcEmisorContabilidadAsync()
+        {
+            try
+            {
+                var viewModel = IoC.Get<SeleccionarRfcViewModel>();
+                viewModel.Inicializar(await _mediator.Send(new BuscarRfcsContabilidadQuery()));
+                _windowManager.ShowDialog(viewModel);
+                if (viewModel.SeleccionoRfc)
+                {
+                    RfcEmisor = viewModel.RfcSeleccionado.Rfc;
+                }
+            }
+            catch (Exception e)
+            {
+                await _dialogCoordinator.ShowMessageAsync(this, "Error", e.ToString());
+            }
+        }
+
+        public async Task BuscarRfcReceptorContabilidadAsync()
+        {
+            try
+            {
+                var viewModel = IoC.Get<SeleccionarRfcViewModel>();
+                viewModel.Inicializar(await _mediator.Send(new BuscarRfcsContabilidadQuery()));
+                _windowManager.ShowDialog(viewModel);
+                if (viewModel.SeleccionoRfc)
+                {
+                    RfcReceptor = viewModel.RfcSeleccionado.Rfc;
+                }
             }
             catch (Exception e)
             {

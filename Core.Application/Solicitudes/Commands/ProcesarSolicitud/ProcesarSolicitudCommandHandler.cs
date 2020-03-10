@@ -53,7 +53,7 @@ namespace Core.Application.Solicitudes.Commands.ProcesarSolicitud
             {
                 do
                 {
-                    await Task.Delay(10000, cancellationToken);
+                    await Task.Delay(30000, cancellationToken);
                     Logger.WithProperty(LogPropertyConstants.SolicitudId, solicitud.Id).Info("Verificando solicitud {0}", solicitud.Id);
                     await _mediator.Send(new VerificarSolicitudCommand(solicitud.Id), cancellationToken);
                     solicitud = await BuscarSolicitudAsync(solicitud.Id, cancellationToken);

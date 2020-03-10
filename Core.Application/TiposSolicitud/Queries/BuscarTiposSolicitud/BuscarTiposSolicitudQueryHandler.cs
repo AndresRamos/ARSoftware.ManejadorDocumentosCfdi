@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using ARSoftware.Cfdi.DescargaMasiva.Models;
+using ARSoftware.Cfdi.DescargaMasiva.Enumerations;
 using Core.Application.TiposSolicitud.Models;
 using MediatR;
 

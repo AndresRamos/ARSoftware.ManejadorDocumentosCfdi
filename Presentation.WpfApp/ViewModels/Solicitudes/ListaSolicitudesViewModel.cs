@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Data;
 using Caliburn.Micro;
@@ -149,23 +150,26 @@ namespace Presentation.WpfApp.ViewModels.Solicitudes
 
         public async Task ProcesarSolicitudAsync()
         {
+            var solicitudId = SolicitudSeleccionada.Id;
+
             var messageDialogResult = await _dialogCoordinator.ShowMessageAsync(this, "Procesar Solicitud", $"Esta seguro de querer procesar la solicitud {SolicitudSeleccionada.Id}?", MessageDialogStyle.AffirmativeAndNegative);
             if (messageDialogResult != MessageDialogResult.Affirmative)
             {
                 return;
             }
 
-            var progressDialogController = await _dialogCoordinator.ShowProgressAsync(this, "Procesando Solicitud", "Procesando solicitud.");
+            var progressDialogController = await _dialogCoordinator.ShowProgressAsync(this, "Procesando Solicitud", "Procesando solicitud. Este proceso puede tardar hasta 5 minutos.");
             progressDialogController.SetIndeterminate();
             await Task.Delay(1000);
 
             try
             {
-                await _mediator.Send(new ProcesarSolicitudCommand(SolicitudSeleccionada.Id));
-                await BuscarSolicitudesAsync();
+                await _mediator.Send(new ProcesarSolicitudCommand(solicitudId));
                 var viewModel = IoC.Get<DetalleSolicitudViewModel>();
-                await viewModel.InicializarAsync(SolicitudSeleccionada.Id);
+                await viewModel.InicializarAsync(solicitudId);
                 _windowManager.ShowWindow(viewModel);
+                await BuscarSolicitudesAsync();
+                SolicitudSeleccionada = Solicitudes.FirstOrDefault(s => s.Id == solicitudId);
             }
             catch (Exception e)
             {
@@ -174,9 +178,8 @@ namespace Presentation.WpfApp.ViewModels.Solicitudes
             finally
             {
                 RaiseGuards();
+                await progressDialogController.CloseAsync();
             }
-
-            await progressDialogController.CloseAsync();
         }
 
         public async Task VerDetallesSolicitudSeleccionadaAsync()

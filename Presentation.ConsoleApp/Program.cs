@@ -2,6 +2,7 @@
 using System.IO;
 using System.Web;
 using ARSoftware.Cfdi.DescargaMasiva.Constants;
+using ARSoftware.Cfdi.DescargaMasiva.Enumerations;
 using ARSoftware.Cfdi.DescargaMasiva.Helpers;
 using ARSoftware.Cfdi.DescargaMasiva.Models;
 using ARSoftware.Cfdi.DescargaMasiva.Services;
@@ -30,7 +31,7 @@ namespace Presentation.ConsoleApp
             var soapRequestEnvelopeXml = autenticacionService.GenerateSoapRequestEnvelopeXmlContent(autenticacionRequest, certificadoSat);
             var autenticacionResult = autenticacionService.SendSoapRequest(soapRequestEnvelopeXml);
             var authorizationHttpRequestHeader = $@"WRAP access_token=""{HttpUtility.UrlDecode(autenticacionResult.Token)}""";
-            
+
             // Solicitud
             var solicitudService = new SolicitudService(CfdiDescargaMasivaWebServiceUrls.SolicitudUrl, CfdiDescargaMasivaWebServiceUrls.SolicitudSoapActionUrl);
             var solicitudRequest = SolicitudRequest.CreateInstance(

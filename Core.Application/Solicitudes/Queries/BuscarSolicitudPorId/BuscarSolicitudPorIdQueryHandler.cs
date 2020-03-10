@@ -3,6 +3,7 @@ using System.Data.Entity.Core;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using ARSoftware.Cfdi.DescargaMasiva.Enumerations;
 using Core.Application.Paquetes.Models;
 using Core.Application.Solicitudes.Models;
 using Core.Domain.Entities;
@@ -35,7 +36,7 @@ namespace Core.Application.Solicitudes.Queries.BuscarSolicitudPorId
             {
                 throw new ObjectNotFoundException($"No se encontro la solicitud con Id = {request.SolicitudId}");
             }
-            
+
             return new SolicitudDto(
                 solicitud.Id,
                 solicitud.FechaCreacionUtc,
@@ -85,10 +86,19 @@ namespace Core.Application.Solicitudes.Queries.BuscarSolicitudPorId
                         solicitud.SolicitudVerificacion.CodigoEstadoSolicitud,
                         solicitud.SolicitudVerificacion.EstadoSolicitud,
                         solicitud.SolicitudVerificacion.NumeroCfdis,
-                        solicitud.SolicitudVerificacion.PaquetesIds.Select(p=>new PaqueteIdDto(p.Id, p.IdPaquete, p.IsDescargado)).ToList(),
+                        solicitud.SolicitudVerificacion.PaquetesIds.Select(p => new PaqueteIdDto(p.Id, p.IdPaquete, p.IsDescargado)).ToList(),
                         solicitud.SolicitudVerificacion.Error,
                         solicitud.SolicitudVerificacion.Solicitud,
-                        solicitud.SolicitudVerificacion.Respuesta)
+                        solicitud.SolicitudVerificacion.Respuesta,
+                        CodigoEstatusSolicitud.TryParse(solicitud.SolicitudVerificacion.CodEstatus, out var codigoEstatusSolicitudVer)
+                            ? new CodigoEstatusSolicitudDto(codigoEstatusSolicitudVer.Id, codigoEstatusSolicitudVer.Name, codigoEstatusSolicitudVer.Mensaje, codigoEstatusSolicitudVer.Observaciones)
+                            : null,
+                        EstadoSolicitud.TryParse(solicitud.SolicitudVerificacion.EstadoSolicitud, out var estadoSolicitudVer)
+                            ? new EstadoSolicitudDto(estadoSolicitudVer.Id, estadoSolicitudVer.Name)
+                            : null,
+                        CodigoEstadoSolicitud.TryParse(solicitud.SolicitudVerificacion.CodigoEstadoSolicitud, out var codigoEstadoSolicitudVer)
+                            ? new CodigoEstadoSolicitudDto(codigoEstadoSolicitudVer.Id, codigoEstadoSolicitudVer.Name, codigoEstadoSolicitudVer.Mensaje, codigoEstadoSolicitudVer.Observaciones)
+                            : null)
                     : null,
                 solicitud.SolicitudDescarga != null
                     ? new SolicitudDescargaDto(
@@ -100,7 +110,10 @@ namespace Core.Application.Solicitudes.Queries.BuscarSolicitudPorId
                         solicitud.SolicitudDescarga.Paquete,
                         solicitud.SolicitudDescarga.Error,
                         solicitud.SolicitudDescarga.Solicitud,
-                        solicitud.SolicitudDescarga.Respuesta)
+                        solicitud.SolicitudDescarga.Respuesta,
+                        CodigoEstatusSolicitud.TryParse(solicitud.SolicitudDescarga.CodEstatus, out var codigoEstatusSolicituddes)
+                            ? new CodigoEstatusSolicitudDto(codigoEstatusSolicituddes.Id, codigoEstatusSolicituddes.Name, codigoEstatusSolicituddes.Mensaje, codigoEstatusSolicituddes.Observaciones)
+                            : null)
                     : null,
                 solicitud.SolicitudesWeb.OfType<SolicitudAutenticacion>().OrderBy(s => s.FechaCreacionUtc).ToList()
                     .Select(s => new SolicitudAutenticacionDto(
@@ -142,10 +155,19 @@ namespace Core.Application.Solicitudes.Queries.BuscarSolicitudPorId
                         s.CodigoEstadoSolicitud,
                         s.EstadoSolicitud,
                         s.NumeroCfdis,
-                        s.PaquetesIds.Select(p=>new PaqueteIdDto(p.Id, p.IdPaquete, p.IsDescargado)).ToList(),
+                        s.PaquetesIds.Select(p => new PaqueteIdDto(p.Id, p.IdPaquete, p.IsDescargado)).ToList(),
                         s.Error,
                         s.Solicitud,
-                        s.Respuesta))
+                        s.Respuesta,
+                        CodigoEstatusSolicitud.TryParse(s.CodEstatus, out var codigoEstatusSolicitudVer2)
+                            ? new CodigoEstatusSolicitudDto(codigoEstatusSolicitudVer2.Id, codigoEstatusSolicitudVer2.Name, codigoEstatusSolicitudVer2.Mensaje, codigoEstatusSolicitudVer2.Observaciones)
+                            : null,
+                        EstadoSolicitud.TryParse(s.EstadoSolicitud, out var estadoSolicitudVer2)
+                            ? new EstadoSolicitudDto(estadoSolicitudVer2.Id, estadoSolicitudVer2.Name)
+                            : null,
+                        CodigoEstadoSolicitud.TryParse(s.CodigoEstadoSolicitud, out var codigoEstadoSolicitudVer2)
+                            ? new CodigoEstadoSolicitudDto(codigoEstadoSolicitudVer2.Id, codigoEstadoSolicitudVer2.Name, codigoEstadoSolicitudVer2.Mensaje, codigoEstadoSolicitudVer2.Observaciones)
+                            : null))
                     .ToList(),
                 solicitud.SolicitudesWeb.OfType<SolicitudDescarga>().OrderBy(s => s.FechaCreacionUtc).ToList()
                     .Select(s => new SolicitudDescargaDto(
@@ -157,7 +179,10 @@ namespace Core.Application.Solicitudes.Queries.BuscarSolicitudPorId
                         s.Paquete,
                         s.Error,
                         s.Solicitud,
-                        s.Respuesta))
+                        s.Respuesta,
+                        CodigoEstatusSolicitud.TryParse(s.CodEstatus, out var codigoEstatusSolicituddes2)
+                            ? new CodigoEstatusSolicitudDto(codigoEstatusSolicituddes2.Id, codigoEstatusSolicituddes2.Name, codigoEstatusSolicituddes2.Mensaje, codigoEstatusSolicituddes2.Observaciones)
+                            : null))
                     .ToList(),
                 solicitud.Paquetes.Select(p => new PaqueteDto(p.Id, p.IdSat, p.Contenido)).ToList()
             );

@@ -63,6 +63,7 @@
                            VerticalAlignment="Center"
                            HorizontalAlignment="Right" Margin="5" />
                     <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding Solicitud.CodEstatus}"
+                               ToolTip="{Binding Solicitud.CodigoEstatusSolicitudEnum}"
                                VerticalAlignment="Center" Margin="5" />
                     <Label Grid.Row="3" Grid.Column="0" Content="Mensaje:" FontWeight="Bold" VerticalAlignment="Center"
                            HorizontalAlignment="Right" Margin="5" />

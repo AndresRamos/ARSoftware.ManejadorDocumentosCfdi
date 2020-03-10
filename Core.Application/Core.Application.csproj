@@ -34,8 +34,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ARSoftware.Cfdi.DescargaMasiva, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\ARSoftware.Cfdi.DescargaMasiva.1.0.0\lib\netstandard2.0\ARSoftware.Cfdi.DescargaMasiva.dll</HintPath>
+    <Reference Include="ARSoftware.Cfdi.DescargaMasiva, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ARSoftware.Cfdi.DescargaMasiva.1.0.1\lib\netstandard2.0\ARSoftware.Cfdi.DescargaMasiva.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.4.0\lib\net45\EntityFramework.dll</HintPath>
@@ -90,10 +90,31 @@
   <ItemGroup>
     <Compile Include="Cfdis\ExtraerCfdi\ExtraerCfdiCommand.cs" />
     <Compile Include="Cfdis\ExtraerCfdi\ExtraerCfdiCommandHandler.cs" />
+    <Compile Include="ConfiguracionGeneral\Commands\ActualizarConfiguracionContpaqiComercial\ActualizarConfiguracionContpaqiComercialCommand.cs" />
+    <Compile Include="ConfiguracionGeneral\Commands\ActualizarConfiguracionContpaqiComercial\ActualizarConfiguracionContpaqiComercialCommandHandler.cs" />
+    <Compile Include="ConfiguracionGeneral\Commands\ActualizarConfiguracionContpaqiContabilidad\ActualizarConfiguracionContpaqiContabilidadCommand.cs" />
+    <Compile Include="ConfiguracionGeneral\Commands\ActualizarConfiguracionContpaqiContabilidad\ActualizarConfiguracionContpaqiContabilidadCommandHandler.cs" />
+    <Compile Include="ConfiguracionGeneral\Models\ConfiguracionContpaqiComercialDto.cs" />
+    <Compile Include="ConfiguracionGeneral\Models\ConfiguracionContpaqiContabilidadDto.cs" />
+    <Compile Include="Empresas\Interfaces\IEmpresaComercialRepository.cs" />
+    <Compile Include="Empresas\Interfaces\IEmpresaContabilidadRepository.cs" />
+    <Compile Include="Empresas\Models\EmpresaContpaqiDto.cs" />
+    <Compile Include="Empresas\Queries\BuscarEmpresasComercial\BuscarEmpresasComercialQuery.cs" />
+    <Compile Include="Empresas\Queries\BuscarEmpresasComercial\BuscarEmpresasComercialQueryHandler.cs" />
+    <Compile Include="Empresas\Queries\BuscarEmpresasContabilidad\BuscarEmpresasContabilidadQuery.cs" />
+    <Compile Include="Empresas\Queries\BuscarEmpresasContabilidad\BuscarEmpresasContabilidadQueryHandler.cs" />
     <Compile Include="Paquetes\Commands\ExportarArchivoZip\ExportarArchivoZipCommand.cs" />
     <Compile Include="Paquetes\Commands\ExportarArchivoZip\ExportarArchivoZipCommandHandler.cs" />
     <Compile Include="Paquetes\Models\PaqueteDto.cs" />
     <Compile Include="Paquetes\Models\PaqueteIdDto.cs" />
+    <Compile Include="Properties\Annotations.cs" />
+    <Compile Include="Rfcs\Interfaces\IRfcComercialRepository.cs" />
+    <Compile Include="Rfcs\Interfaces\IRfcContabilidadRepository.cs" />
+    <Compile Include="Rfcs\Models\RfcDto.cs" />
+    <Compile Include="Rfcs\Queries\BuscarRfcsComercial\BuscarRfcsComercialQuery.cs" />
+    <Compile Include="Rfcs\Queries\BuscarRfcsComercial\BuscarRfcsComercialQueryHandler.cs" />
+    <Compile Include="Rfcs\Queries\BuscarRfcsContabilidad\BuscarRfcsContabilidadQuery.cs" />
+    <Compile Include="Rfcs\Queries\BuscarRfcsContabilidad\BuscarRfcsContabilidadQueryHandler.cs" />
     <Compile Include="Solicitudes\Commands\CrearSolicitud\CrearSolicitudCommand.cs" />
     <Compile Include="Solicitudes\Commands\CrearSolicitud\CrearSolicitudCommandHandler.cs" />
     <Compile Include="Cfdis\Queries\ObtenerCertificado\ObtenerCertificadoQuery.cs" />
@@ -115,6 +136,9 @@
     <Compile Include="Solicitudes\Commands\ProcesarSolicitud\ProcesarSolicitudCommandHandler.cs" />
     <Compile Include="Solicitudes\Commands\VerificarSolicitud\VerificarSolicitudCommand.cs" />
     <Compile Include="Solicitudes\Commands\VerificarSolicitud\VerificarSolicitudCommandHandler.cs" />
+    <Compile Include="Solicitudes\Models\CodigoEstadoSolicitudDto.cs" />
+    <Compile Include="Solicitudes\Models\CodigoEstatusSolicitudDto.cs" />
+    <Compile Include="Solicitudes\Models\EstadoSolicitudDto.cs" />
     <Compile Include="Solicitudes\Models\SolicitudAutenticacionDto.cs" />
     <Compile Include="Solicitudes\Models\SolicitudDescargaDto.cs" />
     <Compile Include="Solicitudes\Models\SolicitudDto.cs" />
