@@ -49,6 +49,7 @@ namespace Core.Application.Solicitudes.Commands.ProcesarSolicitud
             }
 
             // Verificar Solicitud
+            int tries = 0;
             if (solicitud.SolicitudAutenticacion.IsTokenValido && solicitud.SolicitudSolicitud.IsValid && (solicitud.SolicitudVerificacion == null || !solicitud.SolicitudVerificacion.IsValid))
             {
                 do
@@ -57,7 +58,8 @@ namespace Core.Application.Solicitudes.Commands.ProcesarSolicitud
                     Logger.WithProperty(LogPropertyConstants.SolicitudId, solicitud.Id).Info("Verificando solicitud {0}", solicitud.Id);
                     await _mediator.Send(new VerificarSolicitudCommand(solicitud.Id), cancellationToken);
                     solicitud = await BuscarSolicitudAsync(solicitud.Id, cancellationToken);
-                } while (solicitud.SolicitudVerificacion.EstadoSolicitud == "1" || solicitud.SolicitudVerificacion.EstadoSolicitud == "2");
+                    tries++;
+                } while ((solicitud.SolicitudVerificacion.EstadoSolicitud == "1" || solicitud.SolicitudVerificacion.EstadoSolicitud == "2") && tries < 3);
             }
 
             // Descargar Solicitud

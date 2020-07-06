@@ -14,10 +14,14 @@ using MediatR;
 using Presentation.WpfApp.Models;
 using Presentation.WpfApp.ViewModels;
 using Presentation.WpfApp.ViewModels.Actualizaciones;
+using Presentation.WpfApp.ViewModels.Autenticacion;
 using Presentation.WpfApp.ViewModels.ConfiguracionGeneral;
 using Presentation.WpfApp.ViewModels.Empresas;
+using Presentation.WpfApp.ViewModels.Permisos;
 using Presentation.WpfApp.ViewModels.Rfcs;
+using Presentation.WpfApp.ViewModels.Roles;
 using Presentation.WpfApp.ViewModels.Solicitudes;
+using Presentation.WpfApp.ViewModels.Usuarios;
 using Presentation.WpfApp.ViewModels.Xmls;
 
 namespace Presentation.WpfApp.Config
@@ -87,14 +91,30 @@ namespace Presentation.WpfApp.Config
             containerBuilder.RegisterType<ShellViewModel>();
             containerBuilder.RegisterType<AcercaDeViewModel>();
 
+            // Actualizaciones
             containerBuilder.RegisterType<ActualizacionAplicacionViewModel>();
 
+            // Autenticacion
+            containerBuilder.RegisterType<AutenticarUsuarioViewModel>();
+
+            // ConfiguracionGeneral
             containerBuilder.RegisterType<ConfiguracionGeneralViewModel>();
 
+            // Empresas
             containerBuilder.RegisterType<SeleccionarEmpresaContpaqiViewModel>();
 
+            // Permisos
+            containerBuilder.RegisterType<SeleccionarPermisoAplicacionViewModel>();
+
+            // Rfcs
             containerBuilder.RegisterType<SeleccionarRfcViewModel>();
 
+            // Roles
+            containerBuilder.RegisterType<EditarRolViewModel>();
+            containerBuilder.RegisterType<ListaRolesViewModel>();
+            containerBuilder.RegisterType<SeleccionarRolViewModel>();
+
+            // Solicitudes
             containerBuilder.RegisterType<DetalleSolicitudViewModel>();
             containerBuilder.RegisterType<ListaSolicitudesViewModel>();
             containerBuilder.RegisterType<NuevaSolicitudViewModel>();
@@ -105,6 +125,12 @@ namespace Presentation.WpfApp.Config
             containerBuilder.RegisterType<SolicitudVerificacionViewModel>();
             containerBuilder.RegisterType<SolicitudViewModel>();
 
+            // Usuarios
+            containerBuilder.RegisterType<CrearUsuarioViewModel>();
+            containerBuilder.RegisterType<EditarUsuarioViewModel>();
+            containerBuilder.RegisterType<ListaUsuariosViewModel>();
+
+            // Xmls
             containerBuilder.RegisterType<XmlViewerViewModel>();
         }
 

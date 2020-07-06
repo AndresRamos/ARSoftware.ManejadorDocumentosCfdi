@@ -136,7 +136,7 @@ namespace Core.Application.Solicitudes.Commands.DescargarSolicitud
                 Logger.WithProperty(LogPropertyConstants.SolicitudId, solicitud.Id).Info("Creando archivo .zip");
                 await _mediator.Send(new ExportarArchivoZipCommand(paquete.Id, Path.Combine(configuracionGeneral.RutaDirectorioDescargas, $"{paquete.IdSat}.zip")), cancellationToken);
 
-             
+                //todo Descomprimir
             }
 
             return Unit.Value;

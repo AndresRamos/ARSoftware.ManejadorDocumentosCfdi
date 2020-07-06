@@ -1,0 +1,184 @@
+﻿<controls:MetroWindow x:Class="Presentation.WpfApp.Views.Usuarios.EditarUsuarioView"
+                      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                      xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+                      xmlns:dialog="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
+                      xmlns:cal="clr-namespace:Caliburn.Micro;assembly=Caliburn.Micro.Platform"
+                      xmlns:viewModels="clr-namespace:Presentation.WpfApp.ViewModels.Usuarios"
+                      xmlns:helpers="clr-namespace:Presentation.WpfApp.Helpers"
+                      mc:Ignorable="d"
+                      Width="700"
+                      Height="500"
+                      WindowStartupLocation="CenterOwner"
+                      d:DataContext="{d:DesignInstance Type=viewModels:EditarUsuarioViewModel, IsDesignTimeCreatable=False}"
+                      cal:Bind.AtDesignTime="True"
+                      dialog:DialogParticipation.Register="{Binding}">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Row="0"
+                   Text="{Binding DisplayName}"
+                   FontWeight="Bold"
+                   FontSize="20"
+                   VerticalAlignment="Center"
+                   Margin="5" />
+        <TabControl Grid.Row="2">
+            <TabItem Header="Perfil">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <Button Grid.Row="0"
+                            Grid.Column="0"
+                            Grid.ColumnSpan="2"
+                            Content="Actualizar"
+                            cal:Message.Attach="ActualizarPerfilAsync"
+                            ToolTip="Actualizar perfil"
+                            Width="150"
+                            Style="{StaticResource AccentedSquareButtonStyle}"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Left"
+                            Margin="5" />
+                    <Label Grid.Row="1"
+                           Grid.Column="0"
+                           Content="Id:"
+                           FontWeight="Bold"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Right"
+                           Margin="5" />
+                    <TextBlock Grid.Row="1"
+                               Grid.Column="1"
+                               Text="{Binding UsuarioId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                               VerticalAlignment="Center"
+                               Margin="5"
+                               controls:TextBoxHelper.ClearTextButton="True" />
+                    <Label Grid.Row="2"
+                           Grid.Column="0"
+                           Content="Primer Nombre:"
+                           FontWeight="Bold"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Right"
+                           Margin="5" />
+                    <TextBox Grid.Row="2"
+                             Grid.Column="1"
+                             Text="{Binding PrimerNombre, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             VerticalAlignment="Center"
+                             Margin="5"
+                             controls:TextBoxHelper.ClearTextButton="True" />
+                    <Label Grid.Row="3"
+                           Grid.Column="0"
+                           Content="Apellido:"
+                           FontWeight="Bold"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Right"
+                           Margin="5" />
+                    <TextBox Grid.Row="3"
+                             Grid.Column="1"
+                             Text="{Binding Apellido, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             VerticalAlignment="Center"
+                             Margin="5"
+                             controls:TextBoxHelper.ClearTextButton="True" />
+                    <Label Grid.Row="4"
+                           Grid.Column="0"
+                           Content="Email:"
+                           FontWeight="Bold"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Right"
+                           Margin="5" />
+                    <TextBox Grid.Row="4"
+                             Grid.Column="1"
+                             Text="{Binding Email, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             VerticalAlignment="Center"
+                             Margin="5"
+                             controls:TextBoxHelper.ClearTextButton="True" />
+                    <Label Grid.Row="5"
+                           Grid.Column="0"
+                           Content="Nombre Usuario:"
+                           FontWeight="Bold"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Right"
+                           Margin="5" />
+                    <TextBox Grid.Row="5"
+                             Grid.Column="1"
+                             Text="{Binding NombreUsuario, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             VerticalAlignment="Center"
+                             Margin="5"
+                             controls:TextBoxHelper.ClearTextButton="True" />
+                    <Label Grid.Row="6"
+                           Grid.Column="0"
+                           Content="Contrasena:"
+                           FontWeight="Bold"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Right"
+                           Margin="5" />
+                    <PasswordBox Grid.Row="6"
+                                 Grid.Column="1"
+                                 helpers:PasswordHelper.Attach="True"
+                                 helpers:PasswordHelper.Password="{Binding Contrasena, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 VerticalAlignment="Center"
+                                 Margin="5"
+                                 controls:TextBoxHelper.ClearTextButton="True" />
+                    <Button Grid.Row="6"
+                            Grid.Column="2"
+                            Content="Cambiar"
+                            cal:Message.Attach="CambiarContrasenaAsync"
+                            VerticalAlignment="Center"
+                            Width="100"
+                            Margin="5" />
+                </Grid>
+            </TabItem>
+            <TabItem Header="Roles">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <StackPanel Grid.Row="0"
+                                Orientation="Horizontal">
+                        <Button Content="Agregar"
+                                cal:Message.Attach="AgregarRolAsync"
+                                ToolTip="Agregar rol"
+                                VerticalAlignment="Center"
+                                Margin="5"
+                                Width="150" />
+                        <Button Content="Remover"
+                                cal:Message.Attach="RemoverRolAsync"
+                                ToolTip="Remover rol"
+                                VerticalAlignment="Center"
+                                Margin="5"
+                                Width="150" />
+                    </StackPanel>
+                    <DataGrid Grid.Row="1"
+                              ItemsSource="{Binding Roles}"
+                              SelectedItem="{Binding RolSeleccionado}"
+                              AutoGenerateColumns="False"
+                              IsReadOnly="True"
+                              Margin="5">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Nombre"
+                                                Binding="{Binding Nombre}" />
+                            <DataGridTextColumn Header="Descripcion"
+                                                Binding="{Binding Descripcion}" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</controls:MetroWindow>

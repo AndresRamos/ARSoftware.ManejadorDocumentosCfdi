@@ -60,10 +60,18 @@
     <Compile Include="Migrations\202003100522209_AddConfiguracioSistemasContpaqi.designer.cs">
       <DependentUpon>202003100522209_AddConfiguracioSistemasContpaqi.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202004092107104_AddUsuarios.cs" />
+    <Compile Include="Migrations\202004092107104_AddUsuarios.designer.cs">
+      <DependentUpon>202004092107104_AddUsuarios.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Common\Common.csproj">
+      <Project>{a4122ec4-b420-4238-b5e3-ecb62bae86c3}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Core.Domain\Core.Domain.csproj">
       <Project>{21a5d6dd-e68f-4cf7-b1f0-a66a47913ff5}</Project>
       <Name>Core.Domain</Name>
@@ -79,6 +87,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202003100522209_AddConfiguracioSistemasContpaqi.resx">
       <DependentUpon>202003100522209_AddConfiguracioSistemasContpaqi.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202004092107104_AddUsuarios.resx">
+      <DependentUpon>202004092107104_AddUsuarios.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

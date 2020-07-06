@@ -47,7 +47,7 @@
       <HintPath>..\packages\MediatR.8.0.1\lib\net461\MediatR.dll</HintPath>
     </Reference>
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <HintPath>..\packages\NLog.4.6.8\lib\net45\NLog.dll</HintPath>
+      <HintPath>..\packages\NLog.4.7.0\lib\net45\NLog.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -88,6 +88,8 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Autenticacion\Queries\ValidarCredencialesUsuario\ValidarCredencialesUsuarioQuery.cs" />
+    <Compile Include="Autenticacion\Queries\ValidarCredencialesUsuario\ValidarCredencialesUsuarioQueryHandler.cs" />
     <Compile Include="Cfdis\ExtraerCfdi\ExtraerCfdiCommand.cs" />
     <Compile Include="Cfdis\ExtraerCfdi\ExtraerCfdiCommandHandler.cs" />
     <Compile Include="ConfiguracionGeneral\Commands\ActualizarConfiguracionContpaqiComercial\ActualizarConfiguracionContpaqiComercialCommand.cs" />
@@ -107,6 +109,9 @@
     <Compile Include="Paquetes\Commands\ExportarArchivoZip\ExportarArchivoZipCommandHandler.cs" />
     <Compile Include="Paquetes\Models\PaqueteDto.cs" />
     <Compile Include="Paquetes\Models\PaqueteIdDto.cs" />
+    <Compile Include="Permisos\Models\PermisosAplicacion.cs" />
+    <Compile Include="Permisos\Queries\BuscarPermisosAplicacion\BuscarPermisosAplicacionQuery.cs" />
+    <Compile Include="Permisos\Queries\BuscarPermisosAplicacion\BuscarPermisosAplicacionQueryHandler.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Rfcs\Interfaces\IRfcComercialRepository.cs" />
     <Compile Include="Rfcs\Interfaces\IRfcContabilidadRepository.cs" />
@@ -115,6 +120,19 @@
     <Compile Include="Rfcs\Queries\BuscarRfcsComercial\BuscarRfcsComercialQueryHandler.cs" />
     <Compile Include="Rfcs\Queries\BuscarRfcsContabilidad\BuscarRfcsContabilidadQuery.cs" />
     <Compile Include="Rfcs\Queries\BuscarRfcsContabilidad\BuscarRfcsContabilidadQueryHandler.cs" />
+    <Compile Include="Roles\Commands\ActualizarRol\ActualizarRolCommand.cs" />
+    <Compile Include="Roles\Commands\ActualizarRol\ActualizarRolCommandHandler.cs" />
+    <Compile Include="Roles\Commands\CrearRol\CrearRolCommand.cs" />
+    <Compile Include="Roles\Commands\CrearRol\CrearRolCommandHandler.cs" />
+    <Compile Include="Permisos\Helpers\PermisosHelper.cs" />
+    <Compile Include="Permisos\Models\PermisoAplicacionDto.cs" />
+    <Compile Include="Roles\Commands\EliminarRol\EliminarRolCommand.cs" />
+    <Compile Include="Roles\Commands\EliminarRol\EliminarRolCommandHandler.cs" />
+    <Compile Include="Roles\Models\RolDto.cs" />
+    <Compile Include="Roles\Queries\BuscarRoles\BuscarRolesQuery.cs" />
+    <Compile Include="Roles\Queries\BuscarRoles\BuscarRolesQueryHandler.cs" />
+    <Compile Include="Roles\Queries\BuscarRolPorId\BuscarRolPorIdQuery.cs" />
+    <Compile Include="Roles\Queries\BuscarRolPorId\BuscarRolPorIdQueryHandler.cs" />
     <Compile Include="Solicitudes\Commands\CrearSolicitud\CrearSolicitudCommand.cs" />
     <Compile Include="Solicitudes\Commands\CrearSolicitud\CrearSolicitudCommandHandler.cs" />
     <Compile Include="Cfdis\Queries\ObtenerCertificado\ObtenerCertificadoQuery.cs" />
@@ -151,6 +169,23 @@
     <Compile Include="TiposSolicitud\Models\TipoSolicitudDto.cs" />
     <Compile Include="TiposSolicitud\Queries\BuscarTiposSolicitud\BuscarTiposSolicitudQuery.cs" />
     <Compile Include="TiposSolicitud\Queries\BuscarTiposSolicitud\BuscarTiposSolicitudQueryHandler.cs" />
+    <Compile Include="Usuarios\Commands\ActualizarPerfilUsuario\ActualizarPerfilUsuarioCommand.cs" />
+    <Compile Include="Usuarios\Commands\ActualizarPerfilUsuario\ActualizarPerfilUsuarioCommandHandler.cs" />
+    <Compile Include="Usuarios\Commands\AgregarRol\AgregarRolCommand.cs" />
+    <Compile Include="Usuarios\Commands\AgregarRol\AgregarRolCommandHandler.cs" />
+    <Compile Include="Usuarios\Commands\CambiarContrasena\CambiarContrasenaCommand.cs" />
+    <Compile Include="Usuarios\Commands\CambiarContrasena\CambiarContrasenaCommandHandler.cs" />
+    <Compile Include="Usuarios\Commands\CrearUsuarioAdministrador\CrearUsuarioAdministradorCommand.cs" />
+    <Compile Include="Usuarios\Commands\CrearUsuarioAdministrador\CrearUsuarioAdministradorCommandHandler.cs" />
+    <Compile Include="Usuarios\Commands\CrearUsuario\CrearUsuarioCommand.cs" />
+    <Compile Include="Usuarios\Commands\CrearUsuario\CrearUsuarioCommandHandler.cs" />
+    <Compile Include="Usuarios\Commands\RemoverRol\RemoverRolCommand.cs" />
+    <Compile Include="Usuarios\Commands\RemoverRol\RemoverRolCommandHandler.cs" />
+    <Compile Include="Usuarios\Models\UsuarioDto.cs" />
+    <Compile Include="Usuarios\Queries\BuscarUsuarioPorId\BuscarUsuarioPorIdQuery.cs" />
+    <Compile Include="Usuarios\Queries\BuscarUsuarioPorId\BuscarUsuarioPorIdQueryHandler.cs" />
+    <Compile Include="Usuarios\Queries\BuscarUsuarios\BuscarUsuariosQuery.cs" />
+    <Compile Include="Usuarios\Queries\BuscarUsuarios\BuscarUsuariosQueryHandler.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

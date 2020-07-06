@@ -78,10 +78,10 @@
       <HintPath>..\packages\MahApps.Metro.1.6.5\lib\net47\MahApps.Metro.dll</HintPath>
     </Reference>
     <Reference Include="MahApps.Metro.IconPacks.Core, Version=3.0.0.0, Culture=neutral, PublicKeyToken=0c0d510f9915137a, processorArchitecture=MSIL">
-      <HintPath>..\packages\MahApps.Metro.IconPacks.FontAwesome.3.3.0\lib\net47\MahApps.Metro.IconPacks.Core.dll</HintPath>
+      <HintPath>..\packages\MahApps.Metro.IconPacks.FontAwesome.3.7.0\lib\net47\MahApps.Metro.IconPacks.Core.dll</HintPath>
     </Reference>
     <Reference Include="MahApps.Metro.IconPacks.FontAwesome, Version=3.0.0.0, Culture=neutral, PublicKeyToken=0c0d510f9915137a, processorArchitecture=MSIL">
-      <HintPath>..\packages\MahApps.Metro.IconPacks.FontAwesome.3.3.0\lib\net47\MahApps.Metro.IconPacks.FontAwesome.dll</HintPath>
+      <HintPath>..\packages\MahApps.Metro.IconPacks.FontAwesome.3.7.0\lib\net47\MahApps.Metro.IconPacks.FontAwesome.dll</HintPath>
     </Reference>
     <Reference Include="MediatR, Version=8.0.1.0, Culture=neutral, PublicKeyToken=bb9a41a5e8aaa7e2, processorArchitecture=MSIL">
       <HintPath>..\packages\MediatR.8.0.1\lib\net461\MediatR.dll</HintPath>
@@ -108,7 +108,7 @@
       <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <HintPath>..\packages\NLog.4.6.8\lib\net45\NLog.dll</HintPath>
+      <HintPath>..\packages\NLog.4.7.0\lib\net45\NLog.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
@@ -120,12 +120,12 @@
     <Reference Include="System.Net.Http.WebRequest" />
     <Reference Include="System.Runtime" />
     <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.7.0\lib\netstandard2.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.7.1\lib\net461\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
     </Reference>
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Threading.Tasks.Extensions.4.5.3\lib\netstandard2.0\System.Threading.Tasks.Extensions.dll</HintPath>
+      <HintPath>..\packages\System.Threading.Tasks.Extensions.4.5.4\lib\net461\System.Threading.Tasks.Extensions.dll</HintPath>
     </Reference>
     <Reference Include="System.Transactions" />
     <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
@@ -156,13 +156,19 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Helpers\PasswordHelper.cs" />
     <Compile Include="Models\ActualizacionAplicacion.cs" />
     <Compile Include="Models\ConfiguracionAplicacion.cs" />
     <Compile Include="ViewModels\AcercaDeViewModel.cs" />
     <Compile Include="ViewModels\Actualizaciones\ActualizacionAplicacionViewModel.cs" />
+    <Compile Include="ViewModels\Autenticacion\AutenticarUsuarioViewModel.cs" />
     <Compile Include="ViewModels\ConfiguracionGeneral\ConfiguracionGeneralViewModel.cs" />
     <Compile Include="ViewModels\Empresas\SeleccionarEmpresaContpaqiViewModel.cs" />
+    <Compile Include="ViewModels\Permisos\SeleccionarPermisoAplicacionViewModel.cs" />
     <Compile Include="ViewModels\Rfcs\SeleccionarRfcViewModel.cs" />
+    <Compile Include="ViewModels\Roles\EditarRolViewModel.cs" />
+    <Compile Include="ViewModels\Roles\ListaRolesViewModel.cs" />
+    <Compile Include="ViewModels\Roles\SeleccionarRolViewModel.cs" />
     <Compile Include="ViewModels\ShellViewModel.cs" />
     <Compile Include="ViewModels\Solicitudes\DetalleSolicitudViewModel.cs" />
     <Compile Include="ViewModels\Solicitudes\ListaSolicitudesViewModel.cs" />
@@ -173,6 +179,9 @@
     <Compile Include="ViewModels\Solicitudes\SolicitudSolicitudViewModel.cs" />
     <Compile Include="ViewModels\Solicitudes\SolicitudVerificacionViewModel.cs" />
     <Compile Include="ViewModels\Solicitudes\SolicitudViewModel.cs" />
+    <Compile Include="ViewModels\Usuarios\CrearUsuarioViewModel.cs" />
+    <Compile Include="ViewModels\Usuarios\EditarUsuarioViewModel.cs" />
+    <Compile Include="ViewModels\Usuarios\ListaUsuariosViewModel.cs" />
     <Compile Include="ViewModels\Xmls\XmlViewerViewModel.cs" />
     <Compile Include="Views\AcercaDeView.xaml.cs">
       <DependentUpon>AcercaDeView.xaml</DependentUpon>
@@ -180,14 +189,29 @@
     <Compile Include="Views\Actualizaciones\ActualizacionAplicacionView.xaml.cs">
       <DependentUpon>ActualizacionAplicacionView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Autenticacion\AutenticarUsuarioView.xaml.cs">
+      <DependentUpon>AutenticarUsuarioView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\ConfiguracionGeneral\ConfiguracionGeneralView.xaml.cs">
       <DependentUpon>ConfiguracionGeneralView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Empresas\SeleccionarEmpresaContpaqiView.xaml.cs">
       <DependentUpon>SeleccionarEmpresaContpaqiView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Permisos\SeleccionarPermisoAplicacionView.xaml.cs">
+      <DependentUpon>SeleccionarPermisoAplicacionView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Rfcs\SeleccionarRfcView.xaml.cs">
       <DependentUpon>SeleccionarRfcView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Roles\EditarRolView.xaml.cs">
+      <DependentUpon>EditarRolView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Roles\ListaRolesView.xaml.cs">
+      <DependentUpon>ListaRolesView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Roles\SeleccionarRolView.xaml.cs">
+      <DependentUpon>SeleccionarRolView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ShellView.xaml.cs">
       <DependentUpon>ShellView.xaml</DependentUpon>
@@ -218,6 +242,15 @@
     </Compile>
     <Compile Include="Views\Solicitudes\SolicitudView.xaml.cs">
       <DependentUpon>SolicitudView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Usuarios\CrearUsuarioView.xaml.cs">
+      <DependentUpon>CrearUsuarioView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Usuarios\EditarUsuarioView.xaml.cs">
+      <DependentUpon>EditarUsuarioView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Usuarios\ListaUsuariosView.xaml.cs">
+      <DependentUpon>ListaUsuariosView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Xmls\XmlViewerView.xaml.cs">
       <DependentUpon>XmlViewerView.xaml</DependentUpon>
@@ -273,6 +306,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\Autenticacion\AutenticarUsuarioView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\ConfiguracionGeneral\ConfiguracionGeneralView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -281,7 +318,23 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\Permisos\SeleccionarPermisoAplicacionView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Rfcs\SeleccionarRfcView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Roles\EditarRolView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Roles\ListaRolesView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Roles\SeleccionarRolView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -322,6 +375,18 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Solicitudes\SolicitudView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Usuarios\CrearUsuarioView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Usuarios\EditarUsuarioView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Usuarios\ListaUsuariosView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

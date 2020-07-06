@@ -4,16 +4,19 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Data;
 using Caliburn.Micro;
+using Core.Application.Permisos.Models;
 using Core.Application.Solicitudes.Commands.ProcesarSolicitud;
 using Core.Application.Solicitudes.Models;
 using Core.Application.Solicitudes.Queries.BuscarSolicitudesPorRangoFecha;
 using MahApps.Metro.Controls.Dialogs;
 using MediatR;
+using Presentation.WpfApp.Models;
 
 namespace Presentation.WpfApp.ViewModels.Solicitudes
 {
     public sealed class ListaSolicitudesViewModel : Screen
     {
+        private readonly ConfiguracionAplicacion _configuracionAplicacion;
         private readonly IDialogCoordinator _dialogCoordinator;
         private readonly IMediator _mediator;
         private readonly IWindowManager _windowManager;
@@ -22,11 +25,12 @@ namespace Presentation.WpfApp.ViewModels.Solicitudes
         private string _filtro;
         private SolicitudDto _solicitudSeleccionada;
 
-        public ListaSolicitudesViewModel(IMediator mediator, IWindowManager windowManager, IDialogCoordinator dialogCoordinator)
+        public ListaSolicitudesViewModel(IMediator mediator, IWindowManager windowManager, IDialogCoordinator dialogCoordinator, ConfiguracionAplicacion configuracionAplicacion)
         {
             _mediator = mediator;
             _windowManager = windowManager;
             _dialogCoordinator = dialogCoordinator;
+            _configuracionAplicacion = configuracionAplicacion;
             DisplayName = "Lista De Solicitudes";
             SolicitudesView = CollectionViewSource.GetDefaultView(Solicitudes);
             SolicitudesView.Filter = SolicitudesView_Filter;
@@ -102,9 +106,11 @@ namespace Presentation.WpfApp.ViewModels.Solicitudes
 
         public bool CanBuscarSolicitudesAsync => FechaInicio <= FechaFin;
 
-        public bool CanProcesarSolicitudAsync => SolicitudSeleccionada != null;
+        public bool CanProcesarSolicitudAsync => SolicitudSeleccionada != null && _configuracionAplicacion.IsUsuarioAutenticado && _configuracionAplicacion.Usuario.TienePermiso(PermisosAplicacion.PuedeProcesarSolicitud);
 
-        public bool CanVerDetallesSolicitudSeleccionadaAsync => SolicitudSeleccionada != null;
+        public bool CanVerDetallesSolicitudSeleccionadaAsync => SolicitudSeleccionada != null && _configuracionAplicacion.IsUsuarioAutenticado && _configuracionAplicacion.Usuario.TienePermiso(PermisosAplicacion.PuedeProcesarSolicitud);
+
+        public bool CanCrearNuevaSolicitudAsync => _configuracionAplicacion.IsUsuarioAutenticado && _configuracionAplicacion.Usuario.TienePermiso(PermisosAplicacion.PuedeCrearSolicitud);
 
         public async Task BuscarSolicitudesAsync()
         {
@@ -203,6 +209,7 @@ namespace Presentation.WpfApp.ViewModels.Solicitudes
         private void RaiseGuards()
         {
             NotifyOfPropertyChange(() => CanBuscarSolicitudesAsync);
+            NotifyOfPropertyChange(() => CanCrearNuevaSolicitudAsync);
             NotifyOfPropertyChange(() => CanProcesarSolicitudAsync);
             NotifyOfPropertyChange(() => CanVerDetallesSolicitudSeleccionadaAsync);
         }

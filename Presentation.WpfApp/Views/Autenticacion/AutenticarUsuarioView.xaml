@@ -1,0 +1,63 @@
+﻿<controls:MetroWindow x:Class="Presentation.WpfApp.Views.Autenticacion.AutenticarUsuarioView"
+                      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                      xmlns:local="clr-namespace:Presentation.WpfApp.Views.Autenticacion"
+                      xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+                      xmlns:dialog="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
+                      xmlns:cal="clr-namespace:Caliburn.Micro;assembly=Caliburn.Micro.Platform"
+                      xmlns:viewModels="clr-namespace:Presentation.WpfApp.ViewModels.Autenticacion"
+                      xmlns:helpers="clr-namespace:Presentation.WpfApp.Helpers"
+                      FocusManager.FocusedElement="{Binding ElementName=NombreUsuarioTextBox}"
+                      mc:Ignorable="d"
+                      WindowStartupLocation="CenterOwner"
+                      SizeToContent="WidthAndHeight"
+                      d:DataContext="{d:DesignInstance Type=viewModels:AutenticarUsuarioViewModel, IsDesignTimeCreatable=False}"
+                      cal:Bind.AtDesignTime="True"
+                      dialog:DialogParticipation.Register="{Binding}">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Row="0"
+                   Text="{Binding DisplayName}"
+                   FontWeight="Bold"
+                   FontSize="20"
+                   VerticalAlignment="Center"
+                   Margin="5" />
+        <TextBox Grid.Row="1"
+                 x:Name="NombreUsuarioTextBox"
+                 Text="{Binding NombreUsuario, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                 VerticalAlignment="Center"
+                 Margin="5"
+                 controls:TextBoxHelper.Watermark="Nombre De Usuario"
+                 controls:TextBoxHelper.ClearTextButton="True" />
+        <PasswordBox Grid.Row="2"
+                     helpers:PasswordHelper.Attach="True"
+                     helpers:PasswordHelper.Password="{Binding Contrasena, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                     VerticalAlignment="Center"
+                     Margin="5"
+                     controls:TextBoxHelper.Watermark="Contrasena"
+                     controls:TextBoxHelper.ClearTextButton="True" />
+        <UniformGrid Grid.Row="3"
+                     Rows="1">
+            <Button Content="Autenticar"
+                    cal:Message.Attach="AutenticarAsync"
+                    VerticalAlignment="Center"
+                    Margin="5"
+                    Width="150"
+                    IsDefault="True"
+                    Style="{StaticResource AccentedSquareButtonStyle}" />
+            <Button Content="Cancelar"
+                    cal:Message.Attach="Cancelar"
+                    VerticalAlignment="Center"
+                    Margin="5"
+                    Width="150"
+                    Style="{StaticResource SquareButtonStyle}" />
+        </UniformGrid>
+    </Grid>
+</controls:MetroWindow>

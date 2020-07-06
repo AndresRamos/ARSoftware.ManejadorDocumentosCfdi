@@ -21,6 +21,10 @@ namespace Infrastructure.Persistance
 
         public DbSet<Paquete> Paquetes { get; set; }
 
+        public DbSet<Usuario> Usuarios { get; set; }
+
+        public DbSet<Rol> Roles { get; set; }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();

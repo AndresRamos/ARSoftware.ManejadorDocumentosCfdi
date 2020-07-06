@@ -9,30 +9,60 @@
                       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                       xmlns:local="clr-namespace:Presentation.WpfApp.Views"
                       mc:Ignorable="d"
-                      WindowStartupLocation="CenterScreen"
                       WindowState="Maximized"
+                      WindowStartupLocation="CenterScreen"
                       d:DataContext="{d:DesignInstance Type=viewModels:ShellViewModel, IsDesignTimeCreatable=False}"
-                      cal:Bind.AtDesignTime="True" dialog:DialogParticipation.Register="{Binding}">
+                      cal:Bind.AtDesignTime="True"
+                      dialog:DialogParticipation.Register="{Binding}">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <Menu Grid.Row="0" IsMainMenu="True">
+        <Menu Grid.Row="0"
+              IsMainMenu="True">
             <MenuItem Header="Archivo">
-                <MenuItem Header="Salir" cal:Message.Attach="Salir" />
+                <MenuItem Header="Iniciar Sesion"
+                          cal:Message.Attach="IniciarSesionAsync" />
+                <MenuItem Header="Cerrar Sesion"
+                          cal:Message.Attach="CerrarSesionAsync" />
+                <Separator />
+                <MenuItem Header="Salir"
+                          cal:Message.Attach="Salir" />
+            </MenuItem>
+            <MenuItem Header="Movimientos">
+                <MenuItem Header="Lista Soliitudes"
+                          cal:Message.Attach="VerListaSolicitudesViewAsync" />
             </MenuItem>
             <MenuItem Header="Configuracion">
-                <MenuItem Header="Configuracion General" cal:Message.Attach="MostrarConfiguracionGeneralAsync" />
+                <MenuItem Header="Configuracion General"
+                          cal:Message.Attach="VerConfiguracionGeneralViewAsync" />
+                <MenuItem Header="Roles"
+                          cal:Message.Attach="VerListaRolesViewAsync" />
+                <MenuItem Header="Usuarios"
+                          cal:Message.Attach="VerListaUsuariosViewAsync" />
             </MenuItem>
             <MenuItem Header="Ayuda">
-                <MenuItem Header="Documentacion" cal:Message.Attach="VerDocumentacionAsync" />
-                <MenuItem Header="Soporte Remoto" cal:Message.Attach="IniciarSoporteRemotoAsync" />
-                <MenuItem Header="Buscar Actualizaciones" cal:Message.Attach="BuscarActualizacionesAsync" />
-                <MenuItem Header="Acerca De" cal:Message.Attach="VerAcercaDeViewAsync" />
+                <MenuItem Header="Documentacion"
+                          cal:Message.Attach="VerDocumentacionAsync" />
+                <MenuItem Header="Soporte Remoto"
+                          cal:Message.Attach="IniciarSoporteRemotoAsync" />
+                <MenuItem Header="Buscar Actualizaciones"
+                          cal:Message.Attach="BuscarActualizacionesAsync" />
+                <MenuItem Header="Acerca De"
+                          cal:Message.Attach="VerAcercaDeViewAsync" />
             </MenuItem>
         </Menu>
-        <TabControl Grid.Row="1" x:Name="Items" />
+        <TabControl Grid.Row="1"
+                    x:Name="Items" />
+        <StatusBar Grid.Row="2">
+            <StatusBarItem>
+                <TextBlock Text="Usuario:" />
+            </StatusBarItem>
+            <StatusBarItem>
+                <TextBlock Text="{Binding ConfiguracionAplicacion.Usuario.NombreComleto}" />
+            </StatusBarItem>
+        </StatusBar>
     </Grid>
 </controls:MetroWindow>
