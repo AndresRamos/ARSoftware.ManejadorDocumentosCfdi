@@ -134,9 +134,9 @@ namespace Presentation.WpfApp.ViewModels.Roles
             }
         }
 
-        public void Cancelar()
+        public async Task Cancelar()
         {
-            TryClose();
+            await TryCloseAsync();
         }
 
         public async Task AgregarPermisoAsync()
@@ -147,7 +147,7 @@ namespace Presentation.WpfApp.ViewModels.Roles
                 var permisosUnicos = permisosAplicacion.Where(pa => Permisos.All(p => p.Nombre != pa.Nombre)).ToList();
                 var viewModel = IoC.Get<SeleccionarPermisoAplicacionViewModel>();
                 viewModel.Inicializar(permisosUnicos);
-                _windowManager.ShowDialog(viewModel);
+                await _windowManager.ShowDialogAsync(viewModel);
                 if (viewModel.SeleccionoPermiso)
                 {
                     Permisos.Add(viewModel.PermisoAplicacionSeleccionado);

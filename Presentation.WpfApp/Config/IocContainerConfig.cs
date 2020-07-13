@@ -2,8 +2,11 @@
 using Autofac;
 using Caliburn.Micro;
 using Core.Application.Cfdis.Queries.ObtenerCertificado;
+using Core.Application.Comprobantes.Interfaces;
 using Core.Application.Empresas.Interfaces;
 using Core.Application.Rfcs.Interfaces;
+using Infrastructure.ContpaqiAdd.Factories;
+using Infrastructure.ContpaqiAdd.Repositories;
 using Infrastructure.ContpaqiComercial.Factories;
 using Infrastructure.ContpaqiComercial.Repositories;
 using Infrastructure.ContpaqiContabilidad.Factories;
@@ -15,6 +18,7 @@ using Presentation.WpfApp.Models;
 using Presentation.WpfApp.ViewModels;
 using Presentation.WpfApp.ViewModels.Actualizaciones;
 using Presentation.WpfApp.ViewModels.Autenticacion;
+using Presentation.WpfApp.ViewModels.Cfdis;
 using Presentation.WpfApp.ViewModels.ConfiguracionGeneral;
 using Presentation.WpfApp.ViewModels.Empresas;
 using Presentation.WpfApp.ViewModels.Permisos;
@@ -40,6 +44,7 @@ namespace Presentation.WpfApp.Config
             RegisterPersistanceModule(containerBuilder);
             RegisterContpaqiComercialModule(containerBuilder);
             RegisterContpaqiContabilidadModule(containerBuilder);
+            RegisterContpaqiAddModule(containerBuilder);
 
             return containerBuilder.Build();
         }
@@ -96,6 +101,9 @@ namespace Presentation.WpfApp.Config
 
             // Autenticacion
             containerBuilder.RegisterType<AutenticarUsuarioViewModel>();
+
+            // CFDIs
+            containerBuilder.RegisterType<ListaCfdisViewModel>();
 
             // ConfiguracionGeneral
             containerBuilder.RegisterType<ConfiguracionGeneralViewModel>();
@@ -179,6 +187,34 @@ namespace Presentation.WpfApp.Config
 
             containerBuilder.RegisterType<EmpresaContabilidadRepository>().As<IEmpresaContabilidadRepository>();
             containerBuilder.RegisterType<RfcContabilidadRepository>().As<IRfcContabilidadRepository>();
+        }
+
+        private static void RegisterContpaqiAddModule(ContainerBuilder containerBuilder)
+        {
+            containerBuilder.Register(c =>
+            {
+                var configuracionAplicacion = c.Resolve<ConfiguracionAplicacion>();
+
+                if (string.IsNullOrWhiteSpace(configuracionAplicacion.ConfiguracionGeneral.ConfiguracionContpaqiContabilidad.Empresa?.GuidAdd))
+                {
+                    return null;
+                }
+
+                var addDocumentMetadataDbContext = AddDocumentMetadataDbContextFactory.Crear(configuracionAplicacion.ConfiguracionGeneral.ConfiguracionContpaqiContabilidad.ContpaqiSqlConnectionString, configuracionAplicacion.ConfiguracionGeneral.ConfiguracionContpaqiContabilidad.Empresa.GuidAdd);
+                return new ComprobanteAddRepository(addDocumentMetadataDbContext);
+            }).As<IComprobanteAddContabilidadRepository>();
+
+            containerBuilder.Register(context =>
+            {
+                var configuracionAplicacion = context.Resolve<ConfiguracionAplicacion>();
+                if (string.IsNullOrWhiteSpace(configuracionAplicacion.ConfiguracionGeneral.ConfiguracionContpaqiComercial.Empresa?.GuidAdd))
+                {
+                    return null;
+                }
+
+                var addDocumentMetadataDbContext = AddDocumentMetadataDbContextFactory.Crear(configuracionAplicacion.ConfiguracionGeneral.ConfiguracionContpaqiContabilidad.ContpaqiSqlConnectionString, configuracionAplicacion.ConfiguracionGeneral.ConfiguracionContpaqiComercial.Empresa.GuidAdd);
+                return new ComprobanteAddRepository(addDocumentMetadataDbContext);
+            }).As<IComprobanteAddComercialRepository>();
         }
     }
 }

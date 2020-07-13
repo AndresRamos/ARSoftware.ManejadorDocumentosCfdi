@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Threading.Tasks;
 using System.Windows.Data;
 using Caliburn.Micro;
 using Core.Application.Roles.Models;
@@ -65,17 +66,17 @@ namespace Presentation.WpfApp.ViewModels.Roles
             Roles.AddRange(roles);
         }
 
-        public void Seleccionar()
+        public async Task Seleccionar()
         {
             SeleccionoRol = true;
-            TryClose();
+            await TryCloseAsync();
         }
 
-        public void Cancelar()
+        public async Task Cancelar()
         {
             SeleccionoRol = false;
             RolSeleccionado = null;
-            TryClose();
+            await TryCloseAsync();
         }
 
         private void RaiseGuards()

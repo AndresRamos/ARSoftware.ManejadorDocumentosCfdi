@@ -6,17 +6,27 @@
                       xmlns:cal="clr-namespace:Caliburn.Micro;assembly=Caliburn.Micro.Platform"
                       xmlns:dialog="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
                       xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
-                      xmlns:viewModels="clr-namespace:Presentation.WpfApp.ViewModels.Solicitudes" mc:Ignorable="d"
-                      d:DesignWidth="1000" d:DesignHeight="900" WindowStartupLocation="CenterOwner"
+                      xmlns:viewModels="clr-namespace:Presentation.WpfApp.ViewModels.Solicitudes"
+                      mc:Ignorable="d"
+                      d:DesignWidth="1000"
+                      d:DesignHeight="900"
+                      WindowStartupLocation="CenterOwner"
                       d:DataContext="{d:DesignInstance Type=viewModels:DetalleSolicitudViewModel, IsDesignTimeCreatable=False}"
-                      cal:Bind.AtDesignTime="True" dialog:DialogParticipation.Register="{Binding}">
+                      cal:Bind.AtDesignTime="True"
+                      dialog:DialogParticipation.Register="{Binding}">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <TextBlock Grid.Row="0" Text="{Binding DisplayName}" FontWeight="Bold" FontSize="20" VerticalAlignment="Center"
+        <TextBlock Grid.Row="0"
+                   Text="{Binding DisplayName}"
+                   FontWeight="Bold"
+                   FontSize="20"
+                   VerticalAlignment="Center"
                    Margin="5" />
-        <TabControl x:Name="Items" Grid.Row="1" TabStripPlacement="Left" />
+        <TabControl x:Name="Items"
+                    Grid.Row="1"
+                    TabStripPlacement="Left" />
     </Grid>
 </controls:MetroWindow>

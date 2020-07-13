@@ -77,7 +77,7 @@ namespace Presentation.WpfApp.ViewModels.ConfiguracionGeneral
                 await _mediator.Send(new ActualizarConfiguracionContpaqiContabilidadCommand(ConfiguracionGeneral.ConfiguracionContpaqiContabilidad));
 
                 await _configuracionAplicacion.CargarConfiguracionAsync();
-                TryClose();
+                await TryCloseAsync();
             }
             catch (Exception e)
             {
@@ -92,7 +92,7 @@ namespace Presentation.WpfApp.ViewModels.ConfiguracionGeneral
                 _configuracionAplicacion.ConfiguracionGeneral.ConfiguracionContpaqiComercial.ContpaqiSqlConnectionString = ConfiguracionGeneral.ConfiguracionContpaqiComercial.ContpaqiSqlConnectionString;
                 var viewModel = IoC.Get<SeleccionarEmpresaContpaqiViewModel>();
                 viewModel.Inicializar(await _mediator.Send(new BuscarEmpresasComercialQuery()));
-                _windowManager.ShowDialog(viewModel);
+                await _windowManager.ShowDialogAsync(viewModel);
                 if (viewModel.SeleccionoEmpresa)
                 {
                     ConfiguracionGeneral.ConfiguracionContpaqiComercial.Empresa = viewModel.EmpresaSeleccionada;
@@ -111,7 +111,7 @@ namespace Presentation.WpfApp.ViewModels.ConfiguracionGeneral
                 _configuracionAplicacion.ConfiguracionGeneral.ConfiguracionContpaqiContabilidad.ContpaqiSqlConnectionString = ConfiguracionGeneral.ConfiguracionContpaqiContabilidad.ContpaqiSqlConnectionString;
                 var viewModel = IoC.Get<SeleccionarEmpresaContpaqiViewModel>();
                 viewModel.Inicializar(await _mediator.Send(new BuscarEmpresasContabilidadQuery()));
-                _windowManager.ShowDialog(viewModel);
+                await _windowManager.ShowDialogAsync(viewModel);
                 if (viewModel.SeleccionoEmpresa)
                 {
                     ConfiguracionGeneral.ConfiguracionContpaqiContabilidad.Empresa = viewModel.EmpresaSeleccionada;
@@ -123,9 +123,9 @@ namespace Presentation.WpfApp.ViewModels.ConfiguracionGeneral
             }
         }
 
-        public void Cancelar()
+        public async Task Cancelar()
         {
-            TryClose();
+            await TryCloseAsync();
         }
     }
 }

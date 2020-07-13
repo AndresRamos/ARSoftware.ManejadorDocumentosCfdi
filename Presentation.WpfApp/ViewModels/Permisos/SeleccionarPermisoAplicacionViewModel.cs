@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Threading.Tasks;
 using System.Windows.Data;
 using Caliburn.Micro;
 using Core.Application.Permisos.Models;
@@ -65,17 +66,17 @@ namespace Presentation.WpfApp.ViewModels.Permisos
             Permisos.AddRange(permisos);
         }
 
-        public void Seleccionar()
+        public async Task Seleccionar()
         {
             SeleccionoPermiso = true;
-            TryClose();
+            await TryCloseAsync();
         }
 
-        public void Cancelar()
+        public async Task Cancelar()
         {
             SeleccionoPermiso = false;
             PermisoAplicacionSeleccionado = null;
-            TryClose();
+            await TryCloseAsync();
         }
 
         private void RaiseGuards()

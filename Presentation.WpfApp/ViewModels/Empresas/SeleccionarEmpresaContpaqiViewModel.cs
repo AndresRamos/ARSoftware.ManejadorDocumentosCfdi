@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Threading.Tasks;
 using System.Windows.Data;
 using Caliburn.Micro;
 using Core.Application.Empresas.Models;
@@ -63,17 +64,17 @@ namespace Presentation.WpfApp.ViewModels.Empresas
             Empresas.AddRange(empresas);
         }
 
-        public void Seleccionar()
+        public async Task Seleccionar()
         {
             SeleccionoEmpresa = true;
-            TryClose();
+            await TryCloseAsync();
         }
 
-        public void Cancelar()
+        public async Task Cancelar()
         {
             EmpresaSeleccionada = null;
             SeleccionoEmpresa = false;
-            TryClose();
+            await TryCloseAsync();
         }
 
         private bool EmpresasView_Filter(object obj)

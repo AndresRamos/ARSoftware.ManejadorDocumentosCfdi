@@ -197,7 +197,7 @@ namespace Presentation.WpfApp.ViewModels.Usuarios
                 var rolesUnicos = roles.Where(pa => Roles.All(p => p.Id != pa.Id)).ToList();
                 var viewModel = IoC.Get<SeleccionarRolViewModel>();
                 viewModel.Inicializar(rolesUnicos);
-                _windowManager.ShowDialog(viewModel);
+                await _windowManager.ShowDialogAsync(viewModel);
                 if (viewModel.SeleccionoRol)
                 {
                     await _mediator.Send(new AgregarRolCommand(UsuarioId, viewModel.RolSeleccionado.Id));

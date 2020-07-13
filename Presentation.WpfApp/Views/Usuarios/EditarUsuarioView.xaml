@@ -51,7 +51,7 @@
                             cal:Message.Attach="ActualizarPerfilAsync"
                             ToolTip="Actualizar perfil"
                             Width="150"
-                            Style="{StaticResource AccentedSquareButtonStyle}"
+                            Style="{StaticResource MahApps.Styles.Button.Square.Accent}"
                             VerticalAlignment="Center"
                             HorizontalAlignment="Left"
                             Margin="5" />

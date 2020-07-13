@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Contpaqi.Sql.Comercial.Generales;
 using Core.Application.Empresas.Interfaces;
 using Core.Application.Empresas.Models;
+using Infrastructure.ContpaqiComercial.Factories;
 
 namespace Infrastructure.ContpaqiComercial.Repositories
 {
@@ -20,8 +21,26 @@ namespace Infrastructure.ContpaqiComercial.Repositories
 
         public async Task<IEnumerable<EmpresaContpaqiDto>> BuscarEmpresasAsync()
         {
-            return (await _context.Empresas.Select(e => new {e.CNOMBREEMPRESA, e.CRUTADATOS}).ToListAsync())
-                .Select(e => new EmpresaContpaqiDto(e.CNOMBREEMPRESA, new DirectoryInfo(e.CRUTADATOS).Name)).ToList();
+            var empresasComercial = await _context.Empresas.Where(e => e.CIDEMPRESA != 1).Select(e => new {e.CNOMBREEMPRESA, e.CRUTADATOS}).ToListAsync();
+
+            var empresasList = new List<EmpresaContpaqiDto>();
+
+            foreach (var empresaComercial in empresasComercial)
+            {
+                using (var comercialEmpresaDbContext = ComercialEmpresaDbContextFactory.Crear(_context.Database.Connection.ConnectionString, new DirectoryInfo(empresaComercial.CRUTADATOS).Name))
+                {
+                    if (!comercialEmpresaDbContext.Database.Exists())
+                    {
+                        continue;
+                    }
+
+                    var guidAddEmpresaComercial = await comercialEmpresaDbContext.admParametros.Select(p => p.CGUIDDSL).FirstAsync();
+
+                    empresasList.Add(new EmpresaContpaqiDto(empresaComercial.CNOMBREEMPRESA, new DirectoryInfo(empresaComercial.CRUTADATOS).Name, guidAddEmpresaComercial));
+                }
+            }
+
+            return empresasList;
         }
     }
 }

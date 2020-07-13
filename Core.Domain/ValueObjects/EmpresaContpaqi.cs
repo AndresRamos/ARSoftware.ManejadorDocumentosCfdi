@@ -10,13 +10,15 @@ namespace Core.Domain.ValueObjects
 
         public string Nombre { get; private set; }
         public string BaseDatos { get; private set; }
+        public string GuidAdd { get; private set; }
 
-        public static EmpresaContpaqi CreateInstance(string nombre, string baseDatos)
+        public static EmpresaContpaqi CreateInstance(string nombre, string baseDatos, string guidAdd)
         {
             return new EmpresaContpaqi
             {
                 Nombre = nombre,
-                BaseDatos = baseDatos
+                BaseDatos = baseDatos,
+                GuidAdd = guidAdd
             };
         }
 
@@ -24,6 +26,7 @@ namespace Core.Domain.ValueObjects
         {
             yield return Nombre;
             yield return BaseDatos;
+            yield return GuidAdd;
         }
     }
 }

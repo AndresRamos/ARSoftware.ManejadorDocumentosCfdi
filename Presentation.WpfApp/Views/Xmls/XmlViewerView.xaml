@@ -3,26 +3,37 @@
                       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-                      xmlns:local="clr-namespace:Presentation.WpfApp.Views.Xmls"
                       xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
                       xmlns:dialog="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
                       xmlns:cal="clr-namespace:Caliburn.Micro;assembly=Caliburn.Micro.Platform"
-                      xmlns:viewModels="clr-namespace:Presentation.WpfApp.ViewModels.Xmls" mc:Ignorable="d"
+                      xmlns:viewModels="clr-namespace:Presentation.WpfApp.ViewModels.Xmls"
+                      mc:Ignorable="d"
                       WindowStartupLocation="CenterScreen"
                       d:DataContext="{d:DesignInstance Type=viewModels:XmlViewerViewModel, IsDesignTimeCreatable=False}"
-                      cal:Bind.AtDesignTime="True" dialog:DialogParticipation.Register="{Binding}">
+                      cal:Bind.AtDesignTime="True"
+                      dialog:DialogParticipation.Register="{Binding}">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition />
         </Grid.RowDefinitions>
-        <StackPanel Grid.Row="1" Orientation="Horizontal">
-            <Button Content="Guardar" cal:Message.Attach="GuardarArchivoAsync" VerticalAlignment="Center" Margin="5"
-                    Width="150" Style="{StaticResource AccentedSquareButtonStyle}" />
+        <StackPanel Grid.Row="1"
+                    Orientation="Horizontal">
+            <Button Content="Guardar"
+                    cal:Message.Attach="GuardarArchivoAsync"
+                    VerticalAlignment="Center"
+                    Margin="5"
+                    Width="150"
+                    Style="{StaticResource MahApps.Styles.Button.Square.Accent}" />
         </StackPanel>
-        <TextBox Grid.Row="2" Text="{Binding Contenido, Mode=OneWay}" IsReadOnly="True"
-                 VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" AcceptsReturn="True"
-                 AcceptsTab="True" Margin="5" />
+        <TextBox Grid.Row="2"
+                 Text="{Binding Contenido, Mode=OneWay}"
+                 IsReadOnly="True"
+                 VerticalScrollBarVisibility="Auto"
+                 HorizontalScrollBarVisibility="Auto"
+                 AcceptsReturn="True"
+                 AcceptsTab="True"
+                 Margin="5" />
     </Grid>
 </controls:MetroWindow>

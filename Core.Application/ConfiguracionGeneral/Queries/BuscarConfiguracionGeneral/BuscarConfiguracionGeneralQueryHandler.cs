@@ -34,12 +34,14 @@ namespace Core.Application.ConfiguracionGeneral.Queries.BuscarConfiguracionGener
                     configuracionGeneral.ConfiguracionContpaqiComercial.ContpaqiSqlConnectionString,
                     new EmpresaContpaqiDto(
                         configuracionGeneral.ConfiguracionContpaqiComercial.Empresa.Nombre,
-                        configuracionGeneral.ConfiguracionContpaqiComercial.Empresa.BaseDatos)),
+                        configuracionGeneral.ConfiguracionContpaqiComercial.Empresa.BaseDatos,
+                        configuracionGeneral.ConfiguracionContpaqiComercial.Empresa.GuidAdd)),
                 new ConfiguracionContpaqiContabilidadDto(
                     configuracionGeneral.ConfiguracionContpaqiContabilidad.ContpaqiSqlConnectionString,
                     new EmpresaContpaqiDto(
                         configuracionGeneral.ConfiguracionContpaqiContabilidad.Empresa.Nombre,
-                        configuracionGeneral.ConfiguracionContpaqiContabilidad.Empresa.BaseDatos)));
+                        configuracionGeneral.ConfiguracionContpaqiContabilidad.Empresa.BaseDatos,
+                        configuracionGeneral.ConfiguracionContpaqiContabilidad.Empresa.GuidAdd)));
         }
     }
 }

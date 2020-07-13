@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Threading.Tasks;
 using System.Windows.Data;
 using Caliburn.Micro;
 using Core.Application.Rfcs.Models;
@@ -64,17 +65,17 @@ namespace Presentation.WpfApp.ViewModels.Rfcs
             Rfcs.AddRange(rfcs);
         }
 
-        public void Seleccionar()
+        public async Task Seleccionar()
         {
             SeleccionoRfc = true;
-            TryClose();
+            await TryCloseAsync();
         }
 
-        public void Cancelar()
+        public async Task Cancelar()
         {
             RfcSeleccionado = null;
             SeleccionoRfc = false;
-            TryClose();
+            await TryCloseAsync();
         }
 
         private bool RfcsView_Filter(object obj)

@@ -7,9 +7,10 @@
                       xmlns:viewModels="clr-namespace:Presentation.WpfApp.ViewModels.Solicitudes"
                       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-                      xmlns:local="clr-namespace:Presentation.WpfApp.Views.Solicitudes"
                       mc:Ignorable="d"
-                      WindowStartupLocation="CenterOwner" Width="600" Height="350"
+                      WindowStartupLocation="CenterOwner"
+                      Width="600"
+                      Height="350"
                       d:DataContext="{d:DesignInstance Type=viewModels:NuevaSolicitudViewModel, IsDesignTimeCreatable=False}"
                       cal:Bind.AtDesignTime="True"
                       dialog:DialogParticipation.Register="{Binding}">
@@ -19,14 +20,26 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <TextBlock Grid.Row="0" Text="{Binding DisplayName}" FontWeight="Bold" FontSize="20" VerticalAlignment="Center"
+        <TextBlock Grid.Row="0"
+                   Text="{Binding DisplayName}"
+                   FontWeight="Bold"
+                   FontSize="20"
+                   VerticalAlignment="Center"
                    Margin="5" />
-        <StackPanel Grid.Row="1" Orientation="Horizontal">
-            <Button Content="Crear" cal:Message.Attach="CrearSolicitudAsync" Width="150" Margin="5"
+        <StackPanel Grid.Row="1"
+                    Orientation="Horizontal">
+            <Button Content="Crear"
+                    cal:Message.Attach="CrearSolicitudAsync"
+                    Width="150"
+                    Margin="5"
                     VerticalAlignment="Center"
-                    Style="{StaticResource AccentedSquareButtonStyle}" />
-            <Button Content="Cancelar" cal:Message.Attach="Cancelar" Width="150" Margin="5" VerticalAlignment="Center"
-                    Style="{DynamicResource SquareButtonStyle}" />
+                    Style="{StaticResource MahApps.Styles.Button.Square.Accent}" />
+            <Button Content="Cancelar"
+                    cal:Message.Attach="Cancelar"
+                    Width="150"
+                    Margin="5"
+                    VerticalAlignment="Center"
+                    Style="{StaticResource MahApps.Styles.Button.Square}" />
         </StackPanel>
         <Grid Grid.Row="2">
             <Grid.RowDefinitions>
@@ -42,54 +55,108 @@
                 <ColumnDefinition />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
-            <Label Grid.Row="0" Grid.Column="0" Content="Fecha Inicio:" FontWeight="Bold" VerticalAlignment="Center"
-                   HorizontalAlignment="Right" Margin="5" />
-            <DatePicker Grid.Row="0" Grid.Column="1"
+            <Label Grid.Row="0"
+                   Grid.Column="0"
+                   Content="Fecha Inicio:"
+                   FontWeight="Bold"
+                   VerticalAlignment="Center"
+                   HorizontalAlignment="Right"
+                   Margin="5" />
+            <DatePicker Grid.Row="0"
+                        Grid.Column="1"
                         SelectedDate="{Binding FechaInicio, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                        VerticalAlignment="Center" Margin="5" />
-            <Label Grid.Row="1" Grid.Column="0" Content="Fecha Fin:" FontWeight="Bold" VerticalAlignment="Center"
-                   HorizontalAlignment="Right" Margin="5" />
-            <DatePicker Grid.Row="1" Grid.Column="1"
+                        VerticalAlignment="Center"
+                        Margin="5" />
+            <Label Grid.Row="1"
+                   Grid.Column="0"
+                   Content="Fecha Fin:"
+                   FontWeight="Bold"
+                   VerticalAlignment="Center"
+                   HorizontalAlignment="Right"
+                   Margin="5" />
+            <DatePicker Grid.Row="1"
+                        Grid.Column="1"
                         SelectedDate="{Binding FechaFin, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                        VerticalAlignment="Center" Margin="5" />
-            <Label Grid.Row="2" Grid.Column="0" Content="RFC Emisor:" FontWeight="Bold" VerticalAlignment="Center"
-                   HorizontalAlignment="Right" Margin="5" />
-            <TextBox Grid.Row="2" Grid.Column="1"
+                        VerticalAlignment="Center"
+                        Margin="5" />
+            <Label Grid.Row="2"
+                   Grid.Column="0"
+                   Content="RFC Emisor:"
+                   FontWeight="Bold"
+                   VerticalAlignment="Center"
+                   HorizontalAlignment="Right"
+                   Margin="5" />
+            <TextBox Grid.Row="2"
+                     Grid.Column="1"
                      Text="{Binding RfcEmisor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                     VerticalAlignment="Center" Margin="5" />
-            <StackPanel Grid.Row="2" Grid.Column="2" Orientation="Horizontal">
-                <Button Content="COM" cal:Message.Attach="BuscarRfcEmisorComercialAsync"
-                        ToolTip="Buscar RFC del catalogo de CONTPAQi Comercial" VerticalAlignment="Center"
+                     VerticalAlignment="Center"
+                     Margin="5" />
+            <StackPanel Grid.Row="2"
+                        Grid.Column="2"
+                        Orientation="Horizontal">
+                <Button Content="COM"
+                        cal:Message.Attach="BuscarRfcEmisorComercialAsync"
+                        ToolTip="Buscar RFC del catalogo de CONTPAQi Comercial"
+                        VerticalAlignment="Center"
                         Margin="5" />
-                <Button Content="CONT" cal:Message.Attach="BuscarRfcEmisorContabilidadAsync"
-                        ToolTip="Buscar RFC del catalogo de CONTPAQi Contabilidad" VerticalAlignment="Center"
+                <Button Content="CONT"
+                        cal:Message.Attach="BuscarRfcEmisorContabilidadAsync"
+                        ToolTip="Buscar RFC del catalogo de CONTPAQi Contabilidad"
+                        VerticalAlignment="Center"
                         Margin="5" />
             </StackPanel>
-            <Label Grid.Row="3" Grid.Column="0" Content="RFC Receptor:" FontWeight="Bold" VerticalAlignment="Center"
-                   HorizontalAlignment="Right" Margin="5" />
-            <TextBox Grid.Row="3" Grid.Column="1"
+            <Label Grid.Row="3"
+                   Grid.Column="0"
+                   Content="RFC Receptor:"
+                   FontWeight="Bold"
+                   VerticalAlignment="Center"
+                   HorizontalAlignment="Right"
+                   Margin="5" />
+            <TextBox Grid.Row="3"
+                     Grid.Column="1"
                      Text="{Binding RfcReceptor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                     VerticalAlignment="Center" Margin="5" />
-            <StackPanel Grid.Row="3" Grid.Column="2" Orientation="Horizontal">
-                <Button Content="COM" cal:Message.Attach="BuscarRfcReceptorComercialAsync"
-                        ToolTip="Buscar RFC del catalogo de CONTPAQi Comercial" VerticalAlignment="Center"
+                     VerticalAlignment="Center"
+                     Margin="5" />
+            <StackPanel Grid.Row="3"
+                        Grid.Column="2"
+                        Orientation="Horizontal">
+                <Button Content="COM"
+                        cal:Message.Attach="BuscarRfcReceptorComercialAsync"
+                        ToolTip="Buscar RFC del catalogo de CONTPAQi Comercial"
+                        VerticalAlignment="Center"
                         Margin="5" />
-                <Button Content="CONT" cal:Message.Attach="BuscarRfcReceptorContabilidadAsync"
-                        ToolTip="Buscar RFC del catalogo de CONTPAQi Contabilidad" VerticalAlignment="Center"
+                <Button Content="CONT"
+                        cal:Message.Attach="BuscarRfcReceptorContabilidadAsync"
+                        ToolTip="Buscar RFC del catalogo de CONTPAQi Contabilidad"
+                        VerticalAlignment="Center"
                         Margin="5" />
             </StackPanel>
-            <Label Grid.Row="4" Grid.Column="0" Content="RFC Solicitante:" FontWeight="Bold" VerticalAlignment="Center"
-                   HorizontalAlignment="Right" Margin="5" />
-            <TextBlock Grid.Row="4" Grid.Column="1"
+            <Label Grid.Row="4"
+                   Grid.Column="0"
+                   Content="RFC Solicitante:"
+                   FontWeight="Bold"
+                   VerticalAlignment="Center"
+                   HorizontalAlignment="Right"
+                   Margin="5" />
+            <TextBlock Grid.Row="4"
+                       Grid.Column="1"
                        Text="{Binding RfcSolicitante}"
-                       VerticalAlignment="Center" Margin="5" />
-            <Label Grid.Row="5" Grid.Column="0" Content="Tipo Solicitud:" FontWeight="Bold" VerticalAlignment="Center"
-                   HorizontalAlignment="Right" Margin="5" />
-            <ComboBox Grid.Row="5" Grid.Column="1"
+                       VerticalAlignment="Center"
+                       Margin="5" />
+            <Label Grid.Row="5"
+                   Grid.Column="0"
+                   Content="Tipo Solicitud:"
+                   FontWeight="Bold"
+                   VerticalAlignment="Center"
+                   HorizontalAlignment="Right"
+                   Margin="5" />
+            <ComboBox Grid.Row="5"
+                      Grid.Column="1"
                       ItemsSource="{Binding TiposSolicitud}"
                       SelectedItem="{Binding TipoSolicitudSeleccionado}"
                       DisplayMemberPath="Name"
-                      VerticalAlignment="Center" Margin="5" />
+                      VerticalAlignment="Center"
+                      Margin="5" />
         </Grid>
     </Grid>
 </controls:MetroWindow>

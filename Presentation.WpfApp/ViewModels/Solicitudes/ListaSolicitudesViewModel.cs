@@ -141,7 +141,7 @@ namespace Presentation.WpfApp.ViewModels.Solicitudes
             {
                 var viewModel = IoC.Get<NuevaSolicitudViewModel>();
                 await viewModel.InicializarAsync();
-                _windowManager.ShowDialog(viewModel);
+                await _windowManager.ShowDialogAsync(viewModel);
             }
             catch (Exception e)
             {
@@ -173,7 +173,7 @@ namespace Presentation.WpfApp.ViewModels.Solicitudes
                 await _mediator.Send(new ProcesarSolicitudCommand(solicitudId));
                 var viewModel = IoC.Get<DetalleSolicitudViewModel>();
                 await viewModel.InicializarAsync(solicitudId);
-                _windowManager.ShowWindow(viewModel);
+                await _windowManager.ShowWindowAsync(viewModel);
                 await BuscarSolicitudesAsync();
                 SolicitudSeleccionada = Solicitudes.FirstOrDefault(s => s.Id == solicitudId);
             }
@@ -194,7 +194,7 @@ namespace Presentation.WpfApp.ViewModels.Solicitudes
             {
                 var viewModel = IoC.Get<DetalleSolicitudViewModel>();
                 await viewModel.InicializarAsync(SolicitudSeleccionada.Id);
-                _windowManager.ShowWindow(viewModel);
+                await _windowManager.ShowWindowAsync(viewModel);
             }
             catch (Exception e)
             {

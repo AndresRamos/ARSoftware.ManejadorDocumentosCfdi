@@ -84,7 +84,7 @@ namespace Presentation.WpfApp.ViewModels.Usuarios
             try
             {
                 var viewModel = IoC.Get<CrearUsuarioViewModel>();
-                _windowManager.ShowDialog(viewModel);
+                await _windowManager.ShowDialogAsync(viewModel);
                 await CargarUsuariosAsync();
             }
             catch (Exception e)
@@ -99,7 +99,7 @@ namespace Presentation.WpfApp.ViewModels.Usuarios
             {
                 var viewModel = IoC.Get<EditarUsuarioViewModel>();
                 await viewModel.InicializarAsync(UsuarioSeleccionado.Id);
-                _windowManager.ShowDialog(viewModel);
+                await _windowManager.ShowDialogAsync(viewModel);
                 await CargarUsuariosAsync();
             }
             catch (Exception e)
@@ -128,8 +128,7 @@ namespace Presentation.WpfApp.ViewModels.Usuarios
 
         private bool UsuariosView_Filter(object obj)
         {
-            var usuario = obj as UsuarioDto;
-            if (usuario is null)
+            if (!(obj is UsuarioDto usuario))
             {
                 throw new ArgumentNullException(nameof(obj));
             }

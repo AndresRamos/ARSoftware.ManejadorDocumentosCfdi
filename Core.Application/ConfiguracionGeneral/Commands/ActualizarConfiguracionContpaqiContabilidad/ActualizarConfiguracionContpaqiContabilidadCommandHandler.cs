@@ -22,7 +22,7 @@ namespace Core.Application.ConfiguracionGeneral.Commands.ActualizarConfiguracion
 
             configuracionGeneral.ConfiguracionContpaqiContabilidad = ConfiguracionContpaqiContabilidad.CreateInstance(
                 request.ConfiguracionContpaqiContabilidad.ContpaqiSqlConnectionString,
-                EmpresaContpaqi.CreateInstance(request.ConfiguracionContpaqiContabilidad.Empresa.Nombre, request.ConfiguracionContpaqiContabilidad.Empresa.BaseDatos));
+                EmpresaContpaqi.CreateInstance(request.ConfiguracionContpaqiContabilidad.Empresa.Nombre, request.ConfiguracionContpaqiContabilidad.Empresa.BaseDatos, request.ConfiguracionContpaqiContabilidad.Empresa.GuidAdd));
 
             await _context.SaveChangesAsync(cancellationToken);
 

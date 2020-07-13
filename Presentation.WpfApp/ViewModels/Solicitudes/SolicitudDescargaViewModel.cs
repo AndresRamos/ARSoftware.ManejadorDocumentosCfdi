@@ -94,7 +94,7 @@ namespace Presentation.WpfApp.ViewModels.Solicitudes
             {
                 var viewModel = IoC.Get<XmlViewerViewModel>();
                 viewModel.Inicializar(solicitud.Solicitud);
-                _windowManager.ShowDialog(viewModel);
+                await _windowManager.ShowDialogAsync(viewModel);
             }
             catch (Exception e)
             {
@@ -113,7 +113,7 @@ namespace Presentation.WpfApp.ViewModels.Solicitudes
             {
                 var viewModel = IoC.Get<XmlViewerViewModel>();
                 viewModel.Inicializar(solicitud.Respuesta);
-                _windowManager.ShowDialog(viewModel);
+                await _windowManager.ShowDialogAsync(viewModel);
             }
             catch (Exception e)
             {

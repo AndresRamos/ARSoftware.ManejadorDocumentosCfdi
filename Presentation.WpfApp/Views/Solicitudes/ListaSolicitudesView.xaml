@@ -21,9 +21,15 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <TextBlock Grid.Row="0" Text="{Binding DisplayName}" FontWeight="Bold" FontSize="20" VerticalAlignment="Center"
+        <TextBlock Grid.Row="0"
+                   Text="{Binding DisplayName}"
+                   FontWeight="Bold"
+                   FontSize="20"
+                   VerticalAlignment="Center"
                    Margin="5" />
-        <GroupBox Grid.Row="1" Header="Busqueda" Margin="5">
+        <GroupBox Grid.Row="1"
+                  Header="Busqueda"
+                  Margin="5">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
@@ -33,52 +39,108 @@
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
-                <Label Grid.Row="0" Grid.Column="0" Content="Fecha:" FontWeight="Bold" VerticalAlignment="Center"
-                       HorizontalAlignment="Right" Margin="5" />
-                <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal">
+                <Label Grid.Row="0"
+                       Grid.Column="0"
+                       Content="Fecha:"
+                       FontWeight="Bold"
+                       VerticalAlignment="Center"
+                       HorizontalAlignment="Right"
+                       Margin="5" />
+                <StackPanel Grid.Row="0"
+                            Grid.Column="1"
+                            Orientation="Horizontal">
                     <DatePicker SelectedDate="{Binding FechaInicio, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                VerticalAlignment="Center" Width="150" Margin="5" />
-                    <TextBlock Text="a" FontWeight="Bold" VerticalAlignment="Center" Margin="5" />
+                                VerticalAlignment="Center"
+                                Width="150"
+                                Margin="5" />
+                    <TextBlock Text="a"
+                               FontWeight="Bold"
+                               VerticalAlignment="Center"
+                               Margin="5" />
                     <DatePicker SelectedDate="{Binding FechaFin, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                VerticalAlignment="Center" Width="150" Margin="5" />
+                                VerticalAlignment="Center"
+                                Width="150"
+                                Margin="5" />
                 </StackPanel>
-                <Button Grid.Row="1" Grid.Column="1" Content="Buscar" cal:Message.Attach="BuscarSolicitudesAsync"
-                        VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5" Width="150"
-                        Style="{StaticResource AccentedSquareButtonStyle}" />
+                <Button Grid.Row="1"
+                        Grid.Column="1"
+                        Content="Buscar"
+                        cal:Message.Attach="BuscarSolicitudesAsync"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Left"
+                        Margin="5"
+                        Width="150"
+                        Style="{StaticResource MahApps.Styles.Button.Square.Accent}" />
             </Grid>
         </GroupBox>
-        <StackPanel Grid.Row="2" Orientation="Horizontal">
-            <Button Content="Crear Nueva" cal:Message.Attach="CrearNuevaSolicitudAsync" Width="150" Margin="5"
-                    Style="{StaticResource AccentedSquareButtonStyle}" />
-            <Button Content="Procesar" cal:Message.Attach="ProcesarSolicitudAsync" Width="150" Margin="5"
-                    Style="{DynamicResource SquareButtonStyle}" />
-            <Button Content="Ver Detalles" cal:Message.Attach="VerDetallesSolicitudSeleccionadaAsync" Width="150"
-                    Margin="5" Style="{DynamicResource SquareButtonStyle}" />
+        <StackPanel Grid.Row="2"
+                    Orientation="Horizontal">
+            <Button Content="Crear Nueva"
+                    cal:Message.Attach="CrearNuevaSolicitudAsync"
+                    Width="150"
+                    Margin="5"
+                    Style="{StaticResource MahApps.Styles.Button.Square.Accent}" />
+            <Button Content="Procesar"
+                    cal:Message.Attach="ProcesarSolicitudAsync"
+                    Width="150"
+                    Margin="5"
+                    Style="{DynamicResource MahApps.Styles.Button.Square}" />
+            <Button Content="Ver Detalles"
+                    cal:Message.Attach="VerDetallesSolicitudSeleccionadaAsync"
+                    Width="150"
+                    Margin="5"
+                    Style="{DynamicResource MahApps.Styles.Button.Square}" />
         </StackPanel>
-        <StackPanel Grid.Row="3" Orientation="Horizontal" Margin="5">
-            <TextBox Text="{Binding Filtro, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="250"
-                     VerticalAlignment="Center" controls:TextBoxHelper.Watermark="Filtro" Margin="5" />
+        <StackPanel Grid.Row="3"
+                    Orientation="Horizontal"
+                    Margin="5">
+            <TextBox Text="{Binding Filtro, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                     Width="250"
+                     VerticalAlignment="Center"
+                     controls:TextBoxHelper.Watermark="Filtro"
+                     Margin="5" />
         </StackPanel>
-        <DataGrid Grid.Row="4" ItemsSource="{Binding Solicitudes}" SelectedItem="{Binding SolicitudSeleccionada}"
-                  Margin="5" IsReadOnly="True" AutoGenerateColumns="False">
+        <DataGrid Grid.Row="4"
+                  ItemsSource="{Binding Solicitudes}"
+                  SelectedItem="{Binding SolicitudSeleccionada}"
+                  Margin="5"
+                  IsReadOnly="True"
+                  AutoGenerateColumns="False">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Id" Binding="{Binding Id}" />
-                <DataGridTextColumn Header="Fecha Creacion UTC" Binding="{Binding FechaCreacionUtc}" />
-                <DataGridTextColumn Header="Fecha Creacion Local" Binding="{Binding FechaCreacionLocal}" />
-                <DataGridTextColumn Header="Fecha Inicio" Binding="{Binding FechaInicio, StringFormat=\{0:d\}}" />
-                <DataGridTextColumn Header="Fecha Fin" Binding="{Binding FechaFin, StringFormat=\{0:d\}}" />
-                <DataGridTextColumn Header="RFC Emisor" Binding="{Binding RfcEmisor}" />
-                <DataGridTextColumn Header="RFC Receptor" Binding="{Binding RfcReceptor}" />
-                <DataGridTextColumn Header="RFC Solicitante" Binding="{Binding RfcSolicitante}" />
-                <DataGridTextColumn Header="Tipo Solicitud" Binding="{Binding TipoSolicitud}" />
-                <DataGridTextColumn Header="Solicitud Coigo" Binding="{Binding SolicitudSolicitud.CodEstatus}" />
-                <DataGridTextColumn Header="Solicitud Mensaje" Binding="{Binding SolicitudSolicitud.Mensaje}" />
-                <DataGridTextColumn Header="Solicitud ID" Binding="{Binding SolicitudSolicitud.IdSolicitud}" />
-                <DataGridTextColumn Header="Verificaion Estado" Binding="{Binding SolicitudVerificacion.EstadoSolicitud}" />
-                <DataGridTextColumn Header="Verificaion Mensaje" Binding="{Binding SolicitudVerificacion.Mensaje}" />
-                <DataGridTextColumn Header="Numero CFDIs" Binding="{Binding SolicitudVerificacion.NumeroCfdis}" />
-                <DataGridTextColumn Header="Descarga Estatus" Binding="{Binding SolicitudDescarga.CodEstatus}" />
-                <DataGridTextColumn Header="Descarga Mensaje" Binding="{Binding SolicitudDescarga.Mensaje}" />
+                <DataGridTextColumn Header="Id"
+                                    Binding="{Binding Id}" />
+                <DataGridTextColumn Header="Fecha Creacion UTC"
+                                    Binding="{Binding FechaCreacionUtc}" />
+                <DataGridTextColumn Header="Fecha Creacion Local"
+                                    Binding="{Binding FechaCreacionLocal}" />
+                <DataGridTextColumn Header="Fecha Inicio"
+                                    Binding="{Binding FechaInicio, StringFormat=\{0:d\}}" />
+                <DataGridTextColumn Header="Fecha Fin"
+                                    Binding="{Binding FechaFin, StringFormat=\{0:d\}}" />
+                <DataGridTextColumn Header="RFC Emisor"
+                                    Binding="{Binding RfcEmisor}" />
+                <DataGridTextColumn Header="RFC Receptor"
+                                    Binding="{Binding RfcReceptor}" />
+                <DataGridTextColumn Header="RFC Solicitante"
+                                    Binding="{Binding RfcSolicitante}" />
+                <DataGridTextColumn Header="Tipo Solicitud"
+                                    Binding="{Binding TipoSolicitud}" />
+                <DataGridTextColumn Header="Solicitud Coigo"
+                                    Binding="{Binding SolicitudSolicitud.CodEstatus}" />
+                <DataGridTextColumn Header="Solicitud Mensaje"
+                                    Binding="{Binding SolicitudSolicitud.Mensaje}" />
+                <DataGridTextColumn Header="Solicitud ID"
+                                    Binding="{Binding SolicitudSolicitud.IdSolicitud}" />
+                <DataGridTextColumn Header="Verificaion Estado"
+                                    Binding="{Binding SolicitudVerificacion.EstadoSolicitud}" />
+                <DataGridTextColumn Header="Verificaion Mensaje"
+                                    Binding="{Binding SolicitudVerificacion.Mensaje}" />
+                <DataGridTextColumn Header="Numero CFDIs"
+                                    Binding="{Binding SolicitudVerificacion.NumeroCfdis}" />
+                <DataGridTextColumn Header="Descarga Estatus"
+                                    Binding="{Binding SolicitudDescarga.CodEstatus}" />
+                <DataGridTextColumn Header="Descarga Mensaje"
+                                    Binding="{Binding SolicitudDescarga.Mensaje}" />
             </DataGrid.Columns>
         </DataGrid>
     </Grid>

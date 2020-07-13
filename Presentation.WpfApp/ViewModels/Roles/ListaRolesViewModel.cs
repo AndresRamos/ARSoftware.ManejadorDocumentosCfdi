@@ -86,7 +86,7 @@ namespace Presentation.WpfApp.ViewModels.Roles
             {
                 var viewModel = IoC.Get<EditarRolViewModel>();
                 await viewModel.InicializarAsync(null);
-                _windowManager.ShowDialog(viewModel);
+                await _windowManager.ShowDialogAsync(viewModel);
                 await CargarRolesAsync();
             }
             catch (Exception e)
@@ -105,7 +105,7 @@ namespace Presentation.WpfApp.ViewModels.Roles
             {
                 var viewModel = IoC.Get<EditarRolViewModel>();
                 await viewModel.InicializarAsync(RolSeleccionado.Id);
-                _windowManager.ShowDialog(viewModel);
+                await _windowManager.ShowDialogAsync(viewModel);
                 await CargarRolesAsync();
             }
             catch (Exception e)

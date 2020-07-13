@@ -34,14 +34,14 @@
                     VerticalAlignment="Center"
                     Margin="5"
                     Width="150"
-                    Style="{StaticResource AccentedSquareButtonStyle}" />
+                    Style="{StaticResource MahApps.Styles.Button.Square.Accent}" />
             <Button Content="Cancelar"
                     cal:Message.Attach="Cancelar"
                     ToolTip="Cancelar"
                     VerticalAlignment="Center"
                     Margin="5"
                     Width="150"
-                    Style="{DynamicResource SquareButtonStyle}" />
+                    Style="{StaticResource MahApps.Styles.Button.Square}" />
         </StackPanel>
         <TabControl Grid.Row="2">
             <TabItem Header="General">

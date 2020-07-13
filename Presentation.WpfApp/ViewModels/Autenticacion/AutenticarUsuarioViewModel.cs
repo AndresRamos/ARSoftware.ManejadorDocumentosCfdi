@@ -79,7 +79,7 @@ namespace Presentation.WpfApp.ViewModels.Autenticacion
                 {
                     IsUsuarioAutenticado = true;
                     Usuario = usuario;
-                    TryClose();
+                    await TryCloseAsync();
                 }
             }
             catch (Exception e)
@@ -94,11 +94,11 @@ namespace Presentation.WpfApp.ViewModels.Autenticacion
             }
         }
 
-        public void Cancelar()
+        public async Task Cancelar()
         {
             IsUsuarioAutenticado = false;
             Usuario = null;
-            TryClose();
+            await TryCloseAsync();
         }
 
         private void RaiseGuards()

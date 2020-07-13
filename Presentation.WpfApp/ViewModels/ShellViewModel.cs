@@ -2,11 +2,15 @@
 using System.Diagnostics;
 using System.Threading.Tasks;
 using Caliburn.Micro;
+using Core.Application.Cfdis.Queries.LeerEncabezadosCfdi;
 using Core.Application.Permisos.Models;
 using MahApps.Metro.Controls.Dialogs;
+using MediatR;
+using Microsoft.Win32;
 using Presentation.WpfApp.Models;
 using Presentation.WpfApp.ViewModels.Actualizaciones;
 using Presentation.WpfApp.ViewModels.Autenticacion;
+using Presentation.WpfApp.ViewModels.Cfdis;
 using Presentation.WpfApp.ViewModels.ConfiguracionGeneral;
 using Presentation.WpfApp.ViewModels.Roles;
 using Presentation.WpfApp.ViewModels.Solicitudes;
@@ -17,13 +21,16 @@ namespace Presentation.WpfApp.ViewModels
     public sealed class ShellViewModel : Conductor<Screen>.Collection.OneActive
     {
         private readonly IDialogCoordinator _dialogCoordinator;
+
+        private readonly IMediator _mediator;
         private readonly IWindowManager _windowManager;
 
-        public ShellViewModel(IWindowManager windowManager, IDialogCoordinator dialogCoordinator, ConfiguracionAplicacion configuracionAplicacion)
+        public ShellViewModel(IWindowManager windowManager, IDialogCoordinator dialogCoordinator, ConfiguracionAplicacion configuracionAplicacion, IMediator mediator)
         {
             _windowManager = windowManager;
             _dialogCoordinator = dialogCoordinator;
             ConfiguracionAplicacion = configuracionAplicacion;
+            _mediator = mediator;
             DisplayName = "AR Software - Manejador Documentos CFDI";
         }
 
@@ -35,10 +42,11 @@ namespace Presentation.WpfApp.ViewModels
         public bool CanVerConfiguracionGeneralViewAsync => ConfiguracionAplicacion.IsUsuarioAutenticado && ConfiguracionAplicacion.Usuario.TienePermiso(PermisosAplicacion.PuedeEditarConfiguracionGeneral);
         public bool CanVerListaRolesViewAsync => ConfiguracionAplicacion.IsUsuarioAutenticado && ConfiguracionAplicacion.Usuario.TienePermiso(PermisosAplicacion.PuedeEditarUsuarios);
         public bool CanVerListaUsuariosViewAsync => ConfiguracionAplicacion.IsUsuarioAutenticado && ConfiguracionAplicacion.Usuario.TienePermiso(PermisosAplicacion.PuedeEditarUsuarios);
+        public bool CanValidarExistenciaEnAddAsync => ConfiguracionAplicacion.IsUsuarioAutenticado && ConfiguracionAplicacion.Usuario.TienePermiso(PermisosAplicacion.PuedeVerListaSolicitudes);
 
-        public void Salir()
+        public async Task Salir()
         {
-            TryClose();
+            await TryCloseAsync();
         }
 
         public async Task IniciarSesionAsync()
@@ -47,7 +55,7 @@ namespace Presentation.WpfApp.ViewModels
             {
                 var viewModel = IoC.Get<AutenticarUsuarioViewModel>();
                 viewModel.Inicializar();
-                _windowManager.ShowDialog(viewModel);
+                await _windowManager.ShowDialogAsync(viewModel);
                 if (viewModel.IsUsuarioAutenticado)
                 {
                     ConfiguracionAplicacion.SetUsuario(viewModel.Usuario);
@@ -86,7 +94,39 @@ namespace Presentation.WpfApp.ViewModels
             {
                 var viewModel = IoC.Get<ListaSolicitudesViewModel>();
                 Items.Add(viewModel);
-                ActivateItem(viewModel);
+                await ActivateItemAsync(viewModel);
+            }
+            catch (Exception e)
+            {
+                await _dialogCoordinator.ShowMessageAsync(this, "Error", e.ToString());
+            }
+        }
+
+        public async Task ValidarExistenciaEnAddAsync()
+        {
+            try
+            {
+                var openFileDialog = new OpenFileDialog
+                {
+                    Multiselect = true,
+                    Filter = "XML|*.xml"
+                };
+                if (openFileDialog.ShowDialog() != true)
+                {
+                    return;
+                }
+
+                var progressDialogController = await _dialogCoordinator.ShowProgressAsync(this, "Cargando", "Cargando...");
+                progressDialogController.SetIndeterminate();
+                await Task.Delay(1000);
+
+                var comprobantes = await _mediator.Send(new LeerEncabezadosCfdiQuery(openFileDialog.FileNames));
+                var listaCfdisViewModel = IoC.Get<ListaCfdisViewModel>();
+                listaCfdisViewModel.Inicializar(comprobantes);
+
+                await progressDialogController.CloseAsync();
+
+                await _windowManager.ShowDialogAsync(listaCfdisViewModel);
             }
             catch (Exception e)
             {
@@ -100,7 +140,8 @@ namespace Presentation.WpfApp.ViewModels
             {
                 var viewModel = IoC.Get<ConfiguracionGeneralViewModel>();
                 await viewModel.InicializarAsync();
-                _windowManager.ShowWindow(viewModel);
+                await _windowManager.ShowWindowAsync(viewModel);
+                await ConfiguracionAplicacion.CargarConfiguracionAsync();
             }
             catch (Exception e)
             {
@@ -114,7 +155,7 @@ namespace Presentation.WpfApp.ViewModels
             {
                 var viewModel = IoC.Get<ListaRolesViewModel>();
                 await viewModel.InicializarAsync();
-                _windowManager.ShowDialog(viewModel);
+                await _windowManager.ShowDialogAsync(viewModel);
             }
             catch (Exception e)
             {
@@ -128,7 +169,7 @@ namespace Presentation.WpfApp.ViewModels
             {
                 var viewModel = IoC.Get<ListaUsuariosViewModel>();
                 await viewModel.InicializarAsync();
-                _windowManager.ShowDialog(viewModel);
+                await _windowManager.ShowDialogAsync(viewModel);
             }
             catch (Exception e)
             {
@@ -142,7 +183,7 @@ namespace Presentation.WpfApp.ViewModels
             {
                 var viewModel = IoC.Get<ActualizacionAplicacionViewModel>();
                 await viewModel.ChecarActualizacionDisponibleAsync();
-                _windowManager.ShowDialog(viewModel);
+                await _windowManager.ShowDialogAsync(viewModel);
             }
             catch (Exception ex)
             {
@@ -171,7 +212,7 @@ namespace Presentation.WpfApp.ViewModels
             try
             {
                 var viewModel = IoC.Get<AcercaDeViewModel>();
-                _windowManager.ShowDialog(viewModel);
+                await _windowManager.ShowDialogAsync(viewModel);
             }
             catch (Exception ex)
             {
@@ -198,7 +239,7 @@ namespace Presentation.WpfApp.ViewModels
             await viewModel.ChecarActualizacionDisponibleAsync();
             if (viewModel.ActualizacionAplicacion.ActualizacionDisponible)
             {
-                _windowManager.ShowWindow(viewModel);
+                await _windowManager.ShowWindowAsync(viewModel);
             }
 
             await ConfiguracionAplicacion.CargarConfiguracionAsync();
@@ -212,6 +253,7 @@ namespace Presentation.WpfApp.ViewModels
             NotifyOfPropertyChange(() => CanVerConfiguracionGeneralViewAsync);
             NotifyOfPropertyChange(() => CanVerListaRolesViewAsync);
             NotifyOfPropertyChange(() => CanVerListaUsuariosViewAsync);
+            NotifyOfPropertyChange(() => CanValidarExistenciaEnAddAsync);
         }
     }
 }

@@ -74,7 +74,7 @@ namespace Presentation.WpfApp.ViewModels.Solicitudes
             {
                 var viewModel = IoC.Get<XmlViewerViewModel>();
                 viewModel.Inicializar(Solicitud.SolicitudAutenticacion.Solicitud);
-                _windowManager.ShowDialog(viewModel);
+                await _windowManager.ShowDialogAsync(viewModel);
             }
             catch (Exception e)
             {

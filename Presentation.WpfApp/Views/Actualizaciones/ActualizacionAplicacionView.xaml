@@ -1,20 +1,19 @@
 ﻿<controls:MetroWindow x:Class="Presentation.WpfApp.Views.Actualizaciones.ActualizacionAplicacionView"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Presentation.WpfApp.Views.Actualizaciones"
-        xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
-        xmlns:dialog="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
-        xmlns:cal="clr-namespace:Caliburn.Micro;assembly=Caliburn.Micro.Platform"
-        xmlns:viewModels="clr-namespace:Presentation.WpfApp.ViewModels.Actualizaciones"
-        mc:Ignorable="d"
-        WindowStartupLocation="CenterOwner"
-        Width="700"
-        Height="200"
-        d:DataContext="{d:DesignInstance Type=viewModels:ActualizacionAplicacionViewModel, IsDesignTimeCreatable=False}"
-        cal:Bind.AtDesignTime="True"
-        dialog:DialogParticipation.Register="{Binding}">
+                      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                      xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+                      xmlns:dialog="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
+                      xmlns:cal="clr-namespace:Caliburn.Micro;assembly=Caliburn.Micro.Platform"
+                      xmlns:viewModels="clr-namespace:Presentation.WpfApp.ViewModels.Actualizaciones"
+                      mc:Ignorable="d"
+                      WindowStartupLocation="CenterOwner"
+                      Width="700"
+                      Height="200"
+                      d:DataContext="{d:DesignInstance Type=viewModels:ActualizacionAplicacionViewModel, IsDesignTimeCreatable=False}"
+                      cal:Bind.AtDesignTime="True"
+                      dialog:DialogParticipation.Register="{Binding}">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -39,12 +38,12 @@
             <Button Content="Cancelar"
                     x:Name="CerrarVista"
                     Margin="5"
-                    Style="{DynamicResource SquareButtonStyle}"
+                    Style="{StaticResource MahApps.Styles.Button.Square}"
                     Width="150" />
             <Button Content="Descargar Actualizacion"
                     x:Name="DescargarActualizacionAsync"
                     Margin="5"
-                    Style="{StaticResource AccentedSquareButtonStyle}"
+                    Style="{StaticResource MahApps.Styles.Button.Square.Accent}"
                     Width="150" />
         </StackPanel>
     </Grid>

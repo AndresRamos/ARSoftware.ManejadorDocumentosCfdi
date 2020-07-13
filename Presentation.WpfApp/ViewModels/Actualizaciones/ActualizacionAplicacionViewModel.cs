@@ -71,12 +71,12 @@ namespace Presentation.WpfApp.ViewModels.Actualizaciones
             }
 
             IsDescargando = false;
-            TryClose();
+            await TryCloseAsync();
         }
 
-        public void CerrarVista()
+        public async Task CerrarVista()
         {
-            TryClose();
+            await TryCloseAsync();
         }
 
         private void RaiseGuards()

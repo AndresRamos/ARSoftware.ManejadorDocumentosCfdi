@@ -29,6 +29,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.ContpaqiCome
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.ContpaqiContabilidad", "Infrastructure.ContpaqiContabilidad\Infrastructure.ContpaqiContabilidad.csproj", "{D20BE0C8-527B-47D8-AB90-BEE9527BEF5A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.ContpaqiAdd", "Infrastructure.ContpaqiAdd\Infrastructure.ContpaqiAdd.csproj", "{E4967779-A460-4775-B7EB-05E7068049B5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -67,6 +69,10 @@ Global
 		{D20BE0C8-527B-47D8-AB90-BEE9527BEF5A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D20BE0C8-527B-47D8-AB90-BEE9527BEF5A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D20BE0C8-527B-47D8-AB90-BEE9527BEF5A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E4967779-A460-4775-B7EB-05E7068049B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E4967779-A460-4775-B7EB-05E7068049B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E4967779-A460-4775-B7EB-05E7068049B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E4967779-A460-4775-B7EB-05E7068049B5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -84,6 +90,7 @@ Global
 		{B7031143-FEBE-4085-8470-8F97266F84D9} = {08FE9639-A8E5-4842-B759-A468D64D396C}
 		{7868FA1F-FC3C-4D6C-977C-69DA5A465BA6} = {CE0041C5-70EF-408F-8440-AEBD1A4EAE58}
 		{D20BE0C8-527B-47D8-AB90-BEE9527BEF5A} = {CE0041C5-70EF-408F-8440-AEBD1A4EAE58}
+		{E4967779-A460-4775-B7EB-05E7068049B5} = {CE0041C5-70EF-408F-8440-AEBD1A4EAE58}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {083908A8-04B0-44CB-82A4-BE7B602CE5AC}

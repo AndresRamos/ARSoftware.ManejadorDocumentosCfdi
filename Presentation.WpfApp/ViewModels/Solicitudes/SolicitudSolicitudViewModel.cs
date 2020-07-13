@@ -94,7 +94,7 @@ namespace Presentation.WpfApp.ViewModels.Solicitudes
             {
                 var viewModel = IoC.Get<XmlViewerViewModel>();
                 viewModel.Inicializar(solicitud.Solicitud);
-                _windowManager.ShowDialog(viewModel);
+                await _windowManager.ShowDialogAsync(viewModel);
             }
             catch (Exception e)
             {
@@ -102,10 +102,10 @@ namespace Presentation.WpfApp.ViewModels.Solicitudes
             }
         }
 
-        public bool CanVerSolicitudXmlAsync(SolicitudSolicitudDto solicitud)
-        {
-            return !string.IsNullOrEmpty(solicitud?.Solicitud);
-        }
+        //public bool CanVerSolicitudXmlAsync(SolicitudSolicitudDto solicitud)
+        //{
+        //    return !string.IsNullOrEmpty(solicitud?.Solicitud);
+        //}
 
         public async Task VerRespuestaXmlAsync(SolicitudSolicitudDto solicitud)
         {
@@ -113,7 +113,7 @@ namespace Presentation.WpfApp.ViewModels.Solicitudes
             {
                 var viewModel = IoC.Get<XmlViewerViewModel>();
                 viewModel.Inicializar(solicitud.Respuesta);
-                _windowManager.ShowDialog(viewModel);
+                await _windowManager.ShowDialogAsync(viewModel);
             }
             catch (Exception e)
             {

@@ -11,17 +11,15 @@ namespace Presentation.WpfApp.ViewModels.Usuarios
     {
         private readonly IDialogCoordinator _dialogCoordinator;
         private readonly IMediator _mediator;
-        private readonly IWindowManager _windowManager;
         private string _apellido;
         private string _contrasena;
         private string _email;
         private string _nombreUsuario;
         private string _primerNombre;
 
-        public CrearUsuarioViewModel(IMediator mediator, IWindowManager windowManager, IDialogCoordinator dialogCoordinator)
+        public CrearUsuarioViewModel(IMediator mediator, IDialogCoordinator dialogCoordinator)
         {
             _mediator = mediator;
-            _windowManager = windowManager;
             _dialogCoordinator = dialogCoordinator;
             DisplayName = "Crear Usuario";
         }
@@ -106,7 +104,7 @@ namespace Presentation.WpfApp.ViewModels.Usuarios
             try
             {
                 await _mediator.Send(new CrearUsuarioCommand(PrimerNombre, Apellido, Email, NombreUsuario, Contrasena));
-                TryClose();
+                await TryCloseAsync();
             }
             catch (Exception e)
             {
@@ -114,9 +112,9 @@ namespace Presentation.WpfApp.ViewModels.Usuarios
             }
         }
 
-        public void Cancelar()
+        public async Task Cancelar()
         {
-            TryClose();
+            await TryCloseAsync();
         }
     }
 }

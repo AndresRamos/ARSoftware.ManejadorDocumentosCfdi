@@ -7,23 +7,36 @@
              xmlns:dialog="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
              xmlns:viewModels="clr-namespace:Presentation.WpfApp.ViewModels.Solicitudes"
              mc:Ignorable="d"
-             d:DesignHeight="450" d:DesignWidth="800"
+             d:DesignHeight="450"
+             d:DesignWidth="800"
              d:DataContext="{d:DesignInstance Type=viewModels:SolicitudPaquetesViewModel, IsDesignTimeCreatable=False}"
-             cal:Bind.AtDesignTime="True" dialog:DialogParticipation.Register="{Binding}">
+             cal:Bind.AtDesignTime="True"
+             dialog:DialogParticipation.Register="{Binding}">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <TextBlock Grid.Row="0" Text="{Binding DisplayName}" FontWeight="Bold" FontSize="20" VerticalAlignment="Center"
+        <TextBlock Grid.Row="0"
+                   Text="{Binding DisplayName}"
+                   FontWeight="Bold"
+                   FontSize="20"
+                   VerticalAlignment="Center"
                    Margin="5" />
-        <StackPanel Grid.Row="1" Orientation="Horizontal">
-            <Button Content="Guardar" cal:Message.Attach="GuardarPaqueteAsync" VerticalAlignment="Center" Width="150"
+        <StackPanel Grid.Row="1"
+                    Orientation="Horizontal">
+            <Button Content="Guardar"
+                    cal:Message.Attach="GuardarPaqueteAsync"
+                    VerticalAlignment="Center"
+                    Width="150"
                     Margin="5"
-                    Style="{StaticResource AccentedSquareButtonStyle}" />
+                    Style="{StaticResource MahApps.Styles.Button.Square.Accent}" />
         </StackPanel>
-        <DataGrid Grid.Row="2" ItemsSource="{Binding Paquetes}" SelectedItem="{Binding PaqueteSeleccionado}"
-                  IsReadOnly="True" Margin="5" />
+        <DataGrid Grid.Row="2"
+                  ItemsSource="{Binding Paquetes}"
+                  SelectedItem="{Binding PaqueteSeleccionado}"
+                  IsReadOnly="True"
+                  Margin="5" />
     </Grid>
 </UserControl>
