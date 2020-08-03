@@ -36,10 +36,18 @@ namespace Core.Domain.Entities
 
         public ICollection<Paquete> Paquetes { get; set; }
 
-        public static Solicitud CreateNew(DateTime fechaInicio, DateTime fechaFin, string rfcEmisor, string rfcReceptor, string rfcSolicitante, string tipoSolicitud)
+        public int EmpresaId { get; set; }
+        public Empresa Empresa { get; set; }
+
+        public int UsuarioId { get; set; }
+        public Usuario Usuario { get; set; }
+
+        public static Solicitud CreateNew(int empresaId,int usuarioId, DateTime fechaInicio, DateTime fechaFin, string rfcEmisor, string rfcReceptor, string rfcSolicitante, string tipoSolicitud)
         {
             var solicitud = new Solicitud
             {
+                EmpresaId = empresaId,
+                UsuarioId = usuarioId,
                 FechaCreacionUtc = DateTime.UtcNow,
                 FechaInicio = fechaInicio,
                 FechaFin = fechaFin,

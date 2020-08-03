@@ -19,6 +19,8 @@ namespace Core.Application.Solicitudes.Commands.CrearSolicitud
         public async Task<int> Handle(CrearSolicitudCommand request, CancellationToken cancellationToken)
         {
             var nuevaSolicitud = Solicitud.CreateNew(
+                request.EmpresaId,
+                request.UsuarioId,
                 request.FechaInicio,
                 request.FechaFin,
                 request.RfcEmisor,

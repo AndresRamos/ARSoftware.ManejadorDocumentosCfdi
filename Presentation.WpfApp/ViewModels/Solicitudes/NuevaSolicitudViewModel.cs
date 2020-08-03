@@ -1,8 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Caliburn.Micro;
-using Core.Application.ConfiguracionGeneral.Queries.BuscarConfiguracionGeneral;
+using Common.DateRanges;
 using Core.Application.Rfcs.Queries.BuscarRfcsComercial;
 using Core.Application.Rfcs.Queries.BuscarRfcsContabilidad;
 using Core.Application.Solicitudes.Commands.CrearSolicitud;
@@ -10,29 +11,90 @@ using Core.Application.TiposSolicitud.Models;
 using Core.Application.TiposSolicitud.Queries.BuscarTiposSolicitud;
 using MahApps.Metro.Controls.Dialogs;
 using MediatR;
+using Presentation.WpfApp.Models;
 using Presentation.WpfApp.ViewModels.Rfcs;
 
 namespace Presentation.WpfApp.ViewModels.Solicitudes
 {
     public sealed class NuevaSolicitudViewModel : Screen
     {
+        private readonly ConfiguracionAplicacion _configuracionAplicacion;
         private readonly IDialogCoordinator _dialogCoordinator;
         private readonly IMediator _mediator;
-
         private readonly IWindowManager _windowManager;
-        private DateTime _fechaFin = DateTime.Today;
-        private DateTime _fechaInicio = DateTime.Today;
+        private DateTime _fechaFin;
+        private DateTime _fechaInicio;
         private string _rfcEmisor;
         private string _rfcReceptor;
         private string _rfcSolicitante;
+        private TipoRangoFechaEnum _tipoRangoFechaSeleccionado;
         private TipoSolicitudDto _tipoSolicitudSeleccionado;
 
-        public NuevaSolicitudViewModel(IMediator mediator, IDialogCoordinator dialogCoordinator, IWindowManager windowManager)
+        public NuevaSolicitudViewModel(ConfiguracionAplicacion configuracionAplicacion, IMediator mediator, IDialogCoordinator dialogCoordinator, IWindowManager windowManager)
         {
+            _configuracionAplicacion = configuracionAplicacion;
             _mediator = mediator;
             _dialogCoordinator = dialogCoordinator;
             _windowManager = windowManager;
             DisplayName = "Nueva Solicitud";
+            TipoRangoFechaSeleccionado = TipoRangoFechaEnum.Hoy;
+        }
+
+        public IEnumerable<TipoRangoFechaEnum> TiposRangoFecha => Enum.GetValues(typeof(TipoRangoFechaEnum)).Cast<TipoRangoFechaEnum>();
+
+        public TipoRangoFechaEnum TipoRangoFechaSeleccionado
+        {
+            get => _tipoRangoFechaSeleccionado;
+            set
+            {
+                if (_tipoRangoFechaSeleccionado == value)
+                {
+                    return;
+                }
+
+                _tipoRangoFechaSeleccionado = value;
+                NotifyOfPropertyChange(() => TipoRangoFechaSeleccionado);
+
+                switch (TipoRangoFechaSeleccionado)
+                {
+                    case TipoRangoFechaEnum.Custumizado:
+                        break;
+                    case TipoRangoFechaEnum.Hoy:
+                        FechaInicio = RangoFecha.Hoy.Inicio;
+                        FechaFin = RangoFecha.Hoy.Fin;
+                        break;
+                    case TipoRangoFechaEnum.Ayer:
+                        FechaInicio = RangoFecha.Ayer.Inicio;
+                        FechaFin = RangoFecha.Ayer.Fin;
+                        break;
+                    case TipoRangoFechaEnum.EstaSemana:
+                        FechaInicio = RangoFecha.EstaSemana.Inicio;
+                        FechaFin = RangoFecha.EstaSemana.Fin;
+                        break;
+                    case TipoRangoFechaEnum.EstaSemanaAlDia:
+                        FechaInicio = RangoFecha.EstaSemanaAlDia.Inicio;
+                        FechaFin = RangoFecha.EstaSemanaAlDia.Fin;
+                        break;
+                    case TipoRangoFechaEnum.EsteMes:
+                        FechaInicio = RangoFecha.EsteMes.Inicio;
+                        FechaFin = RangoFecha.EsteMes.Fin;
+                        break;
+                    case TipoRangoFechaEnum.EsteMesAlDia:
+                        FechaInicio = RangoFecha.EsteMesAlDia.Inicio;
+                        FechaFin = RangoFecha.EsteMesAlDia.Fin;
+                        break;
+                    case TipoRangoFechaEnum.EsteAno:
+                        FechaInicio = RangoFecha.EsteAno.Inicio;
+                        FechaFin = RangoFecha.EsteAno.Fin;
+                        break;
+                    case TipoRangoFechaEnum.EsteAnoAlDia:
+                        FechaInicio = RangoFecha.EsteAnoAlDia.Inicio;
+                        FechaFin = RangoFecha.EsteAnoAlDia.Fin;
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+            }
         }
 
         public DateTime FechaInicio
@@ -47,6 +109,11 @@ namespace Presentation.WpfApp.ViewModels.Solicitudes
 
                 _fechaInicio = value;
                 NotifyOfPropertyChange(() => FechaInicio);
+
+                if (TipoRangoFechaSeleccionado != TipoRangoFechaEnum.Custumizado)
+                {
+                    TipoRangoFechaSeleccionado = TipoRangoFechaEnum.Custumizado;
+                }
             }
         }
 
@@ -62,6 +129,13 @@ namespace Presentation.WpfApp.ViewModels.Solicitudes
 
                 _fechaFin = value;
                 NotifyOfPropertyChange(() => FechaFin);
+
+                if (TipoRangoFechaSeleccionado != TipoRangoFechaEnum.Custumizado)
+                {
+                    TipoRangoFechaSeleccionado = TipoRangoFechaEnum.Custumizado;
+                }
+
+
             }
         }
 
@@ -129,9 +203,8 @@ namespace Presentation.WpfApp.ViewModels.Solicitudes
 
         public async Task InicializarAsync()
         {
-            var configuracionGeneral = await _mediator.Send(new BuscarConfiguracionGeneralQuery());
-            RfcReceptor = configuracionGeneral.CertificadoSat.Rfc;
-            RfcSolicitante = configuracionGeneral.CertificadoSat.Rfc;
+            RfcReceptor = _configuracionAplicacion.ConfiguracionGeneral.CertificadoSat.Rfc;
+            RfcSolicitante = _configuracionAplicacion.ConfiguracionGeneral.CertificadoSat.Rfc;
             await CargarTiposSolicitudAsync();
         }
 
@@ -141,12 +214,12 @@ namespace Presentation.WpfApp.ViewModels.Solicitudes
             TiposSolicitud.AddRange(await _mediator.Send(new BuscarTiposSolicitudQuery()));
             TipoSolicitudSeleccionado = TiposSolicitud.FirstOrDefault();
         }
-
+        
         public async Task CrearSolicitudAsync()
         {
             try
             {
-                await _mediator.Send(new CrearSolicitudCommand(FechaInicio, FechaFin, RfcEmisor, RfcReceptor, RfcSolicitante, TipoSolicitudSeleccionado.Name));
+                await _mediator.Send(new CrearSolicitudCommand(_configuracionAplicacion.Empresa.Id, _configuracionAplicacion.Usuario.Id, FechaInicio, FechaFin, RfcEmisor, RfcReceptor, RfcSolicitante, TipoSolicitudSeleccionado.Name));
                 await TryCloseAsync();
             }
             catch (Exception e)

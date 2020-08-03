@@ -44,10 +44,10 @@
       <HintPath>..\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="MediatR, Version=8.0.0.0, Culture=neutral, PublicKeyToken=bb9a41a5e8aaa7e2, processorArchitecture=MSIL">
-      <HintPath>..\packages\MediatR.8.0.2\lib\net461\MediatR.dll</HintPath>
+      <HintPath>..\packages\MediatR.8.1.0\lib\net461\MediatR.dll</HintPath>
     </Reference>
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <HintPath>..\packages\NLog.4.7.2\lib\net45\NLog.dll</HintPath>
+      <HintPath>..\packages\NLog.4.7.3\lib\net45\NLog.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -104,13 +104,26 @@
     <Compile Include="ConfiguracionGeneral\Commands\ActualizarConfiguracionContpaqiContabilidad\ActualizarConfiguracionContpaqiContabilidadCommandHandler.cs" />
     <Compile Include="ConfiguracionGeneral\Models\ConfiguracionContpaqiComercialDto.cs" />
     <Compile Include="ConfiguracionGeneral\Models\ConfiguracionContpaqiContabilidadDto.cs" />
+    <Compile Include="Empresas\Commands\ActualizarEmpresaPerfil\ActualizarEmpresaPerfilCommand.cs" />
+    <Compile Include="Empresas\Commands\ActualizarEmpresaPerfil\ActualizarEmpresaPerfilCommandHandler.cs" />
+    <Compile Include="Empresas\Commands\CrearEmpresa\CrearEmpresaCommand.cs" />
+    <Compile Include="Empresas\Commands\CrearEmpresa\CrearEmpresaCommandHandler.cs" />
+    <Compile Include="Empresas\Commands\EliminarEmpresa\EliminarEmpresaCommand.cs" />
+    <Compile Include="Empresas\Commands\EliminarEmpresa\EliminarEmpresaCommandHandler.cs" />
     <Compile Include="Empresas\Interfaces\IEmpresaComercialRepository.cs" />
     <Compile Include="Empresas\Interfaces\IEmpresaContabilidadRepository.cs" />
     <Compile Include="Empresas\Models\EmpresaContpaqiDto.cs" />
+    <Compile Include="Empresas\Models\EmpresaPerfilDto.cs" />
+    <Compile Include="Empresas\Queries\BuscarEmpresaPorId\BuscarEmpresaPorIdQuery.cs" />
+    <Compile Include="Empresas\Queries\BuscarEmpresaPorId\BuscarEmpresaPorIdQueryHandler.cs" />
     <Compile Include="Empresas\Queries\BuscarEmpresasComercial\BuscarEmpresasComercialQuery.cs" />
     <Compile Include="Empresas\Queries\BuscarEmpresasComercial\BuscarEmpresasComercialQueryHandler.cs" />
     <Compile Include="Empresas\Queries\BuscarEmpresasContabilidad\BuscarEmpresasContabilidadQuery.cs" />
     <Compile Include="Empresas\Queries\BuscarEmpresasContabilidad\BuscarEmpresasContabilidadQueryHandler.cs" />
+    <Compile Include="Empresas\Queries\BuscarEmpresasPermitidasPorUsuario\BuscarEmpresasPermitidasPorUsuarioQuery.cs" />
+    <Compile Include="Empresas\Queries\BuscarEmpresasPermitidasPorUsuario\BuscarEmpresasPermitidasPorUsuarioQueryHandler.cs" />
+    <Compile Include="Empresas\Queries\BuscarEmpresas\BuscarEmpresasQuery.cs" />
+    <Compile Include="Empresas\Queries\BuscarEmpresas\BuscarEmpresasQueryHandler.cs" />
     <Compile Include="Paquetes\Commands\ExportarArchivoZip\ExportarArchivoZipCommand.cs" />
     <Compile Include="Paquetes\Commands\ExportarArchivoZip\ExportarArchivoZipCommandHandler.cs" />
     <Compile Include="Paquetes\Models\PaqueteDto.cs" />
@@ -177,6 +190,8 @@
     <Compile Include="TiposSolicitud\Queries\BuscarTiposSolicitud\BuscarTiposSolicitudQueryHandler.cs" />
     <Compile Include="Usuarios\Commands\ActualizarPerfilUsuario\ActualizarPerfilUsuarioCommand.cs" />
     <Compile Include="Usuarios\Commands\ActualizarPerfilUsuario\ActualizarPerfilUsuarioCommandHandler.cs" />
+    <Compile Include="Usuarios\Commands\AgregarEmpresaPermitida\AgregarEmpresaPermitidaCommand.cs" />
+    <Compile Include="Usuarios\Commands\AgregarEmpresaPermitida\AgregarEmpresaPermitidaCommandHandler.cs" />
     <Compile Include="Usuarios\Commands\AgregarRol\AgregarRolCommand.cs" />
     <Compile Include="Usuarios\Commands\AgregarRol\AgregarRolCommandHandler.cs" />
     <Compile Include="Usuarios\Commands\CambiarContrasena\CambiarContrasenaCommand.cs" />
@@ -185,6 +200,8 @@
     <Compile Include="Usuarios\Commands\CrearUsuarioAdministrador\CrearUsuarioAdministradorCommandHandler.cs" />
     <Compile Include="Usuarios\Commands\CrearUsuario\CrearUsuarioCommand.cs" />
     <Compile Include="Usuarios\Commands\CrearUsuario\CrearUsuarioCommandHandler.cs" />
+    <Compile Include="Usuarios\Commands\RemoverEmpresaPermitida\RemoverEmpresaPermitidaCommand.cs" />
+    <Compile Include="Usuarios\Commands\RemoverEmpresaPermitida\RemoverEmpresaPermitidaCommandHandler.cs" />
     <Compile Include="Usuarios\Commands\RemoverRol\RemoverRolCommand.cs" />
     <Compile Include="Usuarios\Commands\RemoverRol\RemoverRolCommandHandler.cs" />
     <Compile Include="Usuarios\Models\UsuarioDto.cs" />

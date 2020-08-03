@@ -1,70 +1,90 @@
 ﻿using System;
-using System.IO;
-using System.Web;
-using ARSoftware.Cfdi.DescargaMasiva.Constants;
-using ARSoftware.Cfdi.DescargaMasiva.Enumerations;
-using ARSoftware.Cfdi.DescargaMasiva.Helpers;
-using ARSoftware.Cfdi.DescargaMasiva.Models;
-using ARSoftware.Cfdi.DescargaMasiva.Services;
+using System.CommandLine;
+using System.CommandLine.Invocation;
+using System.Runtime.InteropServices;
+using System.Threading.Tasks;
+using Autofac;
+using Common.DateRanges;
+using Core.Application.Autenticacion.Queries.ValidarCredencialesUsuario;
+using Core.Application.Empresas.Queries.BuscarEmpresaPorId;
+using Core.Application.Solicitudes.Commands.CrearSolicitud;
+using Core.Application.Solicitudes.Commands.ProcesarSolicitud;
+using MediatR;
+using Presentation.ConsoleApp.Config;
+using Presentation.ConsoleApp.Models;
 
 namespace Presentation.ConsoleApp
 {
     public class Program
     {
-        public static void Main(string[] args)
+        private static IContainer _container;
+
+        public static async Task Main(string[] args)
         {
-            // Parameters
-            var certificadoPfx = new byte[0];
-            var certificadoPassword = "";
-            var fechaInicio = DateTime.Today;
-            var fechaFin = DateTime.Today;
-            var tipoSolicitud = TipoSolicitud.Cfdi;
-            var rfcEmisor = "";
-            var rfcReceptor = "";
-            var rfcSolicitante = "";
-
-            var certificadoSat = X509Certificate2Helper.GetCertificate(certificadoPfx, certificadoPassword);
-
-            // Autenticacion
-            var autenticacionService = new AutenticacionService(CfdiDescargaMasivaWebServiceUrls.AutenticacionUrl, CfdiDescargaMasivaWebServiceUrls.AutenticacionSoapActionUrl);
-            var autenticacionRequest = AutenticacionRequest.CreateInstance();
-            var soapRequestEnvelopeXml = autenticacionService.GenerateSoapRequestEnvelopeXmlContent(autenticacionRequest, certificadoSat);
-            var autenticacionResult = autenticacionService.SendSoapRequest(soapRequestEnvelopeXml);
-            var authorizationHttpRequestHeader = $@"WRAP access_token=""{HttpUtility.UrlDecode(autenticacionResult.Token)}""";
-
-            // Solicitud
-            var solicitudService = new SolicitudService(CfdiDescargaMasivaWebServiceUrls.SolicitudUrl, CfdiDescargaMasivaWebServiceUrls.SolicitudSoapActionUrl);
-            var solicitudRequest = SolicitudRequest.CreateInstance(
-                fechaInicio,
-                fechaFin,
-                tipoSolicitud,
-                rfcEmisor,
-                rfcReceptor,
-                rfcSolicitante);
-            soapRequestEnvelopeXml = SolicitudService.GenerateSoapRequestEnvelopeXmlContent(solicitudRequest, certificadoSat);
-            var solicitudResult = solicitudService.SendSoapRequest(soapRequestEnvelopeXml, authorizationHttpRequestHeader);
-
-            // Verificacion
-            var verificaSolicitudService = new VerificacionService(CfdiDescargaMasivaWebServiceUrls.VerificacionUrl, CfdiDescargaMasivaWebServiceUrls.VerificacionSoapActionUrl);
-            var verificacionRequest = VerificacionRequest.CreateInstance(solicitudResult.IdSolicitud, rfcSolicitante);
-            soapRequestEnvelopeXml = verificaSolicitudService.GenerateSoapRequestEnvelopeXmlContent(verificacionRequest, certificadoSat);
-            var verificacionResult = verificaSolicitudService.SendSoapRequest(soapRequestEnvelopeXml, authorizationHttpRequestHeader);
-
-            // Descarga
-            var descargarSolicitudService = new DescargaService(CfdiDescargaMasivaWebServiceUrls.DescargaUrl, CfdiDescargaMasivaWebServiceUrls.DescargaSoapActionUrl);
-            foreach (var idsPaquete in verificacionResult.IdsPaquetes)
+            try
             {
-                var descargaRequest = DescargaRequest.CreateInstace(idsPaquete, rfcSolicitante);
-                soapRequestEnvelopeXml = descargarSolicitudService.GenerateSoapRequestEnvelopeXmlContent(descargaRequest, certificadoSat);
-                var descargaResult = descargarSolicitudService.SendSoapRequest(soapRequestEnvelopeXml, authorizationHttpRequestHeader);
-
-                var fileName = Path.Combine(@"C:\CFDIS", $"{idsPaquete}.zip");
-                var paqueteContenido = Convert.FromBase64String(descargaResult.Paquete);
-
-                using (var fileStream = File.Create(fileName, paqueteContenido.Length))
+                var crearCommand = new Command("crear")
                 {
-                    fileStream.Write(paqueteContenido, 0, paqueteContenido.Length);
-                }
+                    new Option<TipoRangoFechaEnum>("--tipo-rango-fecha", () => TipoRangoFechaEnum.Hoy),
+                    new Option<DateTime>("--fecha-inicio", () => DateTime.Today),
+                    new Option<DateTime>("--fecha-fin", () => DateTime.Today),
+                    new Option<TipoSolicitudEnum>("--tipo-solicitud", () => TipoSolicitudEnum.Recibidos)
+                };
+                crearCommand.Handler = CommandHandler.Create<CrearCommandOptions>(CrearCommandActionAsync);
+
+                var procesarCommand = new Command("procesar")
+                {
+                    new Option<int>("--solicitud-id")
+                };
+                procesarCommand.Handler = CommandHandler.Create<ProcesarCommandOptions>(ProcesarCommandActionAsync);
+
+                var command = new RootCommand
+                {
+                    new Option<string>(new[] {"--usuario-nombre", "-u"}),
+                    new Option<string>(new[] {"--usuario-contrasena", "-c"}),
+                    new Option<string>(new[] {"--empresa-nombre", "-e"}),
+                    crearCommand,
+                    procesarCommand
+                };
+
+                _container = IocContainerConfig.Configure();
+
+                var result = await command.InvokeAsync("-u usuario -c contrasena -e empresa crear");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+
+            Console.ReadLine();
+        }
+
+        private static void ProcesarCommandActionAsync(ProcesarCommandOptions obj)
+        {
+            Console.WriteLine("Dentro de prcesar command actions");
+        }
+
+        private static async Task CrearCommandActionAsync(CrearCommandOptions options)
+        {
+            var mediator = _container.Resolve<IMediator>();
+
+            var usuario = await mediator.Send(new ValidarCredencialesUsuarioQuery(options.UsuarioNombre, options.UsuarioContrasena));
+            if (usuario == null)
+            {
+                throw new ArgumentException("La credencales proporcionadas no son validas.", nameof(options.UsuarioNombre));
+            }
+
+            var empresa = await mediator.Send(new BuscarEmpresaPorIdQuery(1));
+            if (empresa == null)
+            {
+                throw new ArgumentException("No se encontro la empresa.", nameof(options.EmpresaNombre));
+            }
+
+            var solicitudId = await mediator.Send(new CrearSolicitudCommand(empresa.Id, usuario.Id, options.FechaInicio, options.FechaFin, "", "", "", "CFDI"));
+
+            if (true && solicitudId != 0)
+            {
+                await mediator.Send(new ProcesarSolicitudCommand(solicitudId));
             }
         }
     }

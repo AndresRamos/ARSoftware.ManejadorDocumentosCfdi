@@ -41,6 +41,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DateRanges\DateTimeHelpers.cs" />
+    <Compile Include="DateRanges\RangoFecha.cs" />
+    <Compile Include="DateRanges\TipoRangoFechaEnum.cs" />
     <Compile Include="Infrastructure\PasswordHasher.cs" />
     <Compile Include="LogPropertyConstants.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

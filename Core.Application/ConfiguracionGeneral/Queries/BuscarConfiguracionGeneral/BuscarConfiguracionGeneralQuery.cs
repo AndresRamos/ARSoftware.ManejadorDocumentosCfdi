@@ -5,5 +5,11 @@ namespace Core.Application.ConfiguracionGeneral.Queries.BuscarConfiguracionGener
 {
     public class BuscarConfiguracionGeneralQuery : IRequest<ConfiguracionGeneralDto>
     {
+        public BuscarConfiguracionGeneralQuery(int empresaId)
+        {
+            EmpresaId = empresaId;
+        }
+
+        public int EmpresaId { get; }
     }
 }

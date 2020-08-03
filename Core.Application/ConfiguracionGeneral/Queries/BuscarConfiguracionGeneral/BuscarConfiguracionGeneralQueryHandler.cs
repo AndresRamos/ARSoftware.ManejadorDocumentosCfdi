@@ -19,7 +19,7 @@ namespace Core.Application.ConfiguracionGeneral.Queries.BuscarConfiguracionGener
 
         public async Task<ConfiguracionGeneralDto> Handle(BuscarConfiguracionGeneralQuery request, CancellationToken cancellationToken)
         {
-            var configuracionGeneral = await _context.ConfiguracionGeneral.FirstAsync(cancellationToken);
+            var configuracionGeneral = await _context.ConfiguracionGeneral.SingleAsync(c => c.Id == request.EmpresaId, cancellationToken);
 
             return new ConfiguracionGeneralDto(
                 configuracionGeneral.Id,

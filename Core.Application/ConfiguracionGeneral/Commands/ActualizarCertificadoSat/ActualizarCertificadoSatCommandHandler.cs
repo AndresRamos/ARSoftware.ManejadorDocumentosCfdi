@@ -20,7 +20,7 @@ namespace Core.Application.ConfiguracionGeneral.Commands.ActualizarCertificadoSa
         {
             var configuracionGeneral = await _context.ConfiguracionGeneral.FirstAsync(cancellationToken);
 
-            configuracionGeneral.CertificadoSat = new CertificadoSat(request.CertificadoSat, request.Contrasena, request.RfcEmisor);
+            configuracionGeneral.CertificadoSat = CertificadoSat.CreateInstance(request.CertificadoSat, request.Contrasena, request.RfcEmisor);
 
             configuracionGeneral.RutaDirectorioDescargas = request.RutaDirectorioDescargas;
 

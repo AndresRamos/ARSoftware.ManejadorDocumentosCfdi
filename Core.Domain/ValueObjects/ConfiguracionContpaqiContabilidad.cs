@@ -20,6 +20,11 @@ namespace Core.Domain.ValueObjects
             };
         }
 
+        public static ConfiguracionContpaqiContabilidad CreateSinAsignar()
+        {
+            return CreateInstance("", EmpresaContpaqi.CreateSinAsignar());
+        }
+
         protected override IEnumerable<object> GetAtomicValues()
         {
             yield return ContpaqiSqlConnectionString;

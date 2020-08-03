@@ -6,9 +6,9 @@ namespace Core.Domain.Entities
     {
         public ConfiguracionGeneral()
         {
-            CertificadoSat = new CertificadoSat(null, "", "");
-            ConfiguracionContpaqiComercial = ConfiguracionContpaqiComercial.CreateInstance("", EmpresaContpaqi.CreateInstance("", "", ""));
-            ConfiguracionContpaqiContabilidad = ConfiguracionContpaqiContabilidad.CreateInstance("", EmpresaContpaqi.CreateInstance("", "", ""));
+            CertificadoSat = CertificadoSat.CreateSinAsignar();
+            ConfiguracionContpaqiComercial = ConfiguracionContpaqiComercial.CreateSinAsignar();
+            ConfiguracionContpaqiContabilidad = ConfiguracionContpaqiContabilidad.CreateSinAsignar();
         }
 
         public int Id { get; set; }

@@ -179,6 +179,40 @@
                     </DataGrid>
                 </Grid>
             </TabItem>
+            <TabItem Header="Empresas Permitidas">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <StackPanel Grid.Row="0"
+                                Orientation="Horizontal">
+                        <Button Content="Agregar"
+                                cal:Message.Attach="AgregarEmpresaPermitidaAsync"
+                                ToolTip="Agregar rol"
+                                VerticalAlignment="Center"
+                                Margin="5"
+                                Width="150" />
+                        <Button Content="Remover"
+                                cal:Message.Attach="RemoverEmpresaPermitidaAsync"
+                                ToolTip="Remover rol"
+                                VerticalAlignment="Center"
+                                Margin="5"
+                                Width="150" />
+                    </StackPanel>
+                    <DataGrid Grid.Row="1"
+                              ItemsSource="{Binding EmpresasPermitidas}"
+                              SelectedItem="{Binding EmpresaPermitidaSeleccionada}"
+                              Margin="5"
+                              AutoGenerateColumns="False"
+                              IsReadOnly="True">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Nombre"
+                                                Binding="{Binding Nombre}" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </TabItem>
         </TabControl>
     </Grid>
 </controls:MetroWindow>

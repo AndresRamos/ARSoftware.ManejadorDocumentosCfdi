@@ -28,6 +28,11 @@
                 <MenuItem Header="Cerrar Sesion"
                           cal:Message.Attach="CerrarSesionAsync" />
                 <Separator />
+                <MenuItem Header="Abrir Empresa"
+                          cal:Message.Attach="AbrirEmpresaAsync" />
+                <MenuItem Header="Cerrar Empresa"
+                          cal:Message.Attach="CerrarEmpresaAsync" />
+                <Separator />
                 <MenuItem Header="Salir"
                           cal:Message.Attach="Salir" />
             </MenuItem>
@@ -40,6 +45,8 @@
             <MenuItem Header="Configuracion">
                 <MenuItem Header="Configuracion General"
                           cal:Message.Attach="VerConfiguracionGeneralViewAsync" />
+                <MenuItem Header="Empresas"
+                          cal:Message.Attach="VerListaEmpresasViewAsync" />
                 <MenuItem Header="Roles"
                           cal:Message.Attach="VerListaRolesViewAsync" />
                 <MenuItem Header="Usuarios"

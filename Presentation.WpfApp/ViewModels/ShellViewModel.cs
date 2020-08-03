@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using Caliburn.Micro;
 using Core.Application.Cfdis.Queries.LeerEncabezadosCfdi;
+using Core.Application.Empresas.Queries.BuscarEmpresasPermitidasPorUsuario;
 using Core.Application.Permisos.Models;
 using MahApps.Metro.Controls.Dialogs;
 using MediatR;
@@ -12,6 +13,7 @@ using Presentation.WpfApp.ViewModels.Actualizaciones;
 using Presentation.WpfApp.ViewModels.Autenticacion;
 using Presentation.WpfApp.ViewModels.Cfdis;
 using Presentation.WpfApp.ViewModels.ConfiguracionGeneral;
+using Presentation.WpfApp.ViewModels.Empresas;
 using Presentation.WpfApp.ViewModels.Roles;
 using Presentation.WpfApp.ViewModels.Solicitudes;
 using Presentation.WpfApp.ViewModels.Usuarios;
@@ -38,11 +40,14 @@ namespace Presentation.WpfApp.ViewModels
 
         public bool CanIniciarSesionAsync => !ConfiguracionAplicacion.IsUsuarioAutenticado;
         public bool CanCerrarSesionAsync => ConfiguracionAplicacion.IsUsuarioAutenticado;
-        public bool CanVerListaSolicitudesViewAsync => ConfiguracionAplicacion.IsUsuarioAutenticado && ConfiguracionAplicacion.Usuario.TienePermiso(PermisosAplicacion.PuedeVerListaSolicitudes);
-        public bool CanVerConfiguracionGeneralViewAsync => ConfiguracionAplicacion.IsUsuarioAutenticado && ConfiguracionAplicacion.Usuario.TienePermiso(PermisosAplicacion.PuedeEditarConfiguracionGeneral);
+        public bool CanVerListaSolicitudesViewAsync => ConfiguracionAplicacion.IsUsuarioAutenticado && ConfiguracionAplicacion.Usuario.TienePermiso(PermisosAplicacion.PuedeVerListaSolicitudes) && ConfiguracionAplicacion.IsEmpresaAbierta;
+        public bool CanVerConfiguracionGeneralViewAsync => ConfiguracionAplicacion.IsUsuarioAutenticado && ConfiguracionAplicacion.Usuario.TienePermiso(PermisosAplicacion.PuedeEditarConfiguracionGeneral) && ConfiguracionAplicacion.IsEmpresaAbierta;
         public bool CanVerListaRolesViewAsync => ConfiguracionAplicacion.IsUsuarioAutenticado && ConfiguracionAplicacion.Usuario.TienePermiso(PermisosAplicacion.PuedeEditarUsuarios);
         public bool CanVerListaUsuariosViewAsync => ConfiguracionAplicacion.IsUsuarioAutenticado && ConfiguracionAplicacion.Usuario.TienePermiso(PermisosAplicacion.PuedeEditarUsuarios);
-        public bool CanValidarExistenciaEnAddAsync => ConfiguracionAplicacion.IsUsuarioAutenticado && ConfiguracionAplicacion.Usuario.TienePermiso(PermisosAplicacion.PuedeVerListaSolicitudes);
+        public bool CanValidarExistenciaEnAddAsync => ConfiguracionAplicacion.IsUsuarioAutenticado && ConfiguracionAplicacion.Usuario.TienePermiso(PermisosAplicacion.PuedeVerListaSolicitudes) && ConfiguracionAplicacion.IsEmpresaAbierta;
+        public bool CanVerListaEmpresasViewAsync => ConfiguracionAplicacion.IsUsuarioAutenticado && ConfiguracionAplicacion.Usuario.TienePermiso(PermisosAplicacion.PuedeEditarEmpresas) && !ConfiguracionAplicacion.IsEmpresaAbierta;
+        public bool CanAbrirEmpresaAsync => ConfiguracionAplicacion.IsUsuarioAutenticado && !ConfiguracionAplicacion.IsEmpresaAbierta;
+        public bool CanCerrarEmpresaAsync => ConfiguracionAplicacion.IsEmpresaAbierta;
 
         public async Task Salir()
         {
@@ -76,7 +81,55 @@ namespace Presentation.WpfApp.ViewModels
             try
             {
                 Items.Clear();
+                ConfiguracionAplicacion.CerrarEmpresa();
                 ConfiguracionAplicacion.SetUsuario(null);
+            }
+            catch (Exception e)
+            {
+                await _dialogCoordinator.ShowMessageAsync(this, "Error", e.ToString());
+            }
+            finally
+            {
+                RaiseGuards();
+            }
+        }
+
+        public async Task AbrirEmpresaAsync()
+        {
+            try
+            {
+                var seleccionarEmpresaViewModel = IoC.Get<SeleccionarEmpresaViewModel>();
+
+                if (ConfiguracionAplicacion.Usuario.TienePermiso(PermisosAplicacion.TodasLasEmpresasPermitidas))
+                {
+                    await seleccionarEmpresaViewModel.InicializarAsync();
+                }
+                else
+                {
+                    seleccionarEmpresaViewModel.Inicializar(await _mediator.Send(new BuscarEmpresasPermitidasPorUsuarioQuery(ConfiguracionAplicacion.Usuario.Id)));
+                }
+
+                await _windowManager.ShowDialogAsync(seleccionarEmpresaViewModel);
+                if (seleccionarEmpresaViewModel.SeleccionoEmpresa)
+                {
+                    await ConfiguracionAplicacion.AbrirEmpresaAsync(seleccionarEmpresaViewModel.EmpresaSeleccionada);
+                }
+            }
+            catch (Exception e)
+            {
+                await _dialogCoordinator.ShowMessageAsync(this, "Error", e.ToString());
+            }
+            finally
+            {
+                RaiseGuards();
+            }
+        }
+
+        public async Task CerrarEmpresaAsync()
+        {
+            try
+            {
+                ConfiguracionAplicacion.CerrarEmpresa();
             }
             catch (Exception e)
             {
@@ -142,6 +195,20 @@ namespace Presentation.WpfApp.ViewModels
                 await viewModel.InicializarAsync();
                 await _windowManager.ShowWindowAsync(viewModel);
                 await ConfiguracionAplicacion.CargarConfiguracionAsync();
+            }
+            catch (Exception e)
+            {
+                await _dialogCoordinator.ShowMessageAsync(this, "Error", e.ToString());
+            }
+        }
+
+        public async Task VerListaEmpresasViewAsync()
+        {
+            try
+            {
+                var viewModel = IoC.Get<ListaEmpresasViewModel>();
+                await viewModel.InicializarAsync();
+                await ActivateItemAsync(viewModel);
             }
             catch (Exception e)
             {
@@ -241,8 +308,6 @@ namespace Presentation.WpfApp.ViewModels
             {
                 await _windowManager.ShowWindowAsync(viewModel);
             }
-
-            await ConfiguracionAplicacion.CargarConfiguracionAsync();
         }
 
         private void RaiseGuards()
@@ -254,6 +319,9 @@ namespace Presentation.WpfApp.ViewModels
             NotifyOfPropertyChange(() => CanVerListaRolesViewAsync);
             NotifyOfPropertyChange(() => CanVerListaUsuariosViewAsync);
             NotifyOfPropertyChange(() => CanValidarExistenciaEnAddAsync);
+            NotifyOfPropertyChange(() => CanVerListaEmpresasViewAsync);
+            NotifyOfPropertyChange(() => CanAbrirEmpresaAsync);
+            NotifyOfPropertyChange(() => CanCerrarEmpresaAsync);
         }
     }
 }

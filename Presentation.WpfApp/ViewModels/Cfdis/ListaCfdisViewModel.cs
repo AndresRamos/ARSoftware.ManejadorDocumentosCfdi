@@ -75,9 +75,11 @@ namespace Presentation.WpfApp.ViewModels.Cfdis
 
         public async Task ExportarExcelAsync()
         {
-            var saveFileDialog = new SaveFileDialog();
-            saveFileDialog.Filter = "Excel | *.xlsx";
-            saveFileDialog.FileName = "CFDIs.xlsx";
+            var saveFileDialog = new SaveFileDialog
+            {
+                Filter = "Excel | *.xlsx", 
+                FileName = "CFDIs.xlsx"
+            };
             if (saveFileDialog.ShowDialog() != true)
             {
                 return;

@@ -9,18 +9,12 @@ namespace Infrastructure.Persistance.Migrations
     {
         public Configuration()
         {
-            AutomaticMigrationsEnabled = false;
+            AutomaticMigrationsEnabled = true;
         }
 
         protected override void Seed(ManejadorDocumentosCfdiDbContext context)
         {
-            var configuracionGeneral = context.ConfiguracionGeneral.FirstOrDefault();
-            if (configuracionGeneral is null)
-            {
-                configuracionGeneral = new ConfiguracionGeneral();
-                context.Entry(configuracionGeneral).State = EntityState.Added;
-                context.SaveChanges();
-            }
+          
         }
     }
 }

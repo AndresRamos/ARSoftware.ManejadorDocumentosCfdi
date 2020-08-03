@@ -66,7 +66,7 @@
       <HintPath>..\packages\Contpaqi.Sql.Contabilidad.Generales.1.0.3\lib\net452\Contpaqi.Sql.Contabilidad.Generales.dll</HintPath>
     </Reference>
     <Reference Include="ControlzEx, Version=4.0.0.0, Culture=neutral, PublicKeyToken=69f1c32f803d307e, processorArchitecture=MSIL">
-      <HintPath>..\packages\ControlzEx.4.3.1\lib\net462\ControlzEx.dll</HintPath>
+      <HintPath>..\packages\ControlzEx.4.3.2\lib\net462\ControlzEx.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.dll</HintPath>
@@ -81,22 +81,22 @@
       <HintPath>..\packages\MahApps.Metro.2.1.1\lib\net47\MahApps.Metro.dll</HintPath>
     </Reference>
     <Reference Include="MahApps.Metro.IconPacks.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=0c0d510f9915137a, processorArchitecture=MSIL">
-      <HintPath>..\packages\MahApps.Metro.IconPacks.FontAwesome.4.3.0\lib\net47\MahApps.Metro.IconPacks.Core.dll</HintPath>
+      <HintPath>..\packages\MahApps.Metro.IconPacks.FontAwesome.4.4.0\lib\net47\MahApps.Metro.IconPacks.Core.dll</HintPath>
     </Reference>
     <Reference Include="MahApps.Metro.IconPacks.FontAwesome, Version=4.0.0.0, Culture=neutral, PublicKeyToken=0c0d510f9915137a, processorArchitecture=MSIL">
-      <HintPath>..\packages\MahApps.Metro.IconPacks.FontAwesome.4.3.0\lib\net47\MahApps.Metro.IconPacks.FontAwesome.dll</HintPath>
+      <HintPath>..\packages\MahApps.Metro.IconPacks.FontAwesome.4.4.0\lib\net47\MahApps.Metro.IconPacks.FontAwesome.dll</HintPath>
     </Reference>
     <Reference Include="MediatR, Version=8.0.0.0, Culture=neutral, PublicKeyToken=bb9a41a5e8aaa7e2, processorArchitecture=MSIL">
-      <HintPath>..\packages\MediatR.8.0.2\lib\net461\MediatR.dll</HintPath>
+      <HintPath>..\packages\MediatR.8.1.0\lib\net461\MediatR.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Azure.KeyVault.Core, Version=3.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Azure.KeyVault.Core.3.0.5\lib\net461\Microsoft.Azure.KeyVault.Core.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Azure.Storage.Blob, Version=11.1.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Azure.Storage.Blob.11.1.7\lib\net452\Microsoft.Azure.Storage.Blob.dll</HintPath>
+    <Reference Include="Microsoft.Azure.Storage.Blob, Version=11.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Azure.Storage.Blob.11.2.0\lib\net452\Microsoft.Azure.Storage.Blob.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Azure.Storage.Common, Version=11.1.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Azure.Storage.Common.11.1.7\lib\net452\Microsoft.Azure.Storage.Common.dll</HintPath>
+    <Reference Include="Microsoft.Azure.Storage.Common, Version=11.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Azure.Storage.Common.11.2.0\lib\net452\Microsoft.Azure.Storage.Common.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=1.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.1.1.1\lib\net461\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
@@ -114,7 +114,7 @@
       <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <HintPath>..\packages\NLog.4.7.2\lib\net45\NLog.dll</HintPath>
+      <HintPath>..\packages\NLog.4.7.3\lib\net45\NLog.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
@@ -171,7 +171,10 @@
     <Compile Include="ViewModels\Autenticacion\AutenticarUsuarioViewModel.cs" />
     <Compile Include="ViewModels\Cfdis\ListaCfdisViewModel.cs" />
     <Compile Include="ViewModels\ConfiguracionGeneral\ConfiguracionGeneralViewModel.cs" />
+    <Compile Include="ViewModels\Empresas\EditarEmpresaViewModel.cs" />
+    <Compile Include="ViewModels\Empresas\ListaEmpresasViewModel.cs" />
     <Compile Include="ViewModels\Empresas\SeleccionarEmpresaContpaqiViewModel.cs" />
+    <Compile Include="ViewModels\Empresas\SeleccionarEmpresaViewModel.cs" />
     <Compile Include="ViewModels\Permisos\SeleccionarPermisoAplicacionViewModel.cs" />
     <Compile Include="ViewModels\Rfcs\SeleccionarRfcViewModel.cs" />
     <Compile Include="ViewModels\Roles\EditarRolViewModel.cs" />
@@ -206,8 +209,17 @@
     <Compile Include="Views\ConfiguracionGeneral\ConfiguracionGeneralView.xaml.cs">
       <DependentUpon>ConfiguracionGeneralView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Empresas\EditarEmpresaView.xaml.cs">
+      <DependentUpon>EditarEmpresaView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Empresas\ListaEmpresasView.xaml.cs">
+      <DependentUpon>ListaEmpresasView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Empresas\SeleccionarEmpresaContpaqiView.xaml.cs">
       <DependentUpon>SeleccionarEmpresaContpaqiView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Empresas\SeleccionarEmpresaView.xaml.cs">
+      <DependentUpon>SeleccionarEmpresaView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Permisos\SeleccionarPermisoAplicacionView.xaml.cs">
       <DependentUpon>SeleccionarPermisoAplicacionView.xaml</DependentUpon>
@@ -329,7 +341,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\Empresas\EditarEmpresaView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Empresas\ListaEmpresasView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Empresas\SeleccionarEmpresaContpaqiView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Empresas\SeleccionarEmpresaView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

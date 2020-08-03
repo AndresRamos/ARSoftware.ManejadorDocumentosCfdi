@@ -52,22 +52,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ManejadorDocumentosCfdiDbContext.cs" />
-    <Compile Include="Migrations\202003091037280_Initial.cs" />
-    <Compile Include="Migrations\202003091037280_Initial.designer.cs">
-      <DependentUpon>202003091037280_Initial.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202003100522209_AddConfiguracioSistemasContpaqi.cs" />
-    <Compile Include="Migrations\202003100522209_AddConfiguracioSistemasContpaqi.designer.cs">
-      <DependentUpon>202003100522209_AddConfiguracioSistemasContpaqi.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202004092107104_AddUsuarios.cs" />
-    <Compile Include="Migrations\202004092107104_AddUsuarios.designer.cs">
-      <DependentUpon>202004092107104_AddUsuarios.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202007101808164_AddGuidAdd.cs" />
-    <Compile Include="Migrations\202007101808164_AddGuidAdd.designer.cs">
-      <DependentUpon>202007101808164_AddGuidAdd.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -84,20 +68,6 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\202003091037280_Initial.resx">
-      <DependentUpon>202003091037280_Initial.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202003100522209_AddConfiguracioSistemasContpaqi.resx">
-      <DependentUpon>202003100522209_AddConfiguracioSistemasContpaqi.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202004092107104_AddUsuarios.resx">
-      <DependentUpon>202004092107104_AddUsuarios.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202007101808164_AddGuidAdd.resx">
-      <DependentUpon>202007101808164_AddGuidAdd.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

@@ -8,16 +8,24 @@ namespace Core.Domain.ValueObjects
         {
         }
 
-        public CertificadoSat(byte[] certificado, string contrasena, string rfc)
-        {
-            Certificado = certificado;
-            Contrasena = contrasena;
-            Rfc = rfc;
-        }
-
         public byte[] Certificado { get; private set; }
         public string Contrasena { get; private set; }
         public string Rfc { get; private set; }
+
+        public static CertificadoSat CreateInstance(byte[] certificado, string contrasena, string rfc)
+        {
+            return new CertificadoSat
+            {
+                Certificado = certificado,
+                Contrasena = contrasena,
+                Rfc = rfc
+            };
+        }
+
+        public static CertificadoSat CreateSinAsignar()
+        {
+            return CreateInstance(null, "", "");
+        }
 
         protected override IEnumerable<object> GetAtomicValues()
         {

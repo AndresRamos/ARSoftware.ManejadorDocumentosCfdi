@@ -18,8 +18,14 @@ namespace Core.Application.Permisos.Models
         [Display(GroupName = "Permisos", Name = "Puede Editar Usuarios", Description = "El usuario puede editar usuarios.")]
         PuedeEditarUsuarios,
 
-        [Display(GroupName = "Permisos", Name = "Puede Editar Configuracion General", Description = "El usuario puede editar la configuracion General.")]
+        [Display(GroupName = "Permisos", Name = "Puede Editar Configuracion General", Description = "El usuario puede editar la configuracion general.")]
         PuedeEditarConfiguracionGeneral,
+
+        [Display(GroupName = "Permisos", Name = "Puede Editar Empresas", Description = "El usuario puede editar las empresas.")]
+        PuedeEditarEmpresas,
+
+        [Display(GroupName = "Permisos", Name = "Tiene todas las empresas permitidas", Description = "El usuario tiene todas las empresas permitidas.")]
+        TodasLasEmpresasPermitidas,
 
         [Display(GroupName = "Permisos", Name = "Todos Los Permisos", Description = "El usuario tiene todos los permisos de aplicacion.")]
         TodosLosPermisos

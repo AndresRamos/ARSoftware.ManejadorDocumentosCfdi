@@ -5,8 +5,10 @@ namespace Core.Application.Solicitudes.Commands.CrearSolicitud
 {
     public class CrearSolicitudCommand : IRequest<int>
     {
-        public CrearSolicitudCommand(DateTime fechaInicio, DateTime fechaFin, string rfcEmisor, string rfcReceptor, string rfcSolicitante, string tipoSolicitud)
+        public CrearSolicitudCommand(int empresaId, int usuarioId, DateTime fechaInicio, DateTime fechaFin, string rfcEmisor, string rfcReceptor, string rfcSolicitante, string tipoSolicitud)
         {
+            EmpresaId = empresaId;
+            UsuarioId = usuarioId;
             FechaInicio = fechaInicio;
             FechaFin = fechaFin;
             RfcEmisor = rfcEmisor;
@@ -15,6 +17,8 @@ namespace Core.Application.Solicitudes.Commands.CrearSolicitud
             TipoSolicitud = tipoSolicitud;
         }
 
+        public int EmpresaId { get; }
+        public int UsuarioId { get; }
         public DateTime FechaInicio { get; }
         public DateTime FechaFin { get; }
         public string RfcEmisor { get; }

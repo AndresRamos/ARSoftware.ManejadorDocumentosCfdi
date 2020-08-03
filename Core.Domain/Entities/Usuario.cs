@@ -16,6 +16,8 @@ namespace Core.Domain.Entities
         public string PasswordHash { get; private set; }
         public string PasswordSalt { get; private set; }
         public ICollection<Rol> Roles { get; private set; }
+        public ICollection<Empresa> EmpresasPermitidas { get; private set; }
+        public ICollection<Solicitud> Solicitudes { get; private set; }
 
         public static Usuario CreateInstance(string primerNombre, string apellido, string email, string nombreUsuario, string passwordHash, string passwordSalt)
         {
@@ -27,7 +29,9 @@ namespace Core.Domain.Entities
                 NombreUsuario = nombreUsuario,
                 PasswordHash = passwordHash,
                 PasswordSalt = passwordSalt,
-                Roles = new HashSet<Rol>()
+                Roles = new HashSet<Rol>(),
+                EmpresasPermitidas = new HashSet<Empresa>(),
+                Solicitudes = new HashSet<Solicitud>()
             };
         }
 
@@ -43,6 +47,16 @@ namespace Core.Domain.Entities
         {
             PasswordHash = passwordHash;
             PasswordSalt = passwordSalt;
+        }
+
+        public void AgregarEmpresaPermitida(Empresa empresa)
+        {
+            EmpresasPermitidas.Add(empresa);
+        }
+
+        public void RemoverEmpresaPermitida(Empresa empresa)
+        {
+            EmpresasPermitidas.Remove(empresa);
         }
     }
 }

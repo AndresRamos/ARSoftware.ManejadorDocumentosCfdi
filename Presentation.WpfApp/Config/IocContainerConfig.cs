@@ -109,6 +109,9 @@ namespace Presentation.WpfApp.Config
             containerBuilder.RegisterType<ConfiguracionGeneralViewModel>();
 
             // Empresas
+            containerBuilder.RegisterType<EditarEmpresaViewModel>();
+            containerBuilder.RegisterType<ListaEmpresasViewModel>();
+            containerBuilder.RegisterType<SeleccionarEmpresaViewModel>();
             containerBuilder.RegisterType<SeleccionarEmpresaContpaqiViewModel>();
 
             // Permisos

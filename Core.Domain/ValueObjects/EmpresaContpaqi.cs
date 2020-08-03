@@ -22,6 +22,11 @@ namespace Core.Domain.ValueObjects
             };
         }
 
+        public static EmpresaContpaqi CreateSinAsignar()
+        {
+            return CreateInstance("", "", "");
+        }
+
         protected override IEnumerable<object> GetAtomicValues()
         {
             yield return Nombre;

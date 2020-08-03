@@ -2,15 +2,21 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Caliburn.Micro;
+using Core.Application.Empresas.Models;
+using Core.Application.Empresas.Queries.BuscarEmpresas;
+using Core.Application.Empresas.Queries.BuscarEmpresasPermitidasPorUsuario;
 using Core.Application.Roles.Models;
 using Core.Application.Roles.Queries.BuscarRoles;
 using Core.Application.Usuarios.Commands.ActualizarPerfilUsuario;
+using Core.Application.Usuarios.Commands.AgregarEmpresaPermitida;
 using Core.Application.Usuarios.Commands.AgregarRol;
 using Core.Application.Usuarios.Commands.CambiarContrasena;
+using Core.Application.Usuarios.Commands.RemoverEmpresaPermitida;
 using Core.Application.Usuarios.Commands.RemoverRol;
 using Core.Application.Usuarios.Queries.BuscarUsuarioPorId;
 using MahApps.Metro.Controls.Dialogs;
 using MediatR;
+using Presentation.WpfApp.ViewModels.Empresas;
 using Presentation.WpfApp.ViewModels.Roles;
 
 namespace Presentation.WpfApp.ViewModels.Usuarios
@@ -23,6 +29,7 @@ namespace Presentation.WpfApp.ViewModels.Usuarios
         private string _apellido;
         private string _contrasena;
         private string _email;
+        private EmpresaPerfilDto _empresaPermitidaSeleccionada;
         private string _nombreUsuario;
         private string _primerNombre;
         private RolDto _rolSeleccionado;
@@ -145,9 +152,31 @@ namespace Presentation.WpfApp.ViewModels.Usuarios
             }
         }
 
+        public BindableCollection<EmpresaPerfilDto> EmpresasPermitidas { get; } = new BindableCollection<EmpresaPerfilDto>();
+
+        public EmpresaPerfilDto EmpresaPermitidaSeleccionada
+        {
+            get => _empresaPermitidaSeleccionada;
+            set
+            {
+                if (_empresaPermitidaSeleccionada == value)
+                {
+                    return;
+                }
+
+                _empresaPermitidaSeleccionada = value;
+                NotifyOfPropertyChange(() => EmpresaPermitidaSeleccionada);
+                RaiseGuards();
+            }
+        }
+
         public bool CanRemoverRolAsync => RolSeleccionado != null;
 
         public bool CanCambiarContrasenaAsync => !string.IsNullOrWhiteSpace(Contrasena);
+
+        public bool CanAgregarEmpresaPermitidaAsync => UsuarioId != 0;
+
+        public bool CanRemoverEmpresaPermitidaAsync => UsuarioId != 0 && EmpresaPermitidaSeleccionada != null;
 
         public async Task InicializarAsync(int id)
         {
@@ -161,6 +190,9 @@ namespace Presentation.WpfApp.ViewModels.Usuarios
 
             Roles.Clear();
             Roles.AddRange(usuario.Roles);
+
+            EmpresasPermitidas.Clear();
+            EmpresasPermitidas.AddRange(await _mediator.Send(new BuscarEmpresasPermitidasPorUsuarioQuery(UsuarioId)));
         }
 
         public async Task ActualizarPerfilAsync()
@@ -225,10 +257,52 @@ namespace Presentation.WpfApp.ViewModels.Usuarios
             }
         }
 
+        public async Task AgregarEmpresaPermitidaAsync()
+        {
+            try
+            {
+                var empresaPermitidas = await _mediator.Send(new BuscarEmpresasPermitidasPorUsuarioQuery(UsuarioId));
+                var empresas = await _mediator.Send(new BuscarEmpresasQuery());
+
+                var empresasDisponibles = empresas.Where(e => EmpresasPermitidas.All(ep => ep.Id != e.Id)).ToList();
+
+                var seleccionarEmpresaViewModel = IoC.Get<SeleccionarEmpresaViewModel>();
+                seleccionarEmpresaViewModel.Inicializar(empresasDisponibles);
+
+                await _windowManager.ShowDialogAsync(seleccionarEmpresaViewModel);
+                if (seleccionarEmpresaViewModel.SeleccionoEmpresa)
+                {
+                    await _mediator.Send(new AgregarEmpresaPermitidaCommand(UsuarioId, seleccionarEmpresaViewModel.EmpresaSeleccionada.Id));
+                    await InicializarAsync(UsuarioId);
+                    await _dialogCoordinator.ShowMessageAsync(this, "Empresa Permitida Agregada", "Empresa permitida agregada exitosamente.");
+                }
+            }
+            catch (Exception e)
+            {
+                await _dialogCoordinator.ShowMessageAsync(this, "Erro", e.ToString());
+            }
+        }
+
+        public async Task RemoverEmpresaPermitidaAsync()
+        {
+            try
+            {
+                await _mediator.Send(new RemoverEmpresaPermitidaCommand(UsuarioId, EmpresaPermitidaSeleccionada.Id));
+                await InicializarAsync(UsuarioId);
+                await _dialogCoordinator.ShowMessageAsync(this, "Empresa Permitida Removida", "Empresa permitida removida exitosamente.");
+            }
+            catch (Exception e)
+            {
+                await _dialogCoordinator.ShowMessageAsync(this, "Erro", e.ToString());
+            }
+        }
+
         private void RaiseGuards()
         {
             NotifyOfPropertyChange(() => CanRemoverRolAsync);
             NotifyOfPropertyChange(() => CanCambiarContrasenaAsync);
+            NotifyOfPropertyChange(() => CanAgregarEmpresaPermitidaAsync);
+            NotifyOfPropertyChange(() => CanRemoverEmpresaPermitidaAsync);
         }
     }
 }

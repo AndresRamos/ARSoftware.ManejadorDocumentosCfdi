@@ -42,7 +42,7 @@ namespace Presentation.WpfApp.ViewModels.ConfiguracionGeneral
 
         private async Task CargarConfiguracionGeneralAsync()
         {
-            ConfiguracionGeneral = await _mediator.Send(new BuscarConfiguracionGeneralQuery());
+            ConfiguracionGeneral = await _mediator.Send(new BuscarConfiguracionGeneralQuery(_configuracionAplicacion.Empresa.Id));
         }
 
         public async Task BuscarArchivoCertificadoAsync()
