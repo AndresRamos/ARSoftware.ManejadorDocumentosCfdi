@@ -64,6 +64,11 @@ namespace Presentation.WpfApp.ViewModels
                 if (viewModel.IsUsuarioAutenticado)
                 {
                     ConfiguracionAplicacion.SetUsuario(viewModel.Usuario);
+
+                    if (CanAbrirEmpresaAsync)
+                    {
+                        await AbrirEmpresaAsync();
+                    }
                 }
             }
             catch (Exception e)

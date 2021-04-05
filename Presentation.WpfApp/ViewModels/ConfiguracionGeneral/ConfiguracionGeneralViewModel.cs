@@ -77,6 +77,7 @@ namespace Presentation.WpfApp.ViewModels.ConfiguracionGeneral
                 await _mediator.Send(new ActualizarConfiguracionContpaqiContabilidadCommand(ConfiguracionGeneral.ConfiguracionContpaqiContabilidad));
 
                 await _configuracionAplicacion.CargarConfiguracionAsync();
+
                 await TryCloseAsync();
             }
             catch (Exception e)

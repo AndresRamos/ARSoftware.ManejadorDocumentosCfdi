@@ -1,8 +1,10 @@
-﻿using System.Data.Entity;
+﻿using System;
+using System.Data.Entity;
 using System.Data.Entity.Core;
 using System.Threading;
 using System.Threading.Tasks;
 using Common;
+using Core.Application.Permisos.Models;
 using Core.Application.Solicitudes.Commands.AutenticarSolicitud;
 using Core.Application.Solicitudes.Commands.DescargarSolicitud;
 using Core.Application.Solicitudes.Commands.GenerarSolicitud;
@@ -29,6 +31,18 @@ namespace Core.Application.Solicitudes.Commands.ProcesarSolicitud
         public async Task<Unit> Handle(ProcesarSolicitudCommand request, CancellationToken cancellationToken)
         {
             Logger.WithProperty(LogPropertyConstants.SolicitudId, request.SolicitudId).Info("Procesando solicitud {0}", request.SolicitudId);
+
+            var usuario = await _context.Usuarios.Include(u => u.Roles).SingleOrDefaultAsync(u => u.Id == request.UsuarioId, cancellationToken);
+
+            if (usuario is null)
+            {
+                throw new ObjectNotFoundException("No se encontro el usuario.");
+            }
+
+            if (!usuario.TienePermiso(PermisosAplicacion.PuedeProcesarSolicitud))
+            {
+                throw new InvalidOperationException("El usuario no tiene permiso de crear solicitudes.");
+            }
 
             var solicitud = await BuscarSolicitudAsync(request.SolicitudId, cancellationToken);
 

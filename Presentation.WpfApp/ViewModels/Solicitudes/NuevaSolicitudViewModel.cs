@@ -60,40 +60,43 @@ namespace Presentation.WpfApp.ViewModels.Solicitudes
                     case TipoRangoFechaEnum.Custumizado:
                         break;
                     case TipoRangoFechaEnum.Hoy:
-                        FechaInicio = RangoFecha.Hoy.Inicio;
-                        FechaFin = RangoFecha.Hoy.Fin;
+                        _fechaInicio = RangoFecha.Hoy.Inicio;
+                        _fechaFin = RangoFecha.Hoy.Fin;
                         break;
                     case TipoRangoFechaEnum.Ayer:
-                        FechaInicio = RangoFecha.Ayer.Inicio;
-                        FechaFin = RangoFecha.Ayer.Fin;
+                        _fechaInicio = RangoFecha.Ayer.Inicio;
+                        _fechaFin = RangoFecha.Ayer.Fin;
                         break;
                     case TipoRangoFechaEnum.EstaSemana:
-                        FechaInicio = RangoFecha.EstaSemana.Inicio;
-                        FechaFin = RangoFecha.EstaSemana.Fin;
+                        _fechaInicio = RangoFecha.EstaSemana.Inicio;
+                        _fechaFin = RangoFecha.EstaSemana.Fin;
                         break;
                     case TipoRangoFechaEnum.EstaSemanaAlDia:
-                        FechaInicio = RangoFecha.EstaSemanaAlDia.Inicio;
-                        FechaFin = RangoFecha.EstaSemanaAlDia.Fin;
+                        _fechaInicio = RangoFecha.EstaSemanaAlDia.Inicio;
+                        _fechaFin = RangoFecha.EstaSemanaAlDia.Fin;
                         break;
                     case TipoRangoFechaEnum.EsteMes:
-                        FechaInicio = RangoFecha.EsteMes.Inicio;
-                        FechaFin = RangoFecha.EsteMes.Fin;
+                        _fechaInicio = RangoFecha.EsteMes.Inicio;
+                        _fechaFin = RangoFecha.EsteMes.Fin;
                         break;
                     case TipoRangoFechaEnum.EsteMesAlDia:
-                        FechaInicio = RangoFecha.EsteMesAlDia.Inicio;
-                        FechaFin = RangoFecha.EsteMesAlDia.Fin;
+                        _fechaInicio = RangoFecha.EsteMesAlDia.Inicio;
+                        _fechaFin = RangoFecha.EsteMesAlDia.Fin;
                         break;
                     case TipoRangoFechaEnum.EsteAno:
-                        FechaInicio = RangoFecha.EsteAno.Inicio;
-                        FechaFin = RangoFecha.EsteAno.Fin;
+                        _fechaInicio = RangoFecha.EsteAno.Inicio;
+                        _fechaFin = RangoFecha.EsteAno.Fin;
                         break;
                     case TipoRangoFechaEnum.EsteAnoAlDia:
-                        FechaInicio = RangoFecha.EsteAnoAlDia.Inicio;
-                        FechaFin = RangoFecha.EsteAnoAlDia.Fin;
+                        _fechaInicio = RangoFecha.EsteAnoAlDia.Inicio;
+                        _fechaFin = RangoFecha.EsteAnoAlDia.Fin;
                         break;
                     default:
                         throw new ArgumentOutOfRangeException();
                 }
+
+                NotifyOfPropertyChange(() => FechaInicio);
+                NotifyOfPropertyChange(() => FechaFin);
             }
         }
 
@@ -134,8 +137,6 @@ namespace Presentation.WpfApp.ViewModels.Solicitudes
                 {
                     TipoRangoFechaSeleccionado = TipoRangoFechaEnum.Custumizado;
                 }
-
-
             }
         }
 
@@ -214,7 +215,7 @@ namespace Presentation.WpfApp.ViewModels.Solicitudes
             TiposSolicitud.AddRange(await _mediator.Send(new BuscarTiposSolicitudQuery()));
             TipoSolicitudSeleccionado = TiposSolicitud.FirstOrDefault();
         }
-        
+
         public async Task CrearSolicitudAsync()
         {
             try

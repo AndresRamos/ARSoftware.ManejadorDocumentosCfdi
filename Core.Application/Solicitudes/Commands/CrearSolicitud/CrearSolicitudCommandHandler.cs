@@ -1,6 +1,9 @@
-﻿using System.Data.Entity;
+﻿using System;
+using System.Data.Entity;
+using System.Data.Entity.Core;
 using System.Threading;
 using System.Threading.Tasks;
+using Core.Application.Permisos.Models;
 using Core.Domain.Entities;
 using Infrastructure.Persistance;
 using MediatR;
@@ -18,6 +21,18 @@ namespace Core.Application.Solicitudes.Commands.CrearSolicitud
 
         public async Task<int> Handle(CrearSolicitudCommand request, CancellationToken cancellationToken)
         {
+            var usuario = await _context.Usuarios.Include(u => u.Roles).SingleOrDefaultAsync(u => u.Id == request.UsuarioId, cancellationToken);
+
+            if (usuario is null)
+            {
+                throw new ObjectNotFoundException("No se encontro el usuario.");
+            }
+
+            if (!usuario.TienePermiso(PermisosAplicacion.PuedeCrearSolicitud))
+            {
+                throw new InvalidOperationException("El usuario no tiene permiso de crear solicitudes.");
+            }
+
             var nuevaSolicitud = Solicitud.CreateNew(
                 request.EmpresaId,
                 request.UsuarioId,

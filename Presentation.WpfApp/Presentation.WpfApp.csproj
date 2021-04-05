@@ -17,6 +17,21 @@
     <Deterministic>true</Deterministic>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -53,17 +68,17 @@
     <Reference Include="Contpaqi.Sql.ADD.DocumentMetadata, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Contpaqi.Sql.ADD.DocumentMetadata.1.0.1\lib\net472\Contpaqi.Sql.ADD.DocumentMetadata.dll</HintPath>
     </Reference>
-    <Reference Include="Contpaqi.Sql.Comercial.Empresa, Version=1.0.4.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Contpaqi.Sql.Comercial.Empresa.1.0.4\lib\net452\Contpaqi.Sql.Comercial.Empresa.dll</HintPath>
+    <Reference Include="Contpaqi.Sql.Comercial.Empresa, Version=1.0.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Contpaqi.Sql.Comercial.Empresa.1.0.5\lib\net452\Contpaqi.Sql.Comercial.Empresa.dll</HintPath>
     </Reference>
-    <Reference Include="Contpaqi.Sql.Comercial.Generales, Version=1.0.4.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Contpaqi.Sql.Comercial.Generales.1.0.4\lib\net452\Contpaqi.Sql.Comercial.Generales.dll</HintPath>
+    <Reference Include="Contpaqi.Sql.Comercial.Generales, Version=1.0.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Contpaqi.Sql.Comercial.Generales.1.0.5\lib\net452\Contpaqi.Sql.Comercial.Generales.dll</HintPath>
     </Reference>
-    <Reference Include="Contpaqi.Sql.Contabilidad.Empresa, Version=1.0.3.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Contpaqi.Sql.Contabilidad.Empresa.1.0.3\lib\net452\Contpaqi.Sql.Contabilidad.Empresa.dll</HintPath>
+    <Reference Include="Contpaqi.Sql.Contabilidad.Empresa, Version=1.0.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Contpaqi.Sql.Contabilidad.Empresa.1.0.4\lib\net452\Contpaqi.Sql.Contabilidad.Empresa.dll</HintPath>
     </Reference>
-    <Reference Include="Contpaqi.Sql.Contabilidad.Generales, Version=1.0.3.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Contpaqi.Sql.Contabilidad.Generales.1.0.3\lib\net452\Contpaqi.Sql.Contabilidad.Generales.dll</HintPath>
+    <Reference Include="Contpaqi.Sql.Contabilidad.Generales, Version=1.0.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Contpaqi.Sql.Contabilidad.Generales.1.0.4\lib\net452\Contpaqi.Sql.Contabilidad.Generales.dll</HintPath>
     </Reference>
     <Reference Include="ControlzEx, Version=4.0.0.0, Culture=neutral, PublicKeyToken=69f1c32f803d307e, processorArchitecture=MSIL">
       <HintPath>..\packages\ControlzEx.4.3.2\lib\net462\ControlzEx.dll</HintPath>
@@ -78,7 +93,7 @@
       <HintPath>..\packages\EPPlus.4.5.3.3\lib\net40\EPPlus.dll</HintPath>
     </Reference>
     <Reference Include="MahApps.Metro, Version=2.0.0.0, Culture=neutral, PublicKeyToken=51482d6f650b2b3f, processorArchitecture=MSIL">
-      <HintPath>..\packages\MahApps.Metro.2.1.1\lib\net47\MahApps.Metro.dll</HintPath>
+      <HintPath>..\packages\MahApps.Metro.2.2.0\lib\net47\MahApps.Metro.dll</HintPath>
     </Reference>
     <Reference Include="MahApps.Metro.IconPacks.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=0c0d510f9915137a, processorArchitecture=MSIL">
       <HintPath>..\packages\MahApps.Metro.IconPacks.FontAwesome.4.4.0\lib\net47\MahApps.Metro.IconPacks.Core.dll</HintPath>
@@ -460,7 +475,18 @@
       <Name>Infrastructure.Persistance</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.7.2">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.7.2 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

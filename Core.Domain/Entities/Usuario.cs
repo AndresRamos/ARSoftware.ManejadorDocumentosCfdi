@@ -1,4 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
+using Core.Application.Permisos.Helpers;
+using Core.Application.Permisos.Models;
 
 namespace Core.Domain.Entities
 {
@@ -57,6 +60,18 @@ namespace Core.Domain.Entities
         public void RemoverEmpresaPermitida(Empresa empresa)
         {
             EmpresasPermitidas.Remove(empresa);
+        }
+
+        public bool TienePermiso(PermisosAplicacion permiso)
+        {
+            var permisosList = new List<PermisosAplicacion>();
+
+            foreach (var permisosString in Roles.Select(r => r.Permisos))
+            {
+                permisosList.AddRange(permisosString.UnpackPermissionsFromString());
+            }
+
+            return permisosList.Distinct().ToArray().UsuarioTieneEstePermiso(permiso);
         }
     }
 }

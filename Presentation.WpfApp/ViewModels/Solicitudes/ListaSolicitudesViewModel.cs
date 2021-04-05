@@ -158,7 +158,15 @@ namespace Presentation.WpfApp.ViewModels.Solicitudes
         {
             var solicitudId = SolicitudSeleccionada.Id;
 
-            var messageDialogResult = await _dialogCoordinator.ShowMessageAsync(this, "Procesar Solicitud", $"Esta seguro de querer procesar la solicitud {SolicitudSeleccionada.Id}?", MessageDialogStyle.AffirmativeAndNegative);
+            var messageDialogResult = await _dialogCoordinator.ShowMessageAsync(this,
+                "Procesar Solicitud",
+                $"Esta seguro de querer procesar la solicitud {SolicitudSeleccionada.Id}?",
+                MessageDialogStyle.AffirmativeAndNegative,
+                new MetroDialogSettings
+                {
+                    AffirmativeButtonText = "Si",
+                    NegativeButtonText = "No"
+                });
             if (messageDialogResult != MessageDialogResult.Affirmative)
             {
                 return;
@@ -170,7 +178,7 @@ namespace Presentation.WpfApp.ViewModels.Solicitudes
 
             try
             {
-                await _mediator.Send(new ProcesarSolicitudCommand(solicitudId));
+                await _mediator.Send(new ProcesarSolicitudCommand(solicitudId, _configuracionAplicacion.Usuario.Id));
                 var viewModel = IoC.Get<DetalleSolicitudViewModel>();
                 await viewModel.InicializarAsync(solicitudId);
                 await _windowManager.ShowWindowAsync(viewModel);
