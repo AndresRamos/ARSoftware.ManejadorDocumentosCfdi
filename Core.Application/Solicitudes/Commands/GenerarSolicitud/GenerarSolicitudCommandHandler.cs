@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data.Entity;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 using System.Threading.Tasks;
 using ARSoftware.Cfdi.DescargaMasiva.Constants;
@@ -29,41 +30,46 @@ namespace Core.Application.Solicitudes.Commands.GenerarSolicitud
         {
             Logger.WithProperty(LogPropertyConstants.SolicitudId, request.SolicitudId).Info("Generando solicitud {0}", request.SolicitudId);
 
-            var configuracionGeneral = await _context.ConfiguracionGeneral.FirstAsync(cancellationToken);
-            var solicitud = await _context.Solicitudes
-                .Include(s => s.SolicitudAutenticacion)
+            Domain.Entities.ConfiguracionGeneral configuracionGeneral = await _context.ConfiguracionGeneral.FirstAsync(cancellationToken);
+            Solicitud solicitud = await _context.Solicitudes.Include(s => s.SolicitudAutenticacion)
                 .Include(s => s.SolicitudSolicitud)
                 .Include(s => s.SolicitudesWeb)
                 .SingleAsync(s => s.Id == request.SolicitudId, cancellationToken);
 
             if (solicitud.SolicitudAutenticacion == null)
             {
-                Logger.WithProperty(LogPropertyConstants.SolicitudId, request.SolicitudId).Error("No se puede generar la solicitud {0} por que no existe una solicitud de autenticacion.", solicitud.Id);
-                throw new InvalidOperationException($"No se puede generar la solicitud {solicitud.Id} por que no existe una solicitud de autenticacion.");
+                Logger.WithProperty(LogPropertyConstants.SolicitudId, request.SolicitudId)
+                    .Error("No se puede generar la solicitud {0} por que no existe una solicitud de autenticacion.", solicitud.Id);
+                throw new InvalidOperationException(
+                    $"No se puede generar la solicitud {solicitud.Id} por que no existe una solicitud de autenticacion.");
             }
 
             if (!solicitud.SolicitudAutenticacion.IsTokenValido)
             {
-                Logger.WithProperty(LogPropertyConstants.SolicitudId, request.SolicitudId).Error("No se puede generar la solicitud {0} por que el token no es valido.", solicitud.Id);
+                Logger.WithProperty(LogPropertyConstants.SolicitudId, request.SolicitudId)
+                    .Error("No se puede generar la solicitud {0} por que el token no es valido.", solicitud.Id);
                 throw new InvalidOperationException($"No se puede generar la solicitud {solicitud.Id} por que el token no es valido.");
             }
 
             Logger.WithProperty(LogPropertyConstants.SolicitudId, request.SolicitudId).Info("Obteniendo certificado.");
-            var certificadoSat = X509Certificate2Helper.GetCertificate(configuracionGeneral.CertificadoSat.Certificado, configuracionGeneral.CertificadoSat.Contrasena);
+            X509Certificate2 certificadoSat = X509Certificate2Helper.GetCertificate(configuracionGeneral.CertificadoSat.Certificado,
+                configuracionGeneral.CertificadoSat.Contrasena);
 
-            var solicitudService = new SolicitudService(CfdiDescargaMasivaWebServiceUrls.SolicitudUrl, CfdiDescargaMasivaWebServiceUrls.SolicitudSoapActionUrl);
+            var solicitudService = new SolicitudService(CfdiDescargaMasivaWebServiceUrls.SolicitudUrl,
+                CfdiDescargaMasivaWebServiceUrls.SolicitudSoapActionUrl);
 
             Logger.WithProperty(LogPropertyConstants.SolicitudId, solicitud.Id).Info("Generando XML SOAP de solicitud.");
 
-            var solicitudRequest = SolicitudRequest.CreateInstance(
-                solicitud.FechaInicio,
+            var solicitudRequest = SolicitudRequest.CreateInstance(solicitud.FechaInicio,
                 solicitud.FechaFin,
-                solicitud.TipoSolicitud == TipoSolicitud.Cfdi.Name ? TipoSolicitud.Cfdi : solicitud.TipoSolicitud == TipoSolicitud.Metadata.Name ? TipoSolicitud.Metadata : throw new ArgumentException("El tipo de solicitud no es un tipo valido."),
+                solicitud.TipoSolicitud == TipoSolicitud.Cfdi.Name ? TipoSolicitud.Cfdi :
+                solicitud.TipoSolicitud == TipoSolicitud.Metadata.Name ? TipoSolicitud.Metadata :
+                throw new ArgumentException("El tipo de solicitud no es un tipo valido."),
                 solicitud.RfcEmisor,
-                solicitud.RfcReceptor,
+                solicitud.Receptores,
                 solicitud.RfcSolicitante);
 
-            var soapRequestEnvelopeXml = SolicitudService.GenerateSoapRequestEnvelopeXmlContent(solicitudRequest, certificadoSat);
+            string soapRequestEnvelopeXml = SolicitudService.GenerateSoapRequestEnvelopeXmlContent(solicitudRequest, certificadoSat);
             Logger.WithProperty(LogPropertyConstants.SolicitudId, solicitud.Id).Info("SoapRequestEnvelopeXml: {0}", soapRequestEnvelopeXml);
 
             SolicitudResult solicitudResult;
@@ -74,10 +80,10 @@ namespace Core.Application.Solicitudes.Commands.GenerarSolicitud
             }
             catch (Exception e)
             {
-                Logger.WithProperty(LogPropertyConstants.SolicitudId, solicitud.Id).Error(e, "Se produjo un error al enviar la solicitud SOAP de generacion.");
+                Logger.WithProperty(LogPropertyConstants.SolicitudId, solicitud.Id)
+                    .Error(e, "Se produjo un error al enviar la solicitud SOAP de generacion.");
 
-                var solicitudSolicitudError = SolicitudSolicitud.CreateInstance(
-                    soapRequestEnvelopeXml,
+                var solicitudSolicitudError = SolicitudSolicitud.CreateInstance(soapRequestEnvelopeXml,
                     null,
                     solicitud.FechaInicio,
                     solicitud.FechaFin,
@@ -97,11 +103,11 @@ namespace Core.Application.Solicitudes.Commands.GenerarSolicitud
                 throw;
             }
 
-            Logger.WithProperty(LogPropertyConstants.SolicitudId, solicitud.Id).Info("GenerarSolicitudResult: {@GenerarSolicitudResult}", solicitudResult);
+            Logger.WithProperty(LogPropertyConstants.SolicitudId, solicitud.Id)
+                .Info("GenerarSolicitudResult: {@GenerarSolicitudResult}", solicitudResult);
 
             Logger.WithProperty(LogPropertyConstants.SolicitudId, solicitud.Id).Info("Creando registro de solicitud de solicitud.");
-            var solicitudSolicitud = SolicitudSolicitud.CreateInstance(
-                soapRequestEnvelopeXml,
+            var solicitudSolicitud = SolicitudSolicitud.CreateInstance(soapRequestEnvelopeXml,
                 solicitudResult.WebResponse,
                 solicitud.FechaInicio,
                 solicitud.FechaFin,
@@ -114,7 +120,8 @@ namespace Core.Application.Solicitudes.Commands.GenerarSolicitud
                 solicitudResult.IdSolicitud,
                 null);
 
-            Logger.WithProperty(LogPropertyConstants.SolicitudId, solicitud.Id).Info("SolicitudSolicitud: {@SolicitudSolicitud}", solicitudSolicitud);
+            Logger.WithProperty(LogPropertyConstants.SolicitudId, solicitud.Id)
+                .Info("SolicitudSolicitud: {@SolicitudSolicitud}", solicitudSolicitud);
 
             solicitud.SolicitudesWeb.Add(solicitudSolicitud);
             solicitud.SolicitudSolicitud = solicitudSolicitud;

@@ -12,7 +12,8 @@ namespace Core.Application.TiposSolicitud.Queries.BuscarTiposSolicitud
     {
         public Task<IEnumerable<TipoSolicitudDto>> Handle(BuscarTiposSolicitudQuery request, CancellationToken cancellationToken)
         {
-            return Task.FromResult<IEnumerable<TipoSolicitudDto>>(Enumeration.GetAll<TipoSolicitud>().Select(t => new TipoSolicitudDto(t.Name, t.Id)).ToList());
+            return Task.FromResult<IEnumerable<TipoSolicitudDto>>(TipoSolicitud.List.Select(t => new TipoSolicitudDto(t.Name, t.Value))
+                .ToList());
         }
     }
 }

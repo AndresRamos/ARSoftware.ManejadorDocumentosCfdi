@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Caliburn.Micro;
-using Core.Application.Solicitudes.Commands.AutenticarSolicitud;
+using Core.Application.Solicitudes.Commands.GenerarSolicitud;
 using Core.Application.Solicitudes.Models;
 using Core.Application.Solicitudes.Queries.BuscarSolicitudPorId;
 using MahApps.Metro.Controls.Dialogs;
@@ -71,13 +71,14 @@ namespace Presentation.WpfApp.ViewModels.Solicitudes
 
         public async Task EnviarSolicitudAsync()
         {
-            var progressDialogController = await _dialogCoordinator.ShowProgressAsync(this, "Enviando Solicitud", "Enviando solicitud");
+            ProgressDialogController progressDialogController =
+                await _dialogCoordinator.ShowProgressAsync(this, "Enviando Solicitud", "Enviando solicitud");
             progressDialogController.SetIndeterminate();
             await Task.Delay(1000);
 
             try
             {
-                await _mediator.Send(new AutenticarSolicitudCommand(SolicitudId));
+                await _mediator.Send(new GenerarSolicitudCommand(SolicitudId));
                 Solicitud = (await _mediator.Send(new BuscarSolicitudPorIdQuery(SolicitudId))).SolicitudSolicitud;
             }
             catch (Exception e)

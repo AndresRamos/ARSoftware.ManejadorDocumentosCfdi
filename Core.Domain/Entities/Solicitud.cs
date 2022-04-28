@@ -20,6 +20,8 @@ namespace Core.Domain.Entities
         public string RfcSolicitante { get; set; }
         public string TipoSolicitud { get; set; }
 
+        public IEnumerable<string> Receptores => RfcReceptor.Split('|');
+
         public int? SolicitudAutenticacionId { get; set; }
         public SolicitudAutenticacion SolicitudAutenticacion { get; set; }
 

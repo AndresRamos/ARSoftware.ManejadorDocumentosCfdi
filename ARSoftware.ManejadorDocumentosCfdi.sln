@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29102.190
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32421.90
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Src", "Src", "{D4731F54-74C6-4ACF-B612-BC4D272BA4B8}"
 EndProject
@@ -32,8 +32,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Presentation.ConsoleApp", "Presentation.ConsoleApp\Presentation.ConsoleApp.csproj", "{62BD88DE-37F4-4ADC-A7F3-DE914D360F5A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{72EA57DD-0FC1-4946-95DB-542F40CE9CFD}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Publishing", "Publishing", "{22526E36-A307-45CC-A853-DA07C4746745}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -268,7 +266,6 @@ Global
 		{E4967779-A460-4775-B7EB-05E7068049B5} = {CE0041C5-70EF-408F-8440-AEBD1A4EAE58}
 		{62BD88DE-37F4-4ADC-A7F3-DE914D360F5A} = {08FE9639-A8E5-4842-B759-A468D64D396C}
 		{72EA57DD-0FC1-4946-95DB-542F40CE9CFD} = {CE0041C5-70EF-408F-8440-AEBD1A4EAE58}
-		{22526E36-A307-45CC-A853-DA07C4746745} = {D4731F54-74C6-4ACF-B612-BC4D272BA4B8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {083908A8-04B0-44CB-82A4-BE7B602CE5AC}

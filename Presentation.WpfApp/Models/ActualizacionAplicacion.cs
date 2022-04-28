@@ -3,8 +3,8 @@ using System.IO;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using Azure.Storage.Blobs;
 using Caliburn.Micro;
-using Microsoft.Azure.Storage.Blob;
 
 namespace Presentation.WpfApp.Models
 {
@@ -38,21 +38,21 @@ namespace Presentation.WpfApp.Models
             try
             {
                 var version = Assembly.GetExecutingAssembly().GetName().Version.ToString();
-                var container = new CloudBlobContainer(new Uri("https://arsoftware.blob.core.windows.net/arsoftwaredownloads/"));
+                var container = new BlobContainerClient(new Uri("https://arsoftware.blob.core.windows.net/arsoftwaredownloads/"));
 
-                var currentVersionBlob = container.GetBlockBlobReference(@"ManejadorDocumentosCfdi\CurrentVersion.txt");
+                BlobClient currentVersionBlob = container.GetBlobClient(@"ManejadorDocumentosCfdi\CurrentVersion.txt");
 
                 string currentverstion;
                 using (var memoryStream = new MemoryStream())
                 {
-                    await currentVersionBlob.DownloadToStreamAsync(memoryStream);
+                    await currentVersionBlob.DownloadToAsync(memoryStream);
                     currentverstion = Encoding.UTF8.GetString(memoryStream.ToArray());
                 }
 
                 VersionActual = new Version(version);
                 VersionNueva = new Version(currentverstion);
 
-                var result = VersionActual.CompareTo(VersionNueva);
+                int result = VersionActual.CompareTo(VersionNueva);
                 if (result < 0)
                 {
                     ActualizacionDisponible = true;
@@ -71,9 +71,9 @@ namespace Presentation.WpfApp.Models
 
         public async Task DescargarActualizacionAsync(string fileName)
         {
-            var container = new CloudBlobContainer(new Uri("https://arsoftware.blob.core.windows.net/arsoftwaredownloads/"));
-            var installerFile = container.GetBlockBlobReference(@"ManejadorDocumentosCfdi\Release.zip");
-            await installerFile.DownloadToFileAsync(fileName, FileMode.Create);
+            var container = new BlobContainerClient(new Uri("https://arsoftware.blob.core.windows.net/arsoftwaredownloads/"));
+            BlobClient installerFile = container.GetBlobClient(@"ManejadorDocumentosCfdi\Release.zip");
+            await installerFile.DownloadToAsync(fileName);
         }
     }
 }

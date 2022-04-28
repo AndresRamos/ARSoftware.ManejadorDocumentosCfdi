@@ -23,8 +23,7 @@ namespace Core.Application.Solicitudes.Queries.BuscarSolicitudPorId
 
         public async Task<SolicitudDto> Handle(BuscarSolicitudPorIdQuery request, CancellationToken cancellationToken)
         {
-            var solicitud = await _context.Solicitudes
-                .Include(s => s.SolicitudAutenticacion)
+            Solicitud solicitud = await _context.Solicitudes.Include(s => s.SolicitudAutenticacion)
                 .Include(s => s.SolicitudSolicitud)
                 .Include(s => s.SolicitudVerificacion.PaquetesIds)
                 .Include(s => s.SolicitudDescarga)
@@ -37,8 +36,7 @@ namespace Core.Application.Solicitudes.Queries.BuscarSolicitudPorId
                 throw new ObjectNotFoundException($"No se encontro la solicitud con Id = {request.SolicitudId}");
             }
 
-            return new SolicitudDto(
-                solicitud.Id,
+            return new SolicitudDto(solicitud.Id,
                 solicitud.FechaCreacionUtc,
                 solicitud.FechaInicio,
                 solicitud.FechaFin,
@@ -47,8 +45,7 @@ namespace Core.Application.Solicitudes.Queries.BuscarSolicitudPorId
                 solicitud.RfcSolicitante,
                 solicitud.TipoSolicitud,
                 solicitud.SolicitudAutenticacion != null
-                    ? new SolicitudAutenticacionDto(
-                        solicitud.SolicitudAutenticacion.Id,
+                    ? new SolicitudAutenticacionDto(solicitud.SolicitudAutenticacion.Id,
                         solicitud.SolicitudAutenticacion.FechaCreacionUtc,
                         solicitud.SolicitudAutenticacion.FechaTokenCreacionUtc,
                         solicitud.SolicitudAutenticacion.FechaTokenExpiracionUtc,
@@ -61,8 +58,7 @@ namespace Core.Application.Solicitudes.Queries.BuscarSolicitudPorId
                         solicitud.SolicitudAutenticacion.Respuesta)
                     : null,
                 solicitud.SolicitudSolicitud != null
-                    ? new SolicitudSolicitudDto(
-                        solicitud.SolicitudSolicitud.Id,
+                    ? new SolicitudSolicitudDto(solicitud.SolicitudSolicitud.Id,
                         solicitud.SolicitudSolicitud.FechaCreacionUtc,
                         solicitud.SolicitudSolicitud.FechaInicio,
                         solicitud.SolicitudSolicitud.FechaFin,
@@ -78,31 +74,39 @@ namespace Core.Application.Solicitudes.Queries.BuscarSolicitudPorId
                         solicitud.SolicitudSolicitud.Respuesta)
                     : null,
                 solicitud.SolicitudVerificacion != null
-                    ? new SolicitudVerificacionDto(
-                        solicitud.SolicitudVerificacion.Id,
+                    ? new SolicitudVerificacionDto(solicitud.SolicitudVerificacion.Id,
                         solicitud.SolicitudVerificacion.FechaCreacionUtc,
                         solicitud.SolicitudVerificacion.CodEstatus,
                         solicitud.SolicitudVerificacion.Mensaje,
                         solicitud.SolicitudVerificacion.CodigoEstadoSolicitud,
                         solicitud.SolicitudVerificacion.EstadoSolicitud,
                         solicitud.SolicitudVerificacion.NumeroCfdis,
-                        solicitud.SolicitudVerificacion.PaquetesIds.Select(p => new PaqueteIdDto(p.Id, p.IdPaquete, p.IsDescargado)).ToList(),
+                        solicitud.SolicitudVerificacion.PaquetesIds.Select(p => new PaqueteIdDto(p.Id, p.IdPaquete, p.IsDescargado))
+                            .ToList(),
                         solicitud.SolicitudVerificacion.Error,
                         solicitud.SolicitudVerificacion.Solicitud,
                         solicitud.SolicitudVerificacion.Respuesta,
-                        CodigoEstatusSolicitud.TryParse(solicitud.SolicitudVerificacion.CodEstatus, out var codigoEstatusSolicitudVer)
-                            ? new CodigoEstatusSolicitudDto(codigoEstatusSolicitudVer.Id, codigoEstatusSolicitudVer.Name, codigoEstatusSolicitudVer.Mensaje, codigoEstatusSolicitudVer.Observaciones)
+                        CodigoEstatusSolicitud.TryFromName(solicitud.SolicitudVerificacion.CodEstatus,
+                            out CodigoEstatusSolicitud codigoEstatusSolicitudVer)
+                            ? new CodigoEstatusSolicitudDto(codigoEstatusSolicitudVer.Value,
+                                codigoEstatusSolicitudVer.Name,
+                                codigoEstatusSolicitudVer.Mensaje,
+                                codigoEstatusSolicitudVer.Observaciones)
                             : null,
-                        EstadoSolicitud.TryParse(solicitud.SolicitudVerificacion.EstadoSolicitud, out var estadoSolicitudVer)
-                            ? new EstadoSolicitudDto(estadoSolicitudVer.Id, estadoSolicitudVer.Name)
+                        EstadoSolicitud.TryFromValue(int.Parse(solicitud.SolicitudVerificacion.EstadoSolicitud),
+                            out EstadoSolicitud estadoSolicitudVer)
+                            ? new EstadoSolicitudDto(estadoSolicitudVer.Value, estadoSolicitudVer.Name)
                             : null,
-                        CodigoEstadoSolicitud.TryParse(solicitud.SolicitudVerificacion.CodigoEstadoSolicitud, out var codigoEstadoSolicitudVer)
-                            ? new CodigoEstadoSolicitudDto(codigoEstadoSolicitudVer.Id, codigoEstadoSolicitudVer.Name, codigoEstadoSolicitudVer.Mensaje, codigoEstadoSolicitudVer.Observaciones)
+                        CodigoEstadoSolicitud.TryFromName(solicitud.SolicitudVerificacion.CodigoEstadoSolicitud,
+                            out CodigoEstadoSolicitud codigoEstadoSolicitudVer)
+                            ? new CodigoEstadoSolicitudDto(codigoEstadoSolicitudVer.Value,
+                                codigoEstadoSolicitudVer.Name,
+                                codigoEstadoSolicitudVer.Mensaje,
+                                codigoEstadoSolicitudVer.Observaciones)
                             : null)
                     : null,
                 solicitud.SolicitudDescarga != null
-                    ? new SolicitudDescargaDto(
-                        solicitud.SolicitudDescarga.Id,
+                    ? new SolicitudDescargaDto(solicitud.SolicitudDescarga.Id,
                         solicitud.SolicitudDescarga.FechaCreacionUtc,
                         solicitud.SolicitudDescarga.CodEstatus,
                         solicitud.SolicitudDescarga.Mensaje,
@@ -111,13 +115,18 @@ namespace Core.Application.Solicitudes.Queries.BuscarSolicitudPorId
                         solicitud.SolicitudDescarga.Error,
                         solicitud.SolicitudDescarga.Solicitud,
                         solicitud.SolicitudDescarga.Respuesta,
-                        CodigoEstatusSolicitud.TryParse(solicitud.SolicitudDescarga.CodEstatus, out var codigoEstatusSolicituddes)
-                            ? new CodigoEstatusSolicitudDto(codigoEstatusSolicituddes.Id, codigoEstatusSolicituddes.Name, codigoEstatusSolicituddes.Mensaje, codigoEstatusSolicituddes.Observaciones)
+                        CodigoEstatusSolicitud.TryFromName(solicitud.SolicitudDescarga.CodEstatus,
+                            out CodigoEstatusSolicitud codigoEstatusSolicituddes)
+                            ? new CodigoEstatusSolicitudDto(codigoEstatusSolicituddes.Value,
+                                codigoEstatusSolicituddes.Name,
+                                codigoEstatusSolicituddes.Mensaje,
+                                codigoEstatusSolicituddes.Observaciones)
                             : null)
                     : null,
-                solicitud.SolicitudesWeb.OfType<SolicitudAutenticacion>().OrderBy(s => s.FechaCreacionUtc).ToList()
-                    .Select(s => new SolicitudAutenticacionDto(
-                        s.Id,
+                solicitud.SolicitudesWeb.OfType<SolicitudAutenticacion>()
+                    .OrderBy(s => s.FechaCreacionUtc)
+                    .ToList()
+                    .Select(s => new SolicitudAutenticacionDto(s.Id,
                         s.FechaCreacionUtc,
                         s.FechaTokenCreacionUtc,
                         s.FechaTokenExpiracionUtc,
@@ -129,9 +138,10 @@ namespace Core.Application.Solicitudes.Queries.BuscarSolicitudPorId
                         s.Solicitud,
                         s.Respuesta))
                     .ToList(),
-                solicitud.SolicitudesWeb.OfType<SolicitudSolicitud>().OrderBy(s => s.FechaCreacionUtc).ToList()
-                    .Select(s => new SolicitudSolicitudDto(
-                        s.Id,
+                solicitud.SolicitudesWeb.OfType<SolicitudSolicitud>()
+                    .OrderBy(s => s.FechaCreacionUtc)
+                    .ToList()
+                    .Select(s => new SolicitudSolicitudDto(s.Id,
                         s.FechaCreacionUtc,
                         s.FechaInicio,
                         s.FechaFin,
@@ -146,9 +156,10 @@ namespace Core.Application.Solicitudes.Queries.BuscarSolicitudPorId
                         s.Solicitud,
                         s.Respuesta))
                     .ToList(),
-                solicitud.SolicitudesWeb.OfType<SolicitudVerificacion>().OrderBy(s => s.FechaCreacionUtc).ToList()
-                    .Select(s => new SolicitudVerificacionDto(
-                        s.Id,
+                solicitud.SolicitudesWeb.OfType<SolicitudVerificacion>()
+                    .OrderBy(s => s.FechaCreacionUtc)
+                    .ToList()
+                    .Select(s => new SolicitudVerificacionDto(s.Id,
                         s.FechaCreacionUtc,
                         s.CodEstatus,
                         s.Mensaje,
@@ -159,19 +170,26 @@ namespace Core.Application.Solicitudes.Queries.BuscarSolicitudPorId
                         s.Error,
                         s.Solicitud,
                         s.Respuesta,
-                        CodigoEstatusSolicitud.TryParse(s.CodEstatus, out var codigoEstatusSolicitudVer2)
-                            ? new CodigoEstatusSolicitudDto(codigoEstatusSolicitudVer2.Id, codigoEstatusSolicitudVer2.Name, codigoEstatusSolicitudVer2.Mensaje, codigoEstatusSolicitudVer2.Observaciones)
+                        CodigoEstatusSolicitud.TryFromName(s.CodEstatus, out CodigoEstatusSolicitud codigoEstatusSolicitudVer2)
+                            ? new CodigoEstatusSolicitudDto(codigoEstatusSolicitudVer2.Value,
+                                codigoEstatusSolicitudVer2.Name,
+                                codigoEstatusSolicitudVer2.Mensaje,
+                                codigoEstatusSolicitudVer2.Observaciones)
                             : null,
-                        EstadoSolicitud.TryParse(s.EstadoSolicitud, out var estadoSolicitudVer2)
-                            ? new EstadoSolicitudDto(estadoSolicitudVer2.Id, estadoSolicitudVer2.Name)
+                        EstadoSolicitud.TryFromValue(int.Parse(s.EstadoSolicitud), out EstadoSolicitud estadoSolicitudVer2)
+                            ? new EstadoSolicitudDto(estadoSolicitudVer2.Value, estadoSolicitudVer2.Name)
                             : null,
-                        CodigoEstadoSolicitud.TryParse(s.CodigoEstadoSolicitud, out var codigoEstadoSolicitudVer2)
-                            ? new CodigoEstadoSolicitudDto(codigoEstadoSolicitudVer2.Id, codigoEstadoSolicitudVer2.Name, codigoEstadoSolicitudVer2.Mensaje, codigoEstadoSolicitudVer2.Observaciones)
+                        CodigoEstadoSolicitud.TryFromName(s.CodigoEstadoSolicitud, out CodigoEstadoSolicitud codigoEstadoSolicitudVer2)
+                            ? new CodigoEstadoSolicitudDto(codigoEstadoSolicitudVer2.Value,
+                                codigoEstadoSolicitudVer2.Name,
+                                codigoEstadoSolicitudVer2.Mensaje,
+                                codigoEstadoSolicitudVer2.Observaciones)
                             : null))
                     .ToList(),
-                solicitud.SolicitudesWeb.OfType<SolicitudDescarga>().OrderBy(s => s.FechaCreacionUtc).ToList()
-                    .Select(s => new SolicitudDescargaDto(
-                        s.Id,
+                solicitud.SolicitudesWeb.OfType<SolicitudDescarga>()
+                    .OrderBy(s => s.FechaCreacionUtc)
+                    .ToList()
+                    .Select(s => new SolicitudDescargaDto(s.Id,
                         s.FechaCreacionUtc,
                         s.CodEstatus,
                         s.Mensaje,
@@ -180,12 +198,14 @@ namespace Core.Application.Solicitudes.Queries.BuscarSolicitudPorId
                         s.Error,
                         s.Solicitud,
                         s.Respuesta,
-                        CodigoEstatusSolicitud.TryParse(s.CodEstatus, out var codigoEstatusSolicituddes2)
-                            ? new CodigoEstatusSolicitudDto(codigoEstatusSolicituddes2.Id, codigoEstatusSolicituddes2.Name, codigoEstatusSolicituddes2.Mensaje, codigoEstatusSolicituddes2.Observaciones)
+                        CodigoEstatusSolicitud.TryFromName(s.CodEstatus, out CodigoEstatusSolicitud codigoEstatusSolicituddes2)
+                            ? new CodigoEstatusSolicitudDto(codigoEstatusSolicituddes2.Value,
+                                codigoEstatusSolicituddes2.Name,
+                                codigoEstatusSolicituddes2.Mensaje,
+                                codigoEstatusSolicituddes2.Observaciones)
                             : null))
                     .ToList(),
-                solicitud.Paquetes.Select(p => new PaqueteDto(p.Id, p.IdSat, p.Contenido)).ToList()
-            );
+                solicitud.Paquetes.Select(p => new PaqueteDto(p.Id, p.IdSat, p.Contenido)).ToList());
         }
     }
 }
