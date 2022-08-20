@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using Autofac;
 using Caliburn.Micro;
@@ -24,7 +21,6 @@ namespace Presentation.WpfApp
         {
             _container = IocContainerConfig.Configure();
         }
-
 
         protected override object GetInstance(Type service, string key)
         {
@@ -48,22 +44,19 @@ namespace Presentation.WpfApp
             throw new Exception(string.Format("Could not locate any instances of contract {0}.", key ?? service.Name));
         }
 
-
         protected override IEnumerable<object> GetAllInstances(Type service)
         {
             return _container.Resolve(typeof(IEnumerable<>).MakeGenericType(service)) as IEnumerable<object>;
         }
-
 
         protected override void BuildUp(object instance)
         {
             _container.InjectProperties(instance);
         }
 
-
-        protected override void OnStartup(object sender, StartupEventArgs e)
+        protected override async void OnStartup(object sender, StartupEventArgs e)
         {
-            DisplayRootViewFor<ShellViewModel>();
+            await DisplayRootViewForAsync<ShellViewModel>();
         }
     }
 }
