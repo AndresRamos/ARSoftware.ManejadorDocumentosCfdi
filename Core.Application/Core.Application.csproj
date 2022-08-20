@@ -64,6 +64,7 @@
     <Compile Include="Cfdis\ExtraerCfdi\ExtraerCfdiCommandHandler.cs" />
     <Compile Include="Cfdis\Queries\LeerEncabezadosCfdi\LeerEncabezadosCfdiQuery.cs" />
     <Compile Include="Cfdis\Queries\LeerEncabezadosCfdi\LeerEncabezadosCfdiQueryHandler.cs" />
+    <Compile Include="Common\ConfigureServices.cs" />
     <Compile Include="Comprobantes\Interfaces\IComprobanteAddComercialRepository.cs" />
     <Compile Include="Comprobantes\Interfaces\IComprobanteAddContabilidadRepository.cs" />
     <Compile Include="Comprobantes\Interfaces\IComprobanteAddRepository.cs" />
@@ -203,7 +204,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="ARSoftware.Cfdi.DescargaMasiva">
-      <Version>1.0.2-alpha</Version>
+      <Version>2.0.0-alpha</Version>
     </PackageReference>
     <PackageReference Include="EntityFramework">
       <Version>6.4.4</Version>

@@ -3,9 +3,9 @@ using System.Data.Entity;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 using System.Threading.Tasks;
-using ARSoftware.Cfdi.DescargaMasiva.Constants;
 using ARSoftware.Cfdi.DescargaMasiva.Enumerations;
 using ARSoftware.Cfdi.DescargaMasiva.Helpers;
+using ARSoftware.Cfdi.DescargaMasiva.Interfaces;
 using ARSoftware.Cfdi.DescargaMasiva.Models;
 using ARSoftware.Cfdi.DescargaMasiva.Services;
 using Common;
@@ -20,10 +20,12 @@ namespace Core.Application.Solicitudes.Commands.GenerarSolicitud
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private readonly ManejadorDocumentosCfdiDbContext _context;
+        private readonly ISolicitudService _solicitudService;
 
-        public GenerarSolicitudCommandHandler(ManejadorDocumentosCfdiDbContext context)
+        public GenerarSolicitudCommandHandler(ManejadorDocumentosCfdiDbContext context, ISolicitudService solicitudService)
         {
             _context = context;
+            _solicitudService = solicitudService;
         }
 
         public async Task<Unit> Handle(GenerarSolicitudCommand request, CancellationToken cancellationToken)
@@ -55,9 +57,6 @@ namespace Core.Application.Solicitudes.Commands.GenerarSolicitud
             X509Certificate2 certificadoSat = X509Certificate2Helper.GetCertificate(configuracionGeneral.CertificadoSat.Certificado,
                 configuracionGeneral.CertificadoSat.Contrasena);
 
-            var solicitudService = new SolicitudService(CfdiDescargaMasivaWebServiceUrls.SolicitudUrl,
-                CfdiDescargaMasivaWebServiceUrls.SolicitudSoapActionUrl);
-
             Logger.WithProperty(LogPropertyConstants.SolicitudId, solicitud.Id).Info("Generando XML SOAP de solicitud.");
 
             var solicitudRequest = SolicitudRequest.CreateInstance(solicitud.FechaInicio,
@@ -76,7 +75,9 @@ namespace Core.Application.Solicitudes.Commands.GenerarSolicitud
             try
             {
                 Logger.WithProperty(LogPropertyConstants.SolicitudId, solicitud.Id).Info("Enviando solicitud SOAP de generacion.");
-                solicitudResult = solicitudService.SendSoapRequest(soapRequestEnvelopeXml, solicitud.SolicitudAutenticacion.Autorizacion);
+                solicitudResult = await _solicitudService.SendSoapRequestAsync(soapRequestEnvelopeXml,
+                    solicitud.SolicitudAutenticacion.Autorizacion,
+                    cancellationToken);
             }
             catch (Exception e)
             {
