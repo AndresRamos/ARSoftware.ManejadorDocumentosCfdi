@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 
+// ReSharper disable UnusedMember.Local
+// ReSharper disable AutoPropertyCanBeMadeGetOnly.Local
+
 namespace Core.Domain.Entities
 {
     public class SolicitudVerificacion : SolicitudWebBase
@@ -11,7 +14,15 @@ namespace Core.Domain.Entities
             PaquetesIds = new HashSet<PaqueteId>();
         }
 
-        private SolicitudVerificacion(string solicitud, string respuesta, string codEstatus, string mensaje, string codigoEstadoSolicitud, string estadoSolicitud, string numeroCfdis, IEnumerable<PaqueteId> idsPaquetes, string error) : base(solicitud, respuesta)
+        private SolicitudVerificacion(string solicitud,
+                                      string respuesta,
+                                      string codEstatus,
+                                      string mensaje,
+                                      string codigoEstadoSolicitud,
+                                      string estadoSolicitud,
+                                      string numeroCfdis,
+                                      IEnumerable<PaqueteId> idsPaquetes,
+                                      string error) : base(solicitud, respuesta)
         {
             FechaCreacionUtc = DateTime.UtcNow;
             CodEstatus = codEstatus;
@@ -22,7 +33,7 @@ namespace Core.Domain.Entities
             Error = error;
 
             PaquetesIds = new HashSet<PaqueteId>();
-            foreach (var idsPaquete in idsPaquetes)
+            foreach (PaqueteId idsPaquete in idsPaquetes)
             {
                 PaquetesIds.Add(idsPaquete);
             }
@@ -41,9 +52,25 @@ namespace Core.Domain.Entities
 
         public bool HasPaquetesPendientesPorDescargar => PaquetesIds.Any(p => !p.IsDescargado);
 
-        public static SolicitudVerificacion CreateInstance(string solicitud, string respuesta, string codEstatus, string mensaje, string codigoEstadoSolicitud, string estadoSolicitud, string numeroCfdis, IEnumerable<PaqueteId> idsPaquetes, string error)
+        public static SolicitudVerificacion CreateInstance(string solicitud,
+                                                           string respuesta,
+                                                           string codEstatus,
+                                                           string mensaje,
+                                                           string codigoEstadoSolicitud,
+                                                           string estadoSolicitud,
+                                                           string numeroCfdis,
+                                                           IEnumerable<PaqueteId> idsPaquetes,
+                                                           string error)
         {
-            return new SolicitudVerificacion(solicitud, respuesta, codEstatus, mensaje, codigoEstadoSolicitud, estadoSolicitud, numeroCfdis, idsPaquetes, error);
+            return new SolicitudVerificacion(solicitud,
+                respuesta,
+                codEstatus,
+                mensaje,
+                codigoEstadoSolicitud,
+                estadoSolicitud,
+                numeroCfdis,
+                idsPaquetes,
+                error);
         }
     }
 }

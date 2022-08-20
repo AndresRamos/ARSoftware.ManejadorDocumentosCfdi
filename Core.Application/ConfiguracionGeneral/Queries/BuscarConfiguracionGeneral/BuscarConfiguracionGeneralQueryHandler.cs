@@ -19,10 +19,10 @@ namespace Core.Application.ConfiguracionGeneral.Queries.BuscarConfiguracionGener
 
         public async Task<ConfiguracionGeneralDto> Handle(BuscarConfiguracionGeneralQuery request, CancellationToken cancellationToken)
         {
-            var configuracionGeneral = await _context.ConfiguracionGeneral.SingleAsync(c => c.Id == request.EmpresaId, cancellationToken);
+            Domain.Entities.ConfiguracionGeneral configuracionGeneral =
+                await _context.ConfiguracionGeneral.SingleAsync(c => c.Id == request.EmpresaId, cancellationToken);
 
-            return new ConfiguracionGeneralDto(
-                configuracionGeneral.Id,
+            return new ConfiguracionGeneralDto(configuracionGeneral.Id,
                 new CertificadoSatDto
                 {
                     Certificado = configuracionGeneral.CertificadoSat.Certificado,
@@ -30,16 +30,12 @@ namespace Core.Application.ConfiguracionGeneral.Queries.BuscarConfiguracionGener
                     Rfc = configuracionGeneral.CertificadoSat.Rfc
                 },
                 configuracionGeneral.RutaDirectorioDescargas,
-                new ConfiguracionContpaqiComercialDto(
-                    configuracionGeneral.ConfiguracionContpaqiComercial.ContpaqiSqlConnectionString,
-                    new EmpresaContpaqiDto(
-                        configuracionGeneral.ConfiguracionContpaqiComercial.Empresa.Nombre,
+                new ConfiguracionContpaqiComercialDto(configuracionGeneral.ConfiguracionContpaqiComercial.ContpaqiSqlConnectionString,
+                    new EmpresaContpaqiDto(configuracionGeneral.ConfiguracionContpaqiComercial.Empresa.Nombre,
                         configuracionGeneral.ConfiguracionContpaqiComercial.Empresa.BaseDatos,
                         configuracionGeneral.ConfiguracionContpaqiComercial.Empresa.GuidAdd)),
-                new ConfiguracionContpaqiContabilidadDto(
-                    configuracionGeneral.ConfiguracionContpaqiContabilidad.ContpaqiSqlConnectionString,
-                    new EmpresaContpaqiDto(
-                        configuracionGeneral.ConfiguracionContpaqiContabilidad.Empresa.Nombre,
+                new ConfiguracionContpaqiContabilidadDto(configuracionGeneral.ConfiguracionContpaqiContabilidad.ContpaqiSqlConnectionString,
+                    new EmpresaContpaqiDto(configuracionGeneral.ConfiguracionContpaqiContabilidad.Empresa.Nombre,
                         configuracionGeneral.ConfiguracionContpaqiContabilidad.Empresa.BaseDatos,
                         configuracionGeneral.ConfiguracionContpaqiContabilidad.Empresa.GuidAdd)));
         }

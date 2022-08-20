@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Caliburn.Micro;
@@ -13,6 +14,7 @@ using Core.Application.Usuarios.Commands.AgregarRol;
 using Core.Application.Usuarios.Commands.CambiarContrasena;
 using Core.Application.Usuarios.Commands.RemoverEmpresaPermitida;
 using Core.Application.Usuarios.Commands.RemoverRol;
+using Core.Application.Usuarios.Models;
 using Core.Application.Usuarios.Queries.BuscarUsuarioPorId;
 using MahApps.Metro.Controls.Dialogs;
 using MediatR;
@@ -180,7 +182,7 @@ namespace Presentation.WpfApp.ViewModels.Usuarios
 
         public async Task InicializarAsync(int id)
         {
-            var usuario = await _mediator.Send(new BuscarUsuarioPorIdQuery(id));
+            UsuarioDto usuario = await _mediator.Send(new BuscarUsuarioPorIdQuery(id));
 
             UsuarioId = usuario.Id;
             PrimerNombre = usuario.PrimerNombre;
@@ -200,7 +202,9 @@ namespace Presentation.WpfApp.ViewModels.Usuarios
             try
             {
                 await _mediator.Send(new ActualizarPerfilUsuarioCommand(UsuarioId, PrimerNombre, Apellido, Email, NombreUsuario));
-                await _dialogCoordinator.ShowMessageAsync(this, "Perfil Actualizado", "El perfil del usuario fue actualizado exitosamente.");
+                await _dialogCoordinator.ShowMessageAsync(this,
+                    "Perfil Actualizado",
+                    "El perfil del usuario fue actualizado exitosamente.");
             }
             catch (Exception e)
             {
@@ -225,8 +229,8 @@ namespace Presentation.WpfApp.ViewModels.Usuarios
         {
             try
             {
-                var roles = await _mediator.Send(new BuscarRolesQuery());
-                var rolesUnicos = roles.Where(pa => Roles.All(p => p.Id != pa.Id)).ToList();
+                IEnumerable<RolDto> roles = await _mediator.Send(new BuscarRolesQuery());
+                List<RolDto> rolesUnicos = roles.Where(pa => Roles.All(p => p.Id != pa.Id)).ToList();
                 var viewModel = IoC.Get<SeleccionarRolViewModel>();
                 viewModel.Inicializar(rolesUnicos);
                 await _windowManager.ShowDialogAsync(viewModel);
@@ -261,10 +265,11 @@ namespace Presentation.WpfApp.ViewModels.Usuarios
         {
             try
             {
-                var empresaPermitidas = await _mediator.Send(new BuscarEmpresasPermitidasPorUsuarioQuery(UsuarioId));
-                var empresas = await _mediator.Send(new BuscarEmpresasQuery());
+                IEnumerable<EmpresaPerfilDto> empresaPermitidas =
+                    await _mediator.Send(new BuscarEmpresasPermitidasPorUsuarioQuery(UsuarioId));
+                IEnumerable<EmpresaPerfilDto> empresas = await _mediator.Send(new BuscarEmpresasQuery());
 
-                var empresasDisponibles = empresas.Where(e => EmpresasPermitidas.All(ep => ep.Id != e.Id)).ToList();
+                List<EmpresaPerfilDto> empresasDisponibles = empresas.Where(e => empresaPermitidas.All(ep => ep.Id != e.Id)).ToList();
 
                 var seleccionarEmpresaViewModel = IoC.Get<SeleccionarEmpresaViewModel>();
                 seleccionarEmpresaViewModel.Inicializar(empresasDisponibles);
@@ -274,7 +279,9 @@ namespace Presentation.WpfApp.ViewModels.Usuarios
                 {
                     await _mediator.Send(new AgregarEmpresaPermitidaCommand(UsuarioId, seleccionarEmpresaViewModel.EmpresaSeleccionada.Id));
                     await InicializarAsync(UsuarioId);
-                    await _dialogCoordinator.ShowMessageAsync(this, "Empresa Permitida Agregada", "Empresa permitida agregada exitosamente.");
+                    await _dialogCoordinator.ShowMessageAsync(this,
+                        "Empresa Permitida Agregada",
+                        "Empresa permitida agregada exitosamente.");
                 }
             }
             catch (Exception e)

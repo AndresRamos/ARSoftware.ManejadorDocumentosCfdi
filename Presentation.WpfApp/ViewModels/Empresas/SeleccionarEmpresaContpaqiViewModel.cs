@@ -8,7 +8,7 @@ using Core.Application.Empresas.Models;
 
 namespace Presentation.WpfApp.ViewModels.Empresas
 {
-    public class SeleccionarEmpresaContpaqiViewModel : Screen
+    public sealed class SeleccionarEmpresaContpaqiViewModel : Screen
     {
         private EmpresaContpaqiDto _empresaSeleccionada;
         private string _filtro;
@@ -84,8 +84,7 @@ namespace Presentation.WpfApp.ViewModels.Empresas
                 throw new ArgumentNullException(nameof(obj));
             }
 
-            return string.IsNullOrEmpty(Filtro) ||
-                   empresa.Nombre.IndexOf(Filtro, StringComparison.OrdinalIgnoreCase) >= 0;
+            return string.IsNullOrEmpty(Filtro) || empresa.Nombre.IndexOf(Filtro, StringComparison.OrdinalIgnoreCase) >= 0;
         }
     }
 }

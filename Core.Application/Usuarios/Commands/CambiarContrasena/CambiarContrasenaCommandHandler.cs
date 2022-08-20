@@ -3,6 +3,7 @@ using System.Data.Entity.Core;
 using System.Threading;
 using System.Threading.Tasks;
 using Common.Infrastructure;
+using Core.Domain.Entities;
 using Infrastructure.Persistance;
 using MediatR;
 
@@ -19,10 +20,10 @@ namespace Core.Application.Usuarios.Commands.CambiarContrasena
 
         public async Task<Unit> Handle(CambiarContrasenaCommand request, CancellationToken cancellationToken)
         {
-            var passwordSalt = PasswordHasher.CreateSalt();
-            var passwordHash = PasswordHasher.CreateHash(request.PasswordNueva, passwordSalt);
+            byte[] passwordSalt = PasswordHasher.CreateSalt();
+            byte[] passwordHash = PasswordHasher.CreateHash(request.PasswordNueva, passwordSalt);
 
-            var usuario = await _context.Usuarios.SingleOrDefaultAsync(u => u.Id == request.UsuarioId, cancellationToken);
+            Usuario usuario = await _context.Usuarios.SingleOrDefaultAsync(u => u.Id == request.UsuarioId, cancellationToken);
 
             if (usuario == null)
             {

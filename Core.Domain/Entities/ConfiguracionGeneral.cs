@@ -1,5 +1,7 @@
 ﻿using Core.Domain.ValueObjects;
 
+// ReSharper disable UnusedAutoPropertyAccessor.Global
+
 namespace Core.Domain.Entities
 {
     public class ConfiguracionGeneral

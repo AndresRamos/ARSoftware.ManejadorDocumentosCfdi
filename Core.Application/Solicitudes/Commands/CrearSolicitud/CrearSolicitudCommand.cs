@@ -5,7 +5,14 @@ namespace Core.Application.Solicitudes.Commands.CrearSolicitud
 {
     public class CrearSolicitudCommand : IRequest<int>
     {
-        public CrearSolicitudCommand(int empresaId, int usuarioId, DateTime fechaInicio, DateTime fechaFin, string rfcEmisor, string rfcReceptor, string rfcSolicitante, string tipoSolicitud)
+        public CrearSolicitudCommand(int empresaId,
+                                     int usuarioId,
+                                     DateTime fechaInicio,
+                                     DateTime fechaFin,
+                                     string rfcEmisor,
+                                     string rfcReceptor,
+                                     string rfcSolicitante,
+                                     string tipoSolicitud)
         {
             EmpresaId = empresaId;
             UsuarioId = usuarioId;

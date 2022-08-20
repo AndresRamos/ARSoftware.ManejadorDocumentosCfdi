@@ -3,15 +3,14 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
-using Core.Application.Permisos.Models;
 
-namespace Core.Application.Permisos.Helpers
+namespace Common.Models
 {
     public static class PermisosHelper
     {
         public static string PackPermissionsIntoString(this IEnumerable<PermisosAplicacion> permissions)
         {
-            return permissions.Aggregate("", (s, permission) => s + (char) permission);
+            return permissions.Aggregate("", (s, permission) => s + (char)permission);
         }
 
         public static IEnumerable<PermisosAplicacion> UnpackPermissionsFromString(this string packedPermissions)
@@ -21,31 +20,29 @@ namespace Core.Application.Permisos.Helpers
                 throw new ArgumentNullException(nameof(packedPermissions));
             }
 
-            foreach (var character in packedPermissions)
+            foreach (char character in packedPermissions)
             {
-                yield return (PermisosAplicacion) character;
+                yield return (PermisosAplicacion)character;
             }
         }
 
         public static PermisosAplicacion? BuscarPermisoPorNombre(this string permissionName)
         {
-            return Enum.TryParse(permissionName, out PermisosAplicacion permission)
-                ? (PermisosAplicacion?) permission
-                : null;
+            return Enum.TryParse(permissionName, out PermisosAplicacion permission) ? (PermisosAplicacion?)permission : null;
         }
 
         public static PermisoAplicacionDto ToPermisoDto(this PermisosAplicacion permisoApplicacion)
         {
-            var enumType = typeof(PermisosAplicacion);
+            Type enumType = typeof(PermisosAplicacion);
 
-            var member = enumType.GetMember(permisoApplicacion.ToString());
+            MemberInfo[] member = enumType.GetMember(permisoApplicacion.ToString());
             var displayAttribute = member[0].GetCustomAttribute<DisplayAttribute>();
             if (displayAttribute == null)
             {
                 return null;
             }
 
-            var permiso = (PermisosAplicacion) Enum.Parse(enumType, permisoApplicacion.ToString(), false);
+            var permiso = (PermisosAplicacion)Enum.Parse(enumType, permisoApplicacion.ToString(), false);
 
             return new PermisoAplicacionDto(permiso, displayAttribute.Name, displayAttribute.GroupName, displayAttribute.Description);
         }

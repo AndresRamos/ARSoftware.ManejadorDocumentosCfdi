@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
-using Core.Application.Permisos.Models;
+using Common.Models;
 using MediatR;
 
 namespace Core.Application.Permisos.Queries.BuscarPermisosAplicacion
@@ -15,11 +15,11 @@ namespace Core.Application.Permisos.Queries.BuscarPermisosAplicacion
         {
             var permisos = new List<PermisoAplicacionDto>();
 
-            var enumType = typeof(PermisosAplicacion);
+            Type enumType = typeof(PermisosAplicacion);
 
-            foreach (var permissionName in Enum.GetNames(enumType))
+            foreach (string permissionName in Enum.GetNames(enumType))
             {
-                var member = enumType.GetMember(permissionName);
+                MemberInfo[] member = enumType.GetMember(permissionName);
 
                 var displayAttribute = member[0].GetCustomAttribute<DisplayAttribute>();
                 if (displayAttribute == null)
@@ -27,9 +27,12 @@ namespace Core.Application.Permisos.Queries.BuscarPermisosAplicacion
                     continue;
                 }
 
-                var permiso = (PermisosAplicacion) Enum.Parse(enumType, permissionName, false);
+                var permiso = (PermisosAplicacion)Enum.Parse(enumType, permissionName, false);
 
-                permisos.Add(new PermisoAplicacionDto(permiso, displayAttribute.Name, displayAttribute.GroupName, displayAttribute.Description));
+                permisos.Add(new PermisoAplicacionDto(permiso,
+                    displayAttribute.Name,
+                    displayAttribute.GroupName,
+                    displayAttribute.Description));
             }
 
             return Task.FromResult<IEnumerable<PermisoAplicacionDto>>(permisos);

@@ -11,6 +11,6 @@ namespace Core.Application.Paquetes.Commands.ExportarArchivoZip
         }
 
         public int PaquteId { get; }
-        public string FileName { get;  }
+        public string FileName { get; }
     }
 }

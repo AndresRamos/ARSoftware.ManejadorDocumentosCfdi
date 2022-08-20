@@ -20,13 +20,8 @@ namespace Core.Application.Empresas.Queries.BuscarEmpresas
 
         public async Task<IEnumerable<EmpresaPerfilDto>> Handle(BuscarEmpresasQuery request, CancellationToken cancellationToken)
         {
-            return await _context.Empresas
-                .OrderBy(e => e.Nombre)
-                .Select(e => new EmpresaPerfilDto
-                {
-                    Id = e.Id,
-                    Nombre = e.Nombre
-                })
+            return await _context.Empresas.OrderBy(e => e.Nombre)
+                .Select(e => new EmpresaPerfilDto { Id = e.Id, Nombre = e.Nombre })
                 .ToListAsync(cancellationToken);
         }
     }

@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Core.Application.Permisos.Models;
+using Common.Models;
 
 namespace Core.Application.Roles.Models
 {

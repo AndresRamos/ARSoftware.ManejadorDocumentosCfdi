@@ -113,11 +113,11 @@ namespace Presentation.WpfApp.ViewModels.Empresas
         {
             try
             {
-                var messageDialogResult = await _dialogCoordinator.ShowMessageAsync(this, "Eliminar Empresa", "Esta seguro de querer eliminar la empresa?", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings
-                {
-                    AffirmativeButtonText = "Si",
-                    NegativeButtonText = "No"
-                });
+                MessageDialogResult messageDialogResult = await _dialogCoordinator.ShowMessageAsync(this,
+                    "Eliminar Empresa",
+                    "Esta seguro de querer eliminar la empresa?",
+                    MessageDialogStyle.AffirmativeAndNegative,
+                    new MetroDialogSettings { AffirmativeButtonText = "Si", NegativeButtonText = "No" });
                 if (messageDialogResult == MessageDialogResult.Affirmative)
                 {
                     await _mediator.Send(new EliminarEmpresaCommand(EmpresaSeleccionada.Id));
@@ -148,8 +148,7 @@ namespace Presentation.WpfApp.ViewModels.Empresas
                 throw new InvalidOperationException($"El objecto a filtrar no es de tipo {typeof(EmpresaPerfilDto)}.");
             }
 
-            return string.IsNullOrWhiteSpace(Filtro) ||
-                   empresa.Nombre.IndexOf(Filtro, StringComparison.OrdinalIgnoreCase) >= 0;
+            return string.IsNullOrWhiteSpace(Filtro) || empresa.Nombre.IndexOf(Filtro, StringComparison.OrdinalIgnoreCase) >= 0;
         }
     }
 }

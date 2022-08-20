@@ -1,23 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using Autofac;
+using Contpaqi.Sql.ADD.DocumentMetadata;
 using Core.Application.Cfdis.Queries.ObtenerCertificado;
+using Core.Application.Common;
 using Core.Application.Comprobantes.Interfaces;
 using Core.Application.Empresas.Interfaces;
 using Core.Application.Rfcs.Interfaces;
-using Infrastructure.ContpaqiAdd.Factories;
-using Infrastructure.ContpaqiAdd.Repositories;
-using Infrastructure.ContpaqiComercial.Factories;
-using Infrastructure.ContpaqiComercial.Repositories;
-using Infrastructure.ContpaqiContabilidad.Factories;
-using Infrastructure.ContpaqiContabilidad.Repositories;
+using Infrastructure.Contpaqi.ADD.Factories;
+using Infrastructure.Contpaqi.ADD.Repositories;
+using Infrastructure.Contpaqi.Comercial.Factories;
+using Infrastructure.Contpaqi.Comercial.Repositories;
+using Infrastructure.Contpaqi.Contabilidad.Factories;
+using Infrastructure.Contpaqi.Contabilidad.Repositories;
 using Infrastructure.Persistance;
 using MediatR;
-using Presentation.ConsoleApp.Models;
 
 namespace Presentation.ConsoleApp.Config
 {
@@ -41,13 +38,9 @@ namespace Presentation.ConsoleApp.Config
         {
             builder.RegisterAssemblyTypes(typeof(IMediator).GetTypeInfo().Assembly).AsImplementedInterfaces();
 
-            var mediatrOpenTypes = new[]
-            {
-                typeof(IRequestHandler<,>),
-                typeof(INotificationHandler<>)
-            };
+            Type[] mediatrOpenTypes = { typeof(IRequestHandler<,>), typeof(INotificationHandler<>) };
 
-            foreach (var mediatrOpenType in mediatrOpenTypes)
+            foreach (Type mediatrOpenType in mediatrOpenTypes)
             {
                 builder.RegisterAssemblyTypes(typeof(ObtenerCertificadoQueryHandler).GetTypeInfo().Assembly)
                     .AsClosedTypesOf(mediatrOpenType)
@@ -60,7 +53,7 @@ namespace Presentation.ConsoleApp.Config
                 return t => c.Resolve(t);
             });
         }
-      
+
         private static void RegisterModels(ContainerBuilder containerBuilder)
         {
             containerBuilder.RegisterType<ConfiguracionAplicacion>().SingleInstance();
@@ -76,8 +69,8 @@ namespace Presentation.ConsoleApp.Config
             containerBuilder.Register(c =>
             {
                 var configuracionAplicacion = c.Resolve<ConfiguracionAplicacion>();
-                return ComercialGeneralesDbContextFactory.Crear(
-                    configuracionAplicacion.ConfiguracionGeneral.ConfiguracionContpaqiComercial.ContpaqiSqlConnectionString);
+                return ComercialGeneralesDbContextFactory.Crear(configuracionAplicacion.ConfiguracionGeneral.ConfiguracionContpaqiComercial
+                    .ContpaqiSqlConnectionString);
             });
 
             containerBuilder.Register(c =>
@@ -97,8 +90,8 @@ namespace Presentation.ConsoleApp.Config
             containerBuilder.Register(c =>
             {
                 var configuracionAplicacion = c.Resolve<ConfiguracionAplicacion>();
-                return ContabilidadGeneralesDbContextFactory.Crear(
-                    configuracionAplicacion.ConfiguracionGeneral.ConfiguracionContpaqiContabilidad.ContpaqiSqlConnectionString);
+                return ContabilidadGeneralesDbContextFactory.Crear(configuracionAplicacion.ConfiguracionGeneral
+                    .ConfiguracionContpaqiContabilidad.ContpaqiSqlConnectionString);
             });
 
             containerBuilder.Register(c =>
@@ -116,29 +109,37 @@ namespace Presentation.ConsoleApp.Config
         private static void RegisterContpaqiAddModule(ContainerBuilder containerBuilder)
         {
             containerBuilder.Register(c =>
-            {
-                var configuracionAplicacion = c.Resolve<ConfiguracionAplicacion>();
-
-                if (string.IsNullOrWhiteSpace(configuracionAplicacion.ConfiguracionGeneral.ConfiguracionContpaqiContabilidad.Empresa?.GuidAdd))
                 {
-                    return null;
-                }
+                    var configuracionAplicacion = c.Resolve<ConfiguracionAplicacion>();
 
-                var addDocumentMetadataDbContext = AddDocumentMetadataDbContextFactory.Crear(configuracionAplicacion.ConfiguracionGeneral.ConfiguracionContpaqiContabilidad.ContpaqiSqlConnectionString, configuracionAplicacion.ConfiguracionGeneral.ConfiguracionContpaqiContabilidad.Empresa.GuidAdd);
-                return new ComprobanteAddRepository(addDocumentMetadataDbContext);
-            }).As<IComprobanteAddContabilidadRepository>();
+                    if (string.IsNullOrWhiteSpace(configuracionAplicacion.ConfiguracionGeneral.ConfiguracionContpaqiContabilidad.Empresa
+                            ?.GuidAdd))
+                    {
+                        return null;
+                    }
+
+                    AddDocumentMetadataDbContext addDocumentMetadataDbContext = AddDocumentMetadataDbContextFactory.Crear(
+                        configuracionAplicacion.ConfiguracionGeneral.ConfiguracionContpaqiContabilidad.ContpaqiSqlConnectionString,
+                        configuracionAplicacion.ConfiguracionGeneral.ConfiguracionContpaqiContabilidad.Empresa.GuidAdd);
+                    return new ComprobanteAddRepository(addDocumentMetadataDbContext);
+                })
+                .As<IComprobanteAddContabilidadRepository>();
 
             containerBuilder.Register(context =>
-            {
-                var configuracionAplicacion = context.Resolve<ConfiguracionAplicacion>();
-                if (string.IsNullOrWhiteSpace(configuracionAplicacion.ConfiguracionGeneral.ConfiguracionContpaqiComercial.Empresa?.GuidAdd))
                 {
-                    return null;
-                }
+                    var configuracionAplicacion = context.Resolve<ConfiguracionAplicacion>();
+                    if (string.IsNullOrWhiteSpace(configuracionAplicacion.ConfiguracionGeneral.ConfiguracionContpaqiComercial.Empresa
+                            ?.GuidAdd))
+                    {
+                        return null;
+                    }
 
-                var addDocumentMetadataDbContext = AddDocumentMetadataDbContextFactory.Crear(configuracionAplicacion.ConfiguracionGeneral.ConfiguracionContpaqiContabilidad.ContpaqiSqlConnectionString, configuracionAplicacion.ConfiguracionGeneral.ConfiguracionContpaqiComercial.Empresa.GuidAdd);
-                return new ComprobanteAddRepository(addDocumentMetadataDbContext);
-            }).As<IComprobanteAddComercialRepository>();
+                    AddDocumentMetadataDbContext addDocumentMetadataDbContext = AddDocumentMetadataDbContextFactory.Crear(
+                        configuracionAplicacion.ConfiguracionGeneral.ConfiguracionContpaqiContabilidad.ContpaqiSqlConnectionString,
+                        configuracionAplicacion.ConfiguracionGeneral.ConfiguracionContpaqiComercial.Empresa.GuidAdd);
+                    return new ComprobanteAddRepository(addDocumentMetadataDbContext);
+                })
+                .As<IComprobanteAddComercialRepository>();
         }
     }
 }

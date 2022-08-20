@@ -11,7 +11,7 @@ using Presentation.WpfApp.ViewModels.Xmls;
 
 namespace Presentation.WpfApp.ViewModels.Solicitudes
 {
-    public class SolicitudVerificacionViewModel : Screen
+    public sealed class SolicitudVerificacionViewModel : Screen
     {
         private readonly IDialogCoordinator _dialogCoordinator;
 
@@ -72,7 +72,8 @@ namespace Presentation.WpfApp.ViewModels.Solicitudes
 
         public async Task EnviarSolicitudAsync()
         {
-            var progressDialogController = await _dialogCoordinator.ShowProgressAsync(this, "Enviando Solicitud", "Enviando solicitud");
+            ProgressDialogController progressDialogController =
+                await _dialogCoordinator.ShowProgressAsync(this, "Enviando Solicitud", "Enviando solicitud");
             progressDialogController.SetIndeterminate();
             await Task.Delay(1000);
 

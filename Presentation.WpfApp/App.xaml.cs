@@ -4,10 +4,7 @@ using NLog;
 
 namespace Presentation.WpfApp
 {
-    /// <summary>
-    ///     Interaction logic for App.xaml
-    /// </summary>
-    public partial class App : Application
+    public partial class App
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 

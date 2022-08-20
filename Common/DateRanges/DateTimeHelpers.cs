@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Threading;
 
 namespace Common.DateRanges
@@ -22,8 +23,8 @@ namespace Common.DateRanges
 
         public static DateTime FirstDayOfWeek(this DateTime value)
         {
-            var cultureInfo = Thread.CurrentThread.CurrentCulture;
-            var daysTillCurrentDay = value.DayOfWeek - cultureInfo.DateTimeFormat.FirstDayOfWeek;
+            CultureInfo cultureInfo = Thread.CurrentThread.CurrentCulture;
+            int daysTillCurrentDay = value.DayOfWeek - cultureInfo.DateTimeFormat.FirstDayOfWeek;
             return value.AddDays(-daysTillCurrentDay).Date;
         }
     }

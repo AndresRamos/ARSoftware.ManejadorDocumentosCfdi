@@ -4,7 +4,7 @@ using System.Data.Entity.Core;
 using System.Threading;
 using System.Threading.Tasks;
 using Common;
-using Core.Application.Permisos.Models;
+using Common.Models;
 using Core.Application.Solicitudes.Commands.AutenticarSolicitud;
 using Core.Application.Solicitudes.Commands.DescargarSolicitud;
 using Core.Application.Solicitudes.Commands.GenerarSolicitud;
@@ -30,9 +30,11 @@ namespace Core.Application.Solicitudes.Commands.ProcesarSolicitud
 
         public async Task<Unit> Handle(ProcesarSolicitudCommand request, CancellationToken cancellationToken)
         {
-            Logger.WithProperty(LogPropertyConstants.SolicitudId, request.SolicitudId).Info("Procesando solicitud {0}", request.SolicitudId);
+            Logger.WithProperty(LogPropertyConstants.SolicitudId, request.SolicitudId)
+                .Info("Procesando solicitud {0}", request.SolicitudId);
 
-            var usuario = await _context.Usuarios.Include(u => u.Roles).SingleOrDefaultAsync(u => u.Id == request.UsuarioId, cancellationToken);
+            Usuario usuario = await _context.Usuarios.Include(u => u.Roles)
+                .SingleOrDefaultAsync(u => u.Id == request.UsuarioId, cancellationToken);
 
             if (usuario is null)
             {
@@ -44,7 +46,7 @@ namespace Core.Application.Solicitudes.Commands.ProcesarSolicitud
                 throw new InvalidOperationException("El usuario no tiene permiso de crear solicitudes.");
             }
 
-            var solicitud = await BuscarSolicitudAsync(request.SolicitudId, cancellationToken);
+            Solicitud solicitud = await BuscarSolicitudAsync(request.SolicitudId, cancellationToken);
 
             // Autenticar
             if (solicitud.SolicitudAutenticacion == null || !solicitud.SolicitudAutenticacion.IsTokenValido)
@@ -55,7 +57,8 @@ namespace Core.Application.Solicitudes.Commands.ProcesarSolicitud
             }
 
             // Generar Solicitud
-            if (solicitud.SolicitudAutenticacion.IsTokenValido && (solicitud.SolicitudSolicitud == null || !solicitud.SolicitudSolicitud.IsValid))
+            if (solicitud.SolicitudAutenticacion.IsTokenValido &&
+                (solicitud.SolicitudSolicitud == null || !solicitud.SolicitudSolicitud.IsValid))
             {
                 Logger.WithProperty(LogPropertyConstants.SolicitudId, solicitud.Id).Info("Generando solicitud {0}", solicitud.Id);
                 await _mediator.Send(new GenerarSolicitudCommand(solicitud.Id), cancellationToken);
@@ -63,8 +66,10 @@ namespace Core.Application.Solicitudes.Commands.ProcesarSolicitud
             }
 
             // Verificar Solicitud
-            int tries = 0;
-            if (solicitud.SolicitudAutenticacion.IsTokenValido && solicitud.SolicitudSolicitud.IsValid && (solicitud.SolicitudVerificacion == null || !solicitud.SolicitudVerificacion.IsValid))
+            var tries = 0;
+            if (solicitud.SolicitudAutenticacion.IsTokenValido &&
+                solicitud.SolicitudSolicitud.IsValid &&
+                (solicitud.SolicitudVerificacion == null || !solicitud.SolicitudVerificacion.IsValid))
             {
                 do
                 {
@@ -73,12 +78,17 @@ namespace Core.Application.Solicitudes.Commands.ProcesarSolicitud
                     await _mediator.Send(new VerificarSolicitudCommand(solicitud.Id), cancellationToken);
                     solicitud = await BuscarSolicitudAsync(solicitud.Id, cancellationToken);
                     tries++;
-                } while ((solicitud.SolicitudVerificacion.EstadoSolicitud == "1" || solicitud.SolicitudVerificacion.EstadoSolicitud == "2") && tries < 3);
+                } while ((solicitud.SolicitudVerificacion.EstadoSolicitud == "1" ||
+                          solicitud.SolicitudVerificacion.EstadoSolicitud == "2") &&
+                         tries < 3);
             }
 
             // Descargar Solicitud
             solicitud = await BuscarSolicitudAsync(solicitud.Id, cancellationToken);
-            if (solicitud.SolicitudAutenticacion.IsTokenValido && solicitud.SolicitudSolicitud.IsValid && solicitud.SolicitudVerificacion.IsValid && solicitud.SolicitudVerificacion.HasPaquetesPendientesPorDescargar)
+            if (solicitud.SolicitudAutenticacion.IsTokenValido &&
+                solicitud.SolicitudSolicitud.IsValid &&
+                solicitud.SolicitudVerificacion.IsValid &&
+                solicitud.SolicitudVerificacion.HasPaquetesPendientesPorDescargar)
             {
                 Logger.WithProperty(LogPropertyConstants.SolicitudId, solicitud.Id).Info("Descargando solicitud {0}", solicitud.Id);
                 await _mediator.Send(new DescargarSolicitudCommand(solicitud.Id), cancellationToken);
@@ -92,8 +102,7 @@ namespace Core.Application.Solicitudes.Commands.ProcesarSolicitud
 
         private async Task<Solicitud> BuscarSolicitudAsync(int solicitudId, CancellationToken cancellationToken)
         {
-            var solicitud = await _context.Solicitudes
-                .Include(s => s.SolicitudAutenticacion)
+            Solicitud solicitud = await _context.Solicitudes.Include(s => s.SolicitudAutenticacion)
                 .Include(s => s.SolicitudSolicitud)
                 .Include(s => s.SolicitudVerificacion.PaquetesIds)
                 .AsNoTracking()

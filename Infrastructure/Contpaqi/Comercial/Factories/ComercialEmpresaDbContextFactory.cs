@@ -2,7 +2,7 @@
 using System.Data.SqlClient;
 using Contpaqi.Sql.Comercial.Empresa;
 
-namespace Infrastructure.ContpaqiComercial.Factories
+namespace Infrastructure.Contpaqi.Comercial.Factories
 {
     public static class ComercialEmpresaDbContextFactory
     {
@@ -18,7 +18,7 @@ namespace Infrastructure.ContpaqiComercial.Factories
                 throw new ArgumentNullException(nameof(initialCatalog));
             }
 
-            var builder = new SqlConnectionStringBuilder(contpaqiConnectionString) {InitialCatalog = initialCatalog};
+            var builder = new SqlConnectionStringBuilder(contpaqiConnectionString) { InitialCatalog = initialCatalog };
             return new ComercialEmpresaDbContext(new SqlConnection(builder.ToString()), true);
         }
     }

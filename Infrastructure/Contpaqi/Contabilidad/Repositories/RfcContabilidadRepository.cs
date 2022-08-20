@@ -6,7 +6,7 @@ using Contpaqi.Sql.Contabilidad.Empresa;
 using Core.Application.Rfcs.Interfaces;
 using Core.Application.Rfcs.Models;
 
-namespace Infrastructure.ContpaqiContabilidad.Repositories
+namespace Infrastructure.Contpaqi.Contabilidad.Repositories
 {
     public class RfcContabilidadRepository : IRfcContabilidadRepository
     {
@@ -19,8 +19,9 @@ namespace Infrastructure.ContpaqiContabilidad.Repositories
 
         public async Task<IEnumerable<RfcDto>> BuscarRfcsAsync()
         {
-            return (await _context.Personas.Select(p => new {p.Codigo, p.RFC, p.Nombre}).ToListAsync())
-                .Select(p => new RfcDto(p.Codigo, p.RFC, p.Nombre)).ToList();
+            return (await _context.Personas.Select(p => new { p.Codigo, p.RFC, p.Nombre }).ToListAsync())
+                .Select(p => new RfcDto(p.Codigo, p.RFC, p.Nombre))
+                .ToList();
         }
     }
 }

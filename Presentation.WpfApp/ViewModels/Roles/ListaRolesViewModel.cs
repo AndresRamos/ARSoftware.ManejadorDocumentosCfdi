@@ -122,15 +122,11 @@ namespace Presentation.WpfApp.ViewModels.Roles
         {
             try
             {
-                var messageDialogResult = await _dialogCoordinator.ShowMessageAsync(this,
+                MessageDialogResult messageDialogResult = await _dialogCoordinator.ShowMessageAsync(this,
                     "Eliminar Rol?",
                     $"Esta seguro de querer eliminar el rol {RolSeleccionado.Nombre}?",
                     MessageDialogStyle.AffirmativeAndNegative,
-                    new MetroDialogSettings
-                    {
-                        AffirmativeButtonText = "Si",
-                        NegativeButtonText = "No"
-                    });
+                    new MetroDialogSettings { AffirmativeButtonText = "Si", NegativeButtonText = "No" });
                 if (messageDialogResult != MessageDialogResult.Affirmative)
                 {
                     return;

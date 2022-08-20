@@ -3,7 +3,7 @@ using System.Data.Entity;
 using System.Data.Entity.Core;
 using System.Threading;
 using System.Threading.Tasks;
-using Core.Application.Permisos.Models;
+using Common.Models;
 using Core.Domain.Entities;
 using Infrastructure.Persistance;
 using MediatR;
@@ -21,7 +21,8 @@ namespace Core.Application.Solicitudes.Commands.CrearSolicitud
 
         public async Task<int> Handle(CrearSolicitudCommand request, CancellationToken cancellationToken)
         {
-            var usuario = await _context.Usuarios.Include(u => u.Roles).SingleOrDefaultAsync(u => u.Id == request.UsuarioId, cancellationToken);
+            Usuario usuario = await _context.Usuarios.Include(u => u.Roles)
+                .SingleOrDefaultAsync(u => u.Id == request.UsuarioId, cancellationToken);
 
             if (usuario is null)
             {
@@ -33,8 +34,7 @@ namespace Core.Application.Solicitudes.Commands.CrearSolicitud
                 throw new InvalidOperationException("El usuario no tiene permiso de crear solicitudes.");
             }
 
-            var nuevaSolicitud = Solicitud.CreateNew(
-                request.EmpresaId,
+            var nuevaSolicitud = Solicitud.CreateNew(request.EmpresaId,
                 request.UsuarioId,
                 request.FechaInicio,
                 request.FechaFin,

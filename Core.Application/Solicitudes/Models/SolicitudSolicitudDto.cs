@@ -4,7 +4,20 @@ namespace Core.Application.Solicitudes.Models
 {
     public class SolicitudSolicitudDto
     {
-        public SolicitudSolicitudDto(int id, DateTime fechaCreacionUtc, DateTime fechaInicio, DateTime fechaFin, string rfcEmisor, string rfcReceptor, string rfcSolicitante, string tipoSolicitud, string codEstatus, string mensaje, string idSolicitud, string error, string solicitud, string respuesta)
+        public SolicitudSolicitudDto(int id,
+                                     DateTime fechaCreacionUtc,
+                                     DateTime fechaInicio,
+                                     DateTime fechaFin,
+                                     string rfcEmisor,
+                                     string rfcReceptor,
+                                     string rfcSolicitante,
+                                     string tipoSolicitud,
+                                     string codEstatus,
+                                     string mensaje,
+                                     string idSolicitud,
+                                     string error,
+                                     string solicitud,
+                                     string respuesta)
         {
             Id = id;
             FechaCreacionUtc = fechaCreacionUtc;

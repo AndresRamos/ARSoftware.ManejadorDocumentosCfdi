@@ -4,13 +4,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Data;
 using Caliburn.Micro;
-using Core.Application.Permisos.Models;
+using Common.Models;
+using Core.Application.Common;
 using Core.Application.Solicitudes.Commands.ProcesarSolicitud;
 using Core.Application.Solicitudes.Models;
 using Core.Application.Solicitudes.Queries.BuscarSolicitudesPorRangoFecha;
 using MahApps.Metro.Controls.Dialogs;
 using MediatR;
-using Presentation.WpfApp.Models;
 
 namespace Presentation.WpfApp.ViewModels.Solicitudes
 {
@@ -25,7 +25,10 @@ namespace Presentation.WpfApp.ViewModels.Solicitudes
         private string _filtro;
         private SolicitudDto _solicitudSeleccionada;
 
-        public ListaSolicitudesViewModel(IMediator mediator, IWindowManager windowManager, IDialogCoordinator dialogCoordinator, ConfiguracionAplicacion configuracionAplicacion)
+        public ListaSolicitudesViewModel(IMediator mediator,
+                                         IWindowManager windowManager,
+                                         IDialogCoordinator dialogCoordinator,
+                                         ConfiguracionAplicacion configuracionAplicacion)
         {
             _mediator = mediator;
             _windowManager = windowManager;
@@ -106,15 +109,24 @@ namespace Presentation.WpfApp.ViewModels.Solicitudes
 
         public bool CanBuscarSolicitudesAsync => FechaInicio <= FechaFin;
 
-        public bool CanProcesarSolicitudAsync => SolicitudSeleccionada != null && _configuracionAplicacion.IsUsuarioAutenticado && _configuracionAplicacion.Usuario.TienePermiso(PermisosAplicacion.PuedeProcesarSolicitud);
+        public bool CanProcesarSolicitudAsync =>
+            SolicitudSeleccionada != null &&
+            _configuracionAplicacion.IsUsuarioAutenticado &&
+            _configuracionAplicacion.Usuario.TienePermiso(PermisosAplicacion.PuedeProcesarSolicitud);
 
-        public bool CanVerDetallesSolicitudSeleccionadaAsync => SolicitudSeleccionada != null && _configuracionAplicacion.IsUsuarioAutenticado && _configuracionAplicacion.Usuario.TienePermiso(PermisosAplicacion.PuedeProcesarSolicitud);
+        public bool CanVerDetallesSolicitudSeleccionadaAsync =>
+            SolicitudSeleccionada != null &&
+            _configuracionAplicacion.IsUsuarioAutenticado &&
+            _configuracionAplicacion.Usuario.TienePermiso(PermisosAplicacion.PuedeProcesarSolicitud);
 
-        public bool CanCrearNuevaSolicitudAsync => _configuracionAplicacion.IsUsuarioAutenticado && _configuracionAplicacion.Usuario.TienePermiso(PermisosAplicacion.PuedeCrearSolicitud);
+        public bool CanCrearNuevaSolicitudAsync =>
+            _configuracionAplicacion.IsUsuarioAutenticado &&
+            _configuracionAplicacion.Usuario.TienePermiso(PermisosAplicacion.PuedeCrearSolicitud);
 
         public async Task BuscarSolicitudesAsync()
         {
-            var progressDialogController = await _dialogCoordinator.ShowProgressAsync(this, "Buscando Solicitudes", "Buscando solicitudes.");
+            ProgressDialogController progressDialogController =
+                await _dialogCoordinator.ShowProgressAsync(this, "Buscando Solicitudes", "Buscando solicitudes.");
             progressDialogController.SetIndeterminate();
             await Task.Delay(1000);
 
@@ -156,23 +168,21 @@ namespace Presentation.WpfApp.ViewModels.Solicitudes
 
         public async Task ProcesarSolicitudAsync()
         {
-            var solicitudId = SolicitudSeleccionada.Id;
+            int solicitudId = SolicitudSeleccionada.Id;
 
-            var messageDialogResult = await _dialogCoordinator.ShowMessageAsync(this,
+            MessageDialogResult messageDialogResult = await _dialogCoordinator.ShowMessageAsync(this,
                 "Procesar Solicitud",
                 $"Esta seguro de querer procesar la solicitud {SolicitudSeleccionada.Id}?",
                 MessageDialogStyle.AffirmativeAndNegative,
-                new MetroDialogSettings
-                {
-                    AffirmativeButtonText = "Si",
-                    NegativeButtonText = "No"
-                });
+                new MetroDialogSettings { AffirmativeButtonText = "Si", NegativeButtonText = "No" });
             if (messageDialogResult != MessageDialogResult.Affirmative)
             {
                 return;
             }
 
-            var progressDialogController = await _dialogCoordinator.ShowProgressAsync(this, "Procesando Solicitud", "Procesando solicitud. Este proceso puede tardar hasta 5 minutos.");
+            ProgressDialogController progressDialogController = await _dialogCoordinator.ShowProgressAsync(this,
+                "Procesando Solicitud",
+                "Procesando solicitud. Este proceso puede tardar hasta 5 minutos.");
             progressDialogController.SetIndeterminate();
             await Task.Delay(1000);
 

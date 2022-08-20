@@ -74,7 +74,7 @@ namespace Presentation.WpfApp.ViewModels.Autenticacion
             try
             {
                 await _mediator.Send(new CrearUsuarioAdministradorCommand());
-                var usuario = await _mediator.Send(new ValidarCredencialesUsuarioQuery(NombreUsuario, Contrasena));
+                UsuarioDto usuario = await _mediator.Send(new ValidarCredencialesUsuarioQuery(NombreUsuario, Contrasena));
                 if (usuario != null)
                 {
                     IsUsuarioAutenticado = true;

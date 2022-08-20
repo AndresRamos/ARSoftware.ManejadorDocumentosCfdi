@@ -1,10 +1,10 @@
-﻿using System;
-using System.Data.Entity;
+﻿using System.Data.Entity;
 using System.Data.Entity.Core;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Core.Application.Permisos.Helpers;
+using Common.Models;
+using Core.Domain.Entities;
 using Infrastructure.Persistance;
 using MediatR;
 
@@ -21,7 +21,7 @@ namespace Core.Application.Roles.Commands.ActualizarRol
 
         public async Task<Unit> Handle(ActualizarRolCommand request, CancellationToken cancellationToken)
         {
-            var rol = await _context.Roles.SingleOrDefaultAsync(r => r.Id == request.Id, cancellationToken);
+            Rol rol = await _context.Roles.SingleOrDefaultAsync(r => r.Id == request.Id, cancellationToken);
 
             if (rol == null)
             {

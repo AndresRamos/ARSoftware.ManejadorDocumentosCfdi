@@ -2,8 +2,9 @@
 using System.Data.Entity.Core;
 using System.Threading;
 using System.Threading.Tasks;
-using Core.Application.Permisos.Helpers;
+using Common.Models;
 using Core.Application.Roles.Models;
+using Core.Domain.Entities;
 using Infrastructure.Persistance;
 using MediatR;
 
@@ -20,7 +21,7 @@ namespace Core.Application.Roles.Queries.BuscarRolPorId
 
         public async Task<RolDto> Handle(BuscarRolPorIdQuery request, CancellationToken cancellationToken)
         {
-            var rol = await _context.Roles.SingleOrDefaultAsync(r => r.Id == request.RolId, cancellationToken);
+            Rol rol = await _context.Roles.SingleOrDefaultAsync(r => r.Id == request.RolId, cancellationToken);
 
             if (rol == null)
             {

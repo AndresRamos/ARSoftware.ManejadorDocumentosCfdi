@@ -2,6 +2,7 @@
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
+using Core.Domain.Entities;
 using Infrastructure.Persistance;
 using MediatR;
 using NLog;
@@ -20,10 +21,10 @@ namespace Core.Application.Paquetes.Commands.ExportarArchivoZip
 
         public async Task<Unit> Handle(ExportarArchivoZipCommand request, CancellationToken cancellationToken)
         {
-            var paquete = await _context.Paquetes.SingleAsync(s => s.Id == request.PaquteId, cancellationToken);
+            Paquete paquete = await _context.Paquetes.SingleAsync(s => s.Id == request.PaquteId, cancellationToken);
 
             Logger.Info("Creando archivo .zip");
-            using (var fileStream = File.Create(request.FileName, paquete.Contenido.Length))
+            using (FileStream fileStream = File.Create(request.FileName, paquete.Contenido.Length))
             {
                 fileStream.Write(paquete.Contenido, 0, paquete.Contenido.Length);
             }

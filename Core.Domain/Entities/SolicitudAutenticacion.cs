@@ -1,5 +1,8 @@
 ﻿using System;
 
+// ReSharper disable UnusedMember.Local
+// ReSharper disable AutoPropertyCanBeMadeGetOnly.Local
+
 namespace Core.Domain.Entities
 {
     public class SolicitudAutenticacion : SolicitudWebBase
@@ -8,7 +11,15 @@ namespace Core.Domain.Entities
         {
         }
 
-        private SolicitudAutenticacion(string solicitud, string respuesta, DateTime fechaTokenCreacionUtc, DateTime fechaTokenExpiracionUtc, string token, string autorizacion, string faultCode, string faultString, string error) : base(solicitud, respuesta)
+        private SolicitudAutenticacion(string solicitud,
+                                       string respuesta,
+                                       DateTime fechaTokenCreacionUtc,
+                                       DateTime fechaTokenExpiracionUtc,
+                                       string token,
+                                       string autorizacion,
+                                       string faultCode,
+                                       string faultString,
+                                       string error) : base(solicitud, respuesta)
         {
             FechaCreacionUtc = DateTime.UtcNow;
             FechaTokenCreacionUtc = fechaTokenCreacionUtc;
@@ -30,9 +41,25 @@ namespace Core.Domain.Entities
         public string Error { get; private set; }
         public bool IsTokenValido => DateTime.UtcNow < FechaTokenExpiracionUtc;
 
-        public static SolicitudAutenticacion CreateInstance(string solicitud, string respuesta, DateTime fechaTokenCreacionUtc, DateTime fechaTokenExpiracionUtc, string token, string autorizacion, string faultCode, string faultString, string error)
+        public static SolicitudAutenticacion CreateInstance(string solicitud,
+                                                            string respuesta,
+                                                            DateTime fechaTokenCreacionUtc,
+                                                            DateTime fechaTokenExpiracionUtc,
+                                                            string token,
+                                                            string autorizacion,
+                                                            string faultCode,
+                                                            string faultString,
+                                                            string error)
         {
-            return new SolicitudAutenticacion(solicitud, respuesta, fechaTokenCreacionUtc, fechaTokenExpiracionUtc, token, autorizacion, faultCode, faultString, error);
+            return new SolicitudAutenticacion(solicitud,
+                respuesta,
+                fechaTokenCreacionUtc,
+                fechaTokenExpiracionUtc,
+                token,
+                autorizacion,
+                faultCode,
+                faultString,
+                error);
         }
     }
 }

@@ -79,7 +79,6 @@
     </Compile>
     <Compile Include="Helpers\PasswordHelper.cs" />
     <Compile Include="Models\ActualizacionAplicacion.cs" />
-    <Compile Include="Models\ConfiguracionAplicacion.cs" />
     <Compile Include="ViewModels\AcercaDeViewModel.cs" />
     <Compile Include="ViewModels\Actualizaciones\ActualizacionAplicacionViewModel.cs" />
     <Compile Include="ViewModels\Autenticacion\AutenticarUsuarioViewModel.cs" />
@@ -195,7 +194,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppBootstrapper.cs" />
-    <Compile Include="Config\IocContainerConfig.cs" />
+    <Compile Include="Config\ConfigureServices.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -353,21 +352,13 @@
       <Project>{7512d690-55fc-496d-a1c4-ed2cc05ff1d0}</Project>
       <Name>Core.Application</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Infrastructure.ContpaqiAdd\Infrastructure.ContpaqiAdd.csproj">
-      <Project>{e4967779-a460-4775-b7eb-05e7068049b5}</Project>
-      <Name>Infrastructure.ContpaqiAdd</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Infrastructure.ContpaqiComercial\Infrastructure.ContpaqiComercial.csproj">
-      <Project>{7868fa1f-fc3c-4d6c-977c-69da5a465ba6}</Project>
-      <Name>Infrastructure.ContpaqiComercial</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Infrastructure.ContpaqiContabilidad\Infrastructure.ContpaqiContabilidad.csproj">
-      <Project>{d20be0c8-527b-47d8-ab90-bee9527bef5a}</Project>
-      <Name>Infrastructure.ContpaqiContabilidad</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Infrastructure.Persistance\Infrastructure.Persistance.csproj">
       <Project>{9d31259c-aa7a-46c5-88a6-25b2a3e97194}</Project>
       <Name>Infrastructure.Persistance</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Infrastructure\Infrastructure.csproj">
+      <Project>{72ea57dd-0fc1-4946-95db-542f40ce9cfd}</Project>
+      <Name>Infrastructure</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -395,21 +386,6 @@
     <PackageReference Include="Caliburn.Micro">
       <Version>4.0.210</Version>
     </PackageReference>
-    <PackageReference Include="Contpaqi.Sql.ADD.DocumentMetadata">
-      <Version>1.0.1</Version>
-    </PackageReference>
-    <PackageReference Include="Contpaqi.Sql.Comercial.Empresa">
-      <Version>1.1.0</Version>
-    </PackageReference>
-    <PackageReference Include="Contpaqi.Sql.Comercial.Generales">
-      <Version>1.1.0</Version>
-    </PackageReference>
-    <PackageReference Include="Contpaqi.Sql.Contabilidad.Empresa">
-      <Version>1.0.4</Version>
-    </PackageReference>
-    <PackageReference Include="Contpaqi.Sql.Contabilidad.Generales">
-      <Version>1.0.4</Version>
-    </PackageReference>
     <PackageReference Include="EPPlus">
       <Version>4.5.3.3</Version>
     </PackageReference>
@@ -420,7 +396,7 @@
       <Version>4.11.0</Version>
     </PackageReference>
     <PackageReference Include="MediatR">
-      <Version>8.1.0</Version>
+      <Version>9.0.0</Version>
     </PackageReference>
     <PackageReference Include="NLog">
       <Version>5.0.2</Version>

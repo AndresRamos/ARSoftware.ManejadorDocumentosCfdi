@@ -1,4 +1,4 @@
-﻿namespace Core.Application.Permisos.Models
+﻿namespace Common.Models
 {
     public class PermisoAplicacionDto
     {

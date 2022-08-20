@@ -3,12 +3,13 @@ using System.Data.Entity;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Contpaqi.Sql.Comercial.Empresa;
 using Contpaqi.Sql.Comercial.Generales;
 using Core.Application.Empresas.Interfaces;
 using Core.Application.Empresas.Models;
-using Infrastructure.ContpaqiComercial.Factories;
+using Infrastructure.Contpaqi.Comercial.Factories;
 
-namespace Infrastructure.ContpaqiComercial.Repositories
+namespace Infrastructure.Contpaqi.Comercial.Repositories
 {
     public class EmpresaComercialRepository : IEmpresaComercialRepository
     {
@@ -21,22 +22,28 @@ namespace Infrastructure.ContpaqiComercial.Repositories
 
         public async Task<IEnumerable<EmpresaContpaqiDto>> BuscarEmpresasAsync()
         {
-            var empresasComercial = await _context.Empresas.Where(e => e.CIDEMPRESA != 1).Select(e => new {e.CNOMBREEMPRESA, e.CRUTADATOS}).ToListAsync();
+            var empresasComercial = await _context.Empresas.Where(e => e.CIDEMPRESA != 1)
+                .Select(e => new { e.CNOMBREEMPRESA, e.CRUTADATOS })
+                .ToListAsync();
 
             var empresasList = new List<EmpresaContpaqiDto>();
 
             foreach (var empresaComercial in empresasComercial)
             {
-                using (var comercialEmpresaDbContext = ComercialEmpresaDbContextFactory.Crear(_context.Database.Connection.ConnectionString, new DirectoryInfo(empresaComercial.CRUTADATOS).Name))
+                using (ComercialEmpresaDbContext comercialEmpresaDbContext =
+                       ComercialEmpresaDbContextFactory.Crear(_context.Database.Connection.ConnectionString,
+                           new DirectoryInfo(empresaComercial.CRUTADATOS).Name))
                 {
                     if (!comercialEmpresaDbContext.Database.Exists())
                     {
                         continue;
                     }
 
-                    var guidAddEmpresaComercial = await comercialEmpresaDbContext.admParametros.Select(p => p.CGUIDDSL).FirstAsync();
+                    string guidAddEmpresaComercial = await comercialEmpresaDbContext.admParametros.Select(p => p.CGUIDDSL).FirstAsync();
 
-                    empresasList.Add(new EmpresaContpaqiDto(empresaComercial.CNOMBREEMPRESA, new DirectoryInfo(empresaComercial.CRUTADATOS).Name, guidAddEmpresaComercial));
+                    empresasList.Add(new EmpresaContpaqiDto(empresaComercial.CNOMBREEMPRESA,
+                        new DirectoryInfo(empresaComercial.CRUTADATOS).Name,
+                        guidAddEmpresaComercial));
                 }
             }
 

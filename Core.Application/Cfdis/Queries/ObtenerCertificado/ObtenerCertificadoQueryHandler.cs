@@ -7,7 +7,9 @@ namespace Core.Application.Cfdis.Queries.ObtenerCertificado
     {
         protected override X509Certificate2 Handle(ObtenerCertificadoQuery request)
         {
-            return new X509Certificate2(request.Bytes, request.Password, X509KeyStorageFlags.MachineKeySet | X509KeyStorageFlags.PersistKeySet | X509KeyStorageFlags.Exportable);
+            return new X509Certificate2(request.Bytes,
+                request.Password,
+                X509KeyStorageFlags.MachineKeySet | X509KeyStorageFlags.PersistKeySet | X509KeyStorageFlags.Exportable);
         }
     }
 }

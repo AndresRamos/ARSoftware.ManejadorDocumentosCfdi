@@ -1,4 +1,7 @@
-﻿namespace Core.Domain.Entities
+﻿// ReSharper disable UnusedAutoPropertyAccessor.Local
+// ReSharper disable AutoPropertyCanBeMadeGetOnly.Local
+
+namespace Core.Domain.Entities
 {
     public abstract class SolicitudWebBase
     {

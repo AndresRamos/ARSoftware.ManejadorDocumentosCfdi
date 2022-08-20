@@ -1,5 +1,8 @@
 ﻿using System;
 
+// ReSharper disable UnusedMember.Local
+// ReSharper disable AutoPropertyCanBeMadeGetOnly.Local
+
 namespace Core.Domain.Entities
 {
     public class SolicitudDescarga : SolicitudWebBase
@@ -8,7 +11,13 @@ namespace Core.Domain.Entities
         {
         }
 
-        private SolicitudDescarga(string solicitud, string respuesta, string codEstatus, string mensaje, string paqueteId, string paquete, string error) : base(solicitud, respuesta)
+        private SolicitudDescarga(string solicitud,
+                                  string respuesta,
+                                  string codEstatus,
+                                  string mensaje,
+                                  string paqueteId,
+                                  string paquete,
+                                  string error) : base(solicitud, respuesta)
         {
             FechaCreacionUtc = DateTime.UtcNow;
             CodEstatus = codEstatus;
@@ -25,7 +34,13 @@ namespace Core.Domain.Entities
         public string Paquete { get; private set; }
         public string Error { get; private set; }
 
-        public static SolicitudDescarga CreateInstance(string solicitud, string respuesta, string codEstatus, string mensaje, string paqueteId, string paquete, string error)
+        public static SolicitudDescarga CreateInstance(string solicitud,
+                                                       string respuesta,
+                                                       string codEstatus,
+                                                       string mensaje,
+                                                       string paqueteId,
+                                                       string paquete,
+                                                       string error)
         {
             return new SolicitudDescarga(solicitud, respuesta, codEstatus, mensaje, paqueteId, paquete, error);
         }

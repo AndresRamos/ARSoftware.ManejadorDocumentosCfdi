@@ -110,8 +110,7 @@ namespace Presentation.WpfApp.ViewModels.Empresas
                 throw new InvalidOperationException($"El objecto a filtrar no es de tipo {typeof(EmpresaPerfilDto)}.");
             }
 
-            return string.IsNullOrWhiteSpace(Filtro) ||
-                   empresa.Nombre.IndexOf(Filtro, StringComparison.OrdinalIgnoreCase) >= 0;
+            return string.IsNullOrWhiteSpace(Filtro) || empresa.Nombre.IndexOf(Filtro, StringComparison.OrdinalIgnoreCase) >= 0;
         }
     }
 }

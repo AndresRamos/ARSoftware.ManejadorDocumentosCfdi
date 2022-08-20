@@ -2,6 +2,7 @@
 using System.IO;
 using System.Threading.Tasks;
 using Caliburn.Micro;
+using Core.Application.Common;
 using Core.Application.ConfiguracionGeneral.Commands.ActualizarCertificadoSat;
 using Core.Application.ConfiguracionGeneral.Commands.ActualizarConfiguracionContpaqiComercial;
 using Core.Application.ConfiguracionGeneral.Commands.ActualizarConfiguracionContpaqiContabilidad;
@@ -12,7 +13,6 @@ using Core.Application.Empresas.Queries.BuscarEmpresasContabilidad;
 using MahApps.Metro.Controls.Dialogs;
 using MediatR;
 using Microsoft.Win32;
-using Presentation.WpfApp.Models;
 using Presentation.WpfApp.ViewModels.Empresas;
 
 namespace Presentation.WpfApp.ViewModels.ConfiguracionGeneral
@@ -24,7 +24,10 @@ namespace Presentation.WpfApp.ViewModels.ConfiguracionGeneral
         private readonly IMediator _mediator;
         private readonly IWindowManager _windowManager;
 
-        public ConfiguracionGeneralViewModel(IMediator mediator, IDialogCoordinator dialogCoordinator, ConfiguracionAplicacion configuracionAplicacion, IWindowManager windowManager)
+        public ConfiguracionGeneralViewModel(IMediator mediator,
+                                             IDialogCoordinator dialogCoordinator,
+                                             ConfiguracionAplicacion configuracionAplicacion,
+                                             IWindowManager windowManager)
         {
             _mediator = mediator;
             _dialogCoordinator = dialogCoordinator;
@@ -50,7 +53,7 @@ namespace Presentation.WpfApp.ViewModels.ConfiguracionGeneral
             try
             {
                 var openFileDialog = new OpenFileDialog();
-                var dialogResult = openFileDialog.ShowDialog();
+                bool? dialogResult = openFileDialog.ShowDialog();
                 if (dialogResult == true)
                 {
                     ConfiguracionGeneral.CertificadoSat.Certificado = File.ReadAllBytes(openFileDialog.FileName);
@@ -66,15 +69,16 @@ namespace Presentation.WpfApp.ViewModels.ConfiguracionGeneral
         {
             try
             {
-                await _mediator.Send(new ActualizarCertificadoSatCommand(
-                    ConfiguracionGeneral.CertificadoSat.Certificado,
+                await _mediator.Send(new ActualizarCertificadoSatCommand(ConfiguracionGeneral.CertificadoSat.Certificado,
                     ConfiguracionGeneral.CertificadoSat.Contrasena,
                     ConfiguracionGeneral.CertificadoSat.Rfc,
                     ConfiguracionGeneral.RutaDirectorioDescargas));
 
-                await _mediator.Send(new ActualizarConfiguracionContpaqiComercialCommand(ConfiguracionGeneral.ConfiguracionContpaqiComercial));
+                await _mediator.Send(
+                    new ActualizarConfiguracionContpaqiComercialCommand(ConfiguracionGeneral.ConfiguracionContpaqiComercial));
 
-                await _mediator.Send(new ActualizarConfiguracionContpaqiContabilidadCommand(ConfiguracionGeneral.ConfiguracionContpaqiContabilidad));
+                await _mediator.Send(
+                    new ActualizarConfiguracionContpaqiContabilidadCommand(ConfiguracionGeneral.ConfiguracionContpaqiContabilidad));
 
                 await _configuracionAplicacion.CargarConfiguracionAsync();
 
@@ -90,7 +94,8 @@ namespace Presentation.WpfApp.ViewModels.ConfiguracionGeneral
         {
             try
             {
-                _configuracionAplicacion.ConfiguracionGeneral.ConfiguracionContpaqiComercial.ContpaqiSqlConnectionString = ConfiguracionGeneral.ConfiguracionContpaqiComercial.ContpaqiSqlConnectionString;
+                _configuracionAplicacion.ConfiguracionGeneral.ConfiguracionContpaqiComercial.ContpaqiSqlConnectionString =
+                    ConfiguracionGeneral.ConfiguracionContpaqiComercial.ContpaqiSqlConnectionString;
                 var viewModel = IoC.Get<SeleccionarEmpresaContpaqiViewModel>();
                 viewModel.Inicializar(await _mediator.Send(new BuscarEmpresasComercialQuery()));
                 await _windowManager.ShowDialogAsync(viewModel);
@@ -109,7 +114,8 @@ namespace Presentation.WpfApp.ViewModels.ConfiguracionGeneral
         {
             try
             {
-                _configuracionAplicacion.ConfiguracionGeneral.ConfiguracionContpaqiContabilidad.ContpaqiSqlConnectionString = ConfiguracionGeneral.ConfiguracionContpaqiContabilidad.ContpaqiSqlConnectionString;
+                _configuracionAplicacion.ConfiguracionGeneral.ConfiguracionContpaqiContabilidad.ContpaqiSqlConnectionString =
+                    ConfiguracionGeneral.ConfiguracionContpaqiContabilidad.ContpaqiSqlConnectionString;
                 var viewModel = IoC.Get<SeleccionarEmpresaContpaqiViewModel>();
                 viewModel.Inicializar(await _mediator.Send(new BuscarEmpresasContabilidadQuery()));
                 await _windowManager.ShowDialogAsync(viewModel);

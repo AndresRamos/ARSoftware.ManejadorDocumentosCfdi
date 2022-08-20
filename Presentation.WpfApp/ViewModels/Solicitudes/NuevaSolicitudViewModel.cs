@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Caliburn.Micro;
 using Common.DateRanges;
+using Core.Application.Common;
 using Core.Application.Rfcs.Queries.BuscarRfcsComercial;
 using Core.Application.Rfcs.Queries.BuscarRfcsContabilidad;
 using Core.Application.Solicitudes.Commands.CrearSolicitud;
@@ -11,7 +12,6 @@ using Core.Application.TiposSolicitud.Models;
 using Core.Application.TiposSolicitud.Queries.BuscarTiposSolicitud;
 using MahApps.Metro.Controls.Dialogs;
 using MediatR;
-using Presentation.WpfApp.Models;
 using Presentation.WpfApp.ViewModels.Rfcs;
 
 namespace Presentation.WpfApp.ViewModels.Solicitudes
@@ -30,7 +30,10 @@ namespace Presentation.WpfApp.ViewModels.Solicitudes
         private TipoRangoFechaEnum _tipoRangoFechaSeleccionado;
         private TipoSolicitudDto _tipoSolicitudSeleccionado;
 
-        public NuevaSolicitudViewModel(ConfiguracionAplicacion configuracionAplicacion, IMediator mediator, IDialogCoordinator dialogCoordinator, IWindowManager windowManager)
+        public NuevaSolicitudViewModel(ConfiguracionAplicacion configuracionAplicacion,
+                                       IMediator mediator,
+                                       IDialogCoordinator dialogCoordinator,
+                                       IWindowManager windowManager)
         {
             _configuracionAplicacion = configuracionAplicacion;
             _mediator = mediator;
@@ -220,7 +223,14 @@ namespace Presentation.WpfApp.ViewModels.Solicitudes
         {
             try
             {
-                await _mediator.Send(new CrearSolicitudCommand(_configuracionAplicacion.Empresa.Id, _configuracionAplicacion.Usuario.Id, FechaInicio, FechaFin, RfcEmisor, RfcReceptor, RfcSolicitante, TipoSolicitudSeleccionado.Name));
+                await _mediator.Send(new CrearSolicitudCommand(_configuracionAplicacion.Empresa.Id,
+                    _configuracionAplicacion.Usuario.Id,
+                    FechaInicio,
+                    FechaFin,
+                    RfcEmisor,
+                    RfcReceptor,
+                    RfcSolicitante,
+                    TipoSolicitudSeleccionado.Name));
                 await TryCloseAsync();
             }
             catch (Exception e)

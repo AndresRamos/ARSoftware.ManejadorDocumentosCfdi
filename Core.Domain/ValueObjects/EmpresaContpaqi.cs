@@ -14,12 +14,7 @@ namespace Core.Domain.ValueObjects
 
         public static EmpresaContpaqi CreateInstance(string nombre, string baseDatos, string guidAdd)
         {
-            return new EmpresaContpaqi
-            {
-                Nombre = nombre,
-                BaseDatos = baseDatos,
-                GuidAdd = guidAdd
-            };
+            return new EmpresaContpaqi { Nombre = nombre, BaseDatos = baseDatos, GuidAdd = guidAdd };
         }
 
         public static EmpresaContpaqi CreateSinAsignar()
@@ -27,7 +22,7 @@ namespace Core.Domain.ValueObjects
             return CreateInstance("", "", "");
         }
 
-        protected override IEnumerable<object> GetAtomicValues()
+        protected override IEnumerable<object> GetEqualityComponents()
         {
             yield return Nombre;
             yield return BaseDatos;

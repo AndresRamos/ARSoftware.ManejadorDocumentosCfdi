@@ -1,6 +1,7 @@
 ﻿using System.Data.Entity;
 using System.Threading;
 using System.Threading.Tasks;
+using Core.Domain.Entities;
 using FluentValidation;
 using Infrastructure.Persistance;
 
@@ -9,6 +10,7 @@ namespace Core.Application.Solicitudes.Commands.CrearSolicitud
     public class CrearSolicitudCommandValidator : AbstractValidator<CrearSolicitudCommand>
     {
         private readonly ManejadorDocumentosCfdiDbContext _context;
+
         public CrearSolicitudCommandValidator(ManejadorDocumentosCfdiDbContext context)
         {
             _context = context;
@@ -27,8 +29,8 @@ namespace Core.Application.Solicitudes.Commands.CrearSolicitud
 
         public async Task<bool> UsuarioTieneEmpresaPermitida(int usuarioId, int empresaId, CancellationToken cancellationToken)
         {
-            var usuario = await _context.Usuarios.SingleOrDefaultAsync(u => u.Id == usuarioId, cancellationToken);
-            var empresa = await _context.Empresas.SingleOrDefaultAsync(e => e.Id == empresaId, cancellationToken);
+            Usuario usuario = await _context.Usuarios.FirstAsync(u => u.Id == usuarioId, cancellationToken);
+            Empresa empresa = await _context.Empresas.FirstAsync(e => e.Id == empresaId, cancellationToken);
 
             return usuario.EmpresasPermitidas.Contains(empresa);
         }

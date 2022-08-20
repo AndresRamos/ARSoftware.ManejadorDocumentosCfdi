@@ -1,13 +1,16 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using Core.Application.ConfiguracionGeneral.Models;
 using Core.Application.ConfiguracionGeneral.Queries.BuscarConfiguracionGeneral;
 using Core.Application.Empresas.Models;
 using Core.Application.Usuarios.Models;
 using MediatR;
 
-namespace Presentation.ConsoleApp.Models
+namespace Core.Application.Common
 {
-    public class ConfiguracionAplicacion
+    public class ConfiguracionAplicacion : INotifyPropertyChanged
     {
         private readonly IMediator _mediator;
         private ConfiguracionGeneralDto _configuracionGeneral;
@@ -30,6 +33,7 @@ namespace Presentation.ConsoleApp.Models
                 }
 
                 _empresa = value;
+                OnPropertyChanged();
             }
         }
 
@@ -44,6 +48,7 @@ namespace Presentation.ConsoleApp.Models
                 }
 
                 _configuracionGeneral = value;
+                OnPropertyChanged();
             }
         }
 
@@ -58,12 +63,16 @@ namespace Presentation.ConsoleApp.Models
                 }
 
                 _usuario = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(IsUsuarioAutenticado));
             }
         }
 
         public bool IsUsuarioAutenticado => Usuario != null;
 
         public bool IsEmpresaAbierta => Empresa != null;
+
+        public event PropertyChangedEventHandler PropertyChanged;
 
         public async Task AbrirEmpresaAsync(EmpresaPerfilDto empresa)
         {
@@ -85,6 +94,23 @@ namespace Presentation.ConsoleApp.Models
         {
             Empresa = null;
             ConfiguracionGeneral = null;
+        }
+
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        protected bool SetField<T>(ref T field, T value, [CallerMemberName] string propertyName = null)
+        {
+            if (EqualityComparer<T>.Default.Equals(field, value))
+            {
+                return false;
+            }
+
+            field = value;
+            OnPropertyChanged(propertyName);
+            return true;
         }
     }
 }

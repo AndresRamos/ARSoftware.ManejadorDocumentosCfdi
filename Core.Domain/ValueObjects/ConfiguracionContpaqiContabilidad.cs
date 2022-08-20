@@ -13,11 +13,7 @@ namespace Core.Domain.ValueObjects
 
         public static ConfiguracionContpaqiContabilidad CreateInstance(string contpaqiSqConnectionString, EmpresaContpaqi empresa)
         {
-            return new ConfiguracionContpaqiContabilidad
-            {
-                ContpaqiSqlConnectionString = contpaqiSqConnectionString,
-                Empresa = empresa
-            };
+            return new ConfiguracionContpaqiContabilidad { ContpaqiSqlConnectionString = contpaqiSqConnectionString, Empresa = empresa };
         }
 
         public static ConfiguracionContpaqiContabilidad CreateSinAsignar()
@@ -25,7 +21,7 @@ namespace Core.Domain.ValueObjects
             return CreateInstance("", EmpresaContpaqi.CreateSinAsignar());
         }
 
-        protected override IEnumerable<object> GetAtomicValues()
+        protected override IEnumerable<object> GetEqualityComponents()
         {
             yield return ContpaqiSqlConnectionString;
             yield return Empresa;

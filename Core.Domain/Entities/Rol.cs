@@ -1,5 +1,9 @@
 ﻿using System.Collections.Generic;
 
+// ReSharper disable UnusedAutoPropertyAccessor.Global
+
+// ReSharper disable UnusedAutoPropertyAccessor.Local
+
 namespace Core.Domain.Entities
 {
     public class Rol
@@ -16,12 +20,7 @@ namespace Core.Domain.Entities
 
         public static Rol CreateInstance(string nombre, string descripcion, string permisos)
         {
-            return new Rol
-            {
-                Nombre = nombre,
-                Descripcion = descripcion,
-                Permisos = permisos
-            };
+            return new Rol { Nombre = nombre, Descripcion = descripcion, Permisos = permisos };
         }
 
         public void ActualizarRol(string nombre, string descripcion)

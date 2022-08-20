@@ -3,8 +3,7 @@ using System.Data.Entity;
 using System.Threading;
 using System.Threading.Tasks;
 using Common.Infrastructure;
-using Core.Application.Permisos.Helpers;
-using Core.Application.Permisos.Models;
+using Common.Models;
 using Core.Domain.Entities;
 using Infrastructure.Persistance;
 using MediatR;
@@ -23,22 +22,23 @@ namespace Core.Application.Usuarios.Commands.CrearUsuarioAdministrador
         public async Task<Unit> Handle(CrearUsuarioAdministradorCommand request, CancellationToken cancellationToken)
         {
             const string rolAdministradorNombre = "Administrador";
-            var rolAdministrador = await _context.Roles.SingleOrDefaultAsync(r => r.Nombre == rolAdministradorNombre, cancellationToken);
+            Rol rolAdministrador = await _context.Roles.SingleOrDefaultAsync(r => r.Nombre == rolAdministradorNombre, cancellationToken);
             if (rolAdministrador == null)
             {
-                var permisos = new List<PermisosAplicacion> {PermisosAplicacion.TodosLosPermisos};
+                var permisos = new List<PermisosAplicacion> { PermisosAplicacion.TodosLosPermisos };
                 rolAdministrador = Rol.CreateInstance("Administrador", "Rol de administrador", permisos.PackPermissionsIntoString());
                 _context.Roles.Add(rolAdministrador);
                 await _context.SaveChangesAsync(cancellationToken);
             }
 
             const string usuarioAdministradorNombreUsuario = "admin";
-            var usuarioAdministrador = await _context.Usuarios.SingleOrDefaultAsync(u => u.NombreUsuario == usuarioAdministradorNombreUsuario, cancellationToken);
+            Usuario usuarioAdministrador =
+                await _context.Usuarios.SingleOrDefaultAsync(u => u.NombreUsuario == usuarioAdministradorNombreUsuario, cancellationToken);
 
             if (usuarioAdministrador == null)
             {
-                var passwordSalt = PasswordHasher.CreateSalt();
-                var passwordHash = PasswordHasher.CreateHash("admin", passwordSalt);
+                byte[] passwordSalt = PasswordHasher.CreateSalt();
+                byte[] passwordHash = PasswordHasher.CreateHash("admin", passwordSalt);
                 usuarioAdministrador = Usuario.CreateInstance("Admin",
                     "Admin",
                     "",

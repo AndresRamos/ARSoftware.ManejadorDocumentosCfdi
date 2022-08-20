@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Caliburn.Micro;
 using Core.Application.Empresas.Commands.ActualizarEmpresaPerfil;
 using Core.Application.Empresas.Commands.CrearEmpresa;
+using Core.Application.Empresas.Models;
 using Core.Application.Empresas.Queries.BuscarEmpresaPorId;
 using MahApps.Metro.Controls.Dialogs;
 using MediatR;
@@ -46,7 +47,7 @@ namespace Presentation.WpfApp.ViewModels.Empresas
             }
             else
             {
-                var empresa = await _mediator.Send(new BuscarEmpresaPorIdQuery(id.Value));
+                EmpresaPerfilDto empresa = await _mediator.Send(new BuscarEmpresaPorIdQuery(id.Value));
                 EmpresaId = empresa.Id;
                 Nombre = empresa.Nombre;
             }

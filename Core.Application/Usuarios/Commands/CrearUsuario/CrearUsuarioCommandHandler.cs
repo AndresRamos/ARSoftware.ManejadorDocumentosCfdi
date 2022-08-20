@@ -18,8 +18,8 @@ namespace Core.Application.Usuarios.Commands.CrearUsuario
 
         public async Task<int> Handle(CrearUsuarioCommand request, CancellationToken cancellationToken)
         {
-            var passwordSalt = PasswordHasher.CreateSalt();
-            var passwordHash = PasswordHasher.CreateHash(request.Password, passwordSalt);
+            byte[] passwordSalt = PasswordHasher.CreateSalt();
+            byte[] passwordHash = PasswordHasher.CreateHash(request.Password, passwordSalt);
 
             var nuevoUsuario = Usuario.CreateInstance(request.PrimerNombre,
                 request.Apellido,

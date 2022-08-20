@@ -7,7 +7,8 @@ using MediatR;
 
 namespace Core.Application.ConfiguracionGeneral.Commands.ActualizarConfiguracionContpaqiContabilidad
 {
-    public class ActualizarConfiguracionContpaqiContabilidadCommandHandler : IRequestHandler<ActualizarConfiguracionContpaqiContabilidadCommand>
+    public class ActualizarConfiguracionContpaqiContabilidadCommandHandler : IRequestHandler<
+        ActualizarConfiguracionContpaqiContabilidadCommand>
     {
         private readonly ManejadorDocumentosCfdiDbContext _context;
 
@@ -18,11 +19,13 @@ namespace Core.Application.ConfiguracionGeneral.Commands.ActualizarConfiguracion
 
         public async Task<Unit> Handle(ActualizarConfiguracionContpaqiContabilidadCommand request, CancellationToken cancellationToken)
         {
-            var configuracionGeneral = await _context.ConfiguracionGeneral.FirstAsync(cancellationToken);
+            Domain.Entities.ConfiguracionGeneral configuracionGeneral = await _context.ConfiguracionGeneral.FirstAsync(cancellationToken);
 
             configuracionGeneral.ConfiguracionContpaqiContabilidad = ConfiguracionContpaqiContabilidad.CreateInstance(
                 request.ConfiguracionContpaqiContabilidad.ContpaqiSqlConnectionString,
-                EmpresaContpaqi.CreateInstance(request.ConfiguracionContpaqiContabilidad.Empresa.Nombre, request.ConfiguracionContpaqiContabilidad.Empresa.BaseDatos, request.ConfiguracionContpaqiContabilidad.Empresa.GuidAdd));
+                EmpresaContpaqi.CreateInstance(request.ConfiguracionContpaqiContabilidad.Empresa.Nombre,
+                    request.ConfiguracionContpaqiContabilidad.Empresa.BaseDatos,
+                    request.ConfiguracionContpaqiContabilidad.Empresa.GuidAdd));
 
             await _context.SaveChangesAsync(cancellationToken);
 

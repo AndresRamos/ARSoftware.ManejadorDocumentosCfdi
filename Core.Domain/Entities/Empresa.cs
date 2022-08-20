@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
+// ReSharper disable UnusedAutoPropertyAccessor.Local
+
 namespace Core.Domain.Entities
 {
     public class Empresa
@@ -20,9 +22,7 @@ namespace Core.Domain.Entities
         {
             return new Empresa
             {
-                Nombre = nombre,
-                ConfiguracionGeneral = new ConfiguracionGeneral(),
-                Solicitudes = new HashSet<Solicitud>()
+                Nombre = nombre, ConfiguracionGeneral = new ConfiguracionGeneral(), Solicitudes = new HashSet<Solicitud>()
             };
         }
 

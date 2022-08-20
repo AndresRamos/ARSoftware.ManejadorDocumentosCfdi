@@ -18,9 +18,10 @@ namespace Core.Application.ConfiguracionGeneral.Commands.ActualizarCertificadoSa
 
         public async Task<Unit> Handle(ActualizarCertificadoSatCommand request, CancellationToken cancellationToken)
         {
-            var configuracionGeneral = await _context.ConfiguracionGeneral.FirstAsync(cancellationToken);
+            Domain.Entities.ConfiguracionGeneral configuracionGeneral = await _context.ConfiguracionGeneral.FirstAsync(cancellationToken);
 
-            configuracionGeneral.CertificadoSat = CertificadoSat.CreateInstance(request.CertificadoSat, request.Contrasena, request.RfcEmisor);
+            configuracionGeneral.CertificadoSat =
+                CertificadoSat.CreateInstance(request.CertificadoSat, request.Contrasena, request.RfcEmisor);
 
             configuracionGeneral.RutaDirectorioDescargas = request.RutaDirectorioDescargas;
 

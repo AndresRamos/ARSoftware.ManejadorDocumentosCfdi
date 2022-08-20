@@ -2,7 +2,7 @@
 using System.Data.SqlClient;
 using Contpaqi.Sql.Comercial.Generales;
 
-namespace Infrastructure.ContpaqiComercial.Factories
+namespace Infrastructure.Contpaqi.Comercial.Factories
 {
     public static class ComercialGeneralesDbContextFactory
     {
@@ -13,7 +13,7 @@ namespace Infrastructure.ContpaqiComercial.Factories
                 throw new ArgumentNullException(nameof(contpaqiConnectionString));
             }
 
-            var builder = new SqlConnectionStringBuilder(contpaqiConnectionString) {InitialCatalog = initialCatalog};
+            var builder = new SqlConnectionStringBuilder(contpaqiConnectionString) { InitialCatalog = initialCatalog };
             return new ComercialGeneralesDbContext(new SqlConnection(builder.ToString()), true);
         }
     }

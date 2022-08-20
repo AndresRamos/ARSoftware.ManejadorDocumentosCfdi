@@ -5,10 +5,13 @@ using System.Threading.Tasks;
 using Autofac;
 using Common.DateRanges;
 using Core.Application.Autenticacion.Queries.ValidarCredencialesUsuario;
+using Core.Application.ConfiguracionGeneral.Models;
 using Core.Application.ConfiguracionGeneral.Queries.BuscarConfiguracionGeneral;
+using Core.Application.Empresas.Models;
 using Core.Application.Empresas.Queries.BuscarEmpresaPorNombre;
 using Core.Application.Solicitudes.Commands.CrearSolicitud;
 using Core.Application.Solicitudes.Commands.ProcesarSolicitud;
+using Core.Application.Usuarios.Models;
 using MediatR;
 using NLog;
 using Presentation.ConsoleApp.Config;
@@ -38,17 +41,14 @@ namespace Presentation.ConsoleApp
                 };
                 crearCommand.Handler = CommandHandler.Create<CrearCommandOptions>(CrearCommandActionAsync);
 
-                var procesarCommand = new Command("procesar")
-                {
-                    new Option<int>("--solicitud-id")
-                };
+                var procesarCommand = new Command("procesar") { new Option<int>("--solicitud-id") };
                 procesarCommand.Handler = CommandHandler.Create<ProcesarCommandOptions>(ProcesarCommandActionAsync);
 
                 var command = new RootCommand
                 {
-                    new Option<string>(new[] {"--usuario-nombre", "-u"}),
-                    new Option<string>(new[] {"--usuario-contrasena", "-c"}),
-                    new Option<string>(new[] {"--empresa-nombre", "-e"}),
+                    new Option<string>(new[] { "--usuario-nombre", "-u" }),
+                    new Option<string>(new[] { "--usuario-contrasena", "-c" }),
+                    new Option<string>(new[] { "--empresa-nombre", "-e" }),
                     crearCommand,
                     procesarCommand
                 };
@@ -76,21 +76,23 @@ namespace Presentation.ConsoleApp
             var mediator = _container.Resolve<IMediator>();
 
             Logger.Info("Validando credenciales de usuario.");
-            var usuario = await mediator.Send(new ValidarCredencialesUsuarioQuery(crearCommandOptions.UsuarioNombre, crearCommandOptions.UsuarioContrasena));
+            UsuarioDto usuario =
+                await mediator.Send(new ValidarCredencialesUsuarioQuery(crearCommandOptions.UsuarioNombre,
+                    crearCommandOptions.UsuarioContrasena));
             if (usuario == null)
             {
                 throw new ArgumentException("La credencales proporcionadas no son validas.", nameof(crearCommandOptions.UsuarioNombre));
             }
 
             Logger.Info("Buscando empresa.");
-            var empresa = await mediator.Send(new BuscarEmpresaPorNombreQuery(crearCommandOptions.EmpresaNombre));
+            EmpresaPerfilDto empresa = await mediator.Send(new BuscarEmpresaPorNombreQuery(crearCommandOptions.EmpresaNombre));
             if (empresa == null)
             {
                 throw new ArgumentException("No se encontro la empresa.", nameof(crearCommandOptions.EmpresaNombre));
             }
 
             Logger.Info("Buscando configuracion general.");
-            var configuracionEmpresa = await mediator.Send(new BuscarConfiguracionGeneralQuery(empresa.Id));
+            ConfiguracionGeneralDto configuracionEmpresa = await mediator.Send(new BuscarConfiguracionGeneralQuery(empresa.Id));
 
             DateTime fechaInicio;
             DateTime fechaFin;
@@ -153,7 +155,14 @@ namespace Presentation.ConsoleApp
             }
 
             Logger.Info("Creando solicitud.");
-            var solicitudId = await mediator.Send(new CrearSolicitudCommand(empresa.Id, usuario.Id, fechaInicio, fechaFin, rfcEmisor, rfcReceptor, configuracionEmpresa.CertificadoSat.Rfc, "CFDI"));
+            int solicitudId = await mediator.Send(new CrearSolicitudCommand(empresa.Id,
+                usuario.Id,
+                fechaInicio,
+                fechaFin,
+                rfcEmisor,
+                rfcReceptor,
+                configuracionEmpresa.CertificadoSat.Rfc,
+                "CFDI"));
 
             if (solicitudId != 0 && crearCommandOptions.Procesar)
             {

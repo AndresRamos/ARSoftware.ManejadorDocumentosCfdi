@@ -3,6 +3,7 @@ using System.Data.Entity;
 using System.Data.Entity.Core;
 using System.Threading;
 using System.Threading.Tasks;
+using Core.Domain.Entities;
 using Infrastructure.Persistance;
 using MediatR;
 
@@ -19,7 +20,9 @@ namespace Core.Application.Empresas.Commands.EliminarEmpresa
 
         public async Task<Unit> Handle(EliminarEmpresaCommand request, CancellationToken cancellationToken)
         {
-            var empresa = await _context.Empresas.Include(e => e.ConfiguracionGeneral).Include(e => e.Solicitudes).SingleOrDefaultAsync(e => e.Id == request.EmpresaId, cancellationToken);
+            Empresa empresa = await _context.Empresas.Include(e => e.ConfiguracionGeneral)
+                .Include(e => e.Solicitudes)
+                .SingleOrDefaultAsync(e => e.Id == request.EmpresaId, cancellationToken);
 
             if (empresa is null)
             {

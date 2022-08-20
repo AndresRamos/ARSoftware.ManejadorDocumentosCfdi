@@ -71,7 +71,8 @@ namespace Presentation.WpfApp.ViewModels.Solicitudes
 
         public async Task EnviarSolicitudAsync()
         {
-            var progressDialogController = await _dialogCoordinator.ShowProgressAsync(this, "Enviando Solicitud", "Enviando solicitud");
+            ProgressDialogController progressDialogController =
+                await _dialogCoordinator.ShowProgressAsync(this, "Enviando Solicitud", "Enviando solicitud");
             progressDialogController.SetIndeterminate();
             await Task.Delay(1000);
 

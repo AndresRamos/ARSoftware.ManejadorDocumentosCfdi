@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using System.Windows.Data;
 using Caliburn.Micro;
 using Core.Application.Rfcs.Models;
-using MediatR;
 
 namespace Presentation.WpfApp.ViewModels.Rfcs
 {

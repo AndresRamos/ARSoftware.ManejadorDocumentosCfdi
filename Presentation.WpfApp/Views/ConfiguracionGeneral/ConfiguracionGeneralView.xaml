@@ -157,9 +157,10 @@
                         <TextBlock Text="|"
                                    Margin="5"
                                    VerticalAlignment="Center" />
-                        <TextBlock Text="{Binding ConfiguracionGeneral.ConfiguracionContpaqiComercial.Empresa.BaseDatos}"
-                                   VerticalAlignment="Center"
-                                   Margin="5" />
+                        <TextBlock
+                            Text="{Binding ConfiguracionGeneral.ConfiguracionContpaqiComercial.Empresa.BaseDatos}"
+                            VerticalAlignment="Center"
+                            Margin="5" />
                     </StackPanel>
                     <Button Grid.Row="1"
                             Grid.Column="2"
@@ -219,15 +220,17 @@
                                 Grid.Column="1"
                                 Orientation="Horizontal"
                                 VerticalAlignment="Center">
-                        <TextBlock Text="{Binding ConfiguracionGeneral.ConfiguracionContpaqiContabilidad.Empresa.Nombre}"
-                                   VerticalAlignment="Center"
-                                   Margin="5" />
+                        <TextBlock
+                            Text="{Binding ConfiguracionGeneral.ConfiguracionContpaqiContabilidad.Empresa.Nombre}"
+                            VerticalAlignment="Center"
+                            Margin="5" />
                         <TextBlock Text="|"
                                    Margin="5"
                                    VerticalAlignment="Center" />
-                        <TextBlock Text="{Binding ConfiguracionGeneral.ConfiguracionContpaqiContabilidad.Empresa.BaseDatos}"
-                                   VerticalAlignment="Center"
-                                   Margin="5" />
+                        <TextBlock
+                            Text="{Binding ConfiguracionGeneral.ConfiguracionContpaqiContabilidad.Empresa.BaseDatos}"
+                            VerticalAlignment="Center"
+                            Margin="5" />
                     </StackPanel>
                     <Button Grid.Row="1"
                             Grid.Column="2"

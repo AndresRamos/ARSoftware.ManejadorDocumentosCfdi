@@ -75,17 +75,14 @@ namespace Presentation.WpfApp.ViewModels.Cfdis
 
         public async Task ExportarExcelAsync()
         {
-            var saveFileDialog = new SaveFileDialog
-            {
-                Filter = "Excel | *.xlsx", 
-                FileName = "CFDIs.xlsx"
-            };
+            var saveFileDialog = new SaveFileDialog { Filter = "Excel | *.xlsx", FileName = "CFDIs.xlsx" };
             if (saveFileDialog.ShowDialog() != true)
             {
                 return;
             }
 
-            var progressDialogController = await _dialogCoordinator.ShowProgressAsync(this, "Exportando", "Exportando");
+            ProgressDialogController progressDialogController =
+                await _dialogCoordinator.ShowProgressAsync(this, "Exportando", "Exportando");
             progressDialogController.SetIndeterminate();
             await Task.Delay(1000);
 
@@ -93,7 +90,7 @@ namespace Presentation.WpfApp.ViewModels.Cfdis
             {
                 using (var excelPackage = new ExcelPackage(new FileInfo(saveFileDialog.FileName)))
                 {
-                    var excelWorksheet = excelPackage.Workbook.Worksheets.Add("CFDIs");
+                    ExcelWorksheet excelWorksheet = excelPackage.Workbook.Worksheets.Add("CFDIs");
                     excelWorksheet.Cells.LoadFromCollection(ComprobantesView.Cast<CfdiEncabezadoDto>(), true);
                     excelWorksheet.Cells.AutoFitColumns();
                     excelPackage.Save();

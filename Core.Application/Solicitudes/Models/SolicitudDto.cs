@@ -6,7 +6,23 @@ namespace Core.Application.Solicitudes.Models
 {
     public class SolicitudDto
     {
-        public SolicitudDto(int id, DateTime fechaCreacionUtc, DateTime fechaInicio, DateTime fechaFin, string rfcEmisor, string rfcReceptor, string rfcSolicitante, string tipoSolicitud, SolicitudAutenticacionDto solicitudAutenticacion, SolicitudSolicitudDto solicitudSolicitud, SolicitudVerificacionDto solicitudVerificacion, SolicitudDescargaDto solicitudDescarga, List<SolicitudAutenticacionDto> solicitudesAutenticacion, List<SolicitudSolicitudDto> solicitudesSolicitud, List<SolicitudVerificacionDto> solicitudesVerificacion, List<SolicitudDescargaDto> solicitudesDescarga, List<PaqueteDto> paquetes)
+        public SolicitudDto(int id,
+                            DateTime fechaCreacionUtc,
+                            DateTime fechaInicio,
+                            DateTime fechaFin,
+                            string rfcEmisor,
+                            string rfcReceptor,
+                            string rfcSolicitante,
+                            string tipoSolicitud,
+                            SolicitudAutenticacionDto solicitudAutenticacion,
+                            SolicitudSolicitudDto solicitudSolicitud,
+                            SolicitudVerificacionDto solicitudVerificacion,
+                            SolicitudDescargaDto solicitudDescarga,
+                            List<SolicitudAutenticacionDto> solicitudesAutenticacion,
+                            List<SolicitudSolicitudDto> solicitudesSolicitud,
+                            List<SolicitudVerificacionDto> solicitudesVerificacion,
+                            List<SolicitudDescargaDto> solicitudesDescarga,
+                            List<PaqueteDto> paquetes)
         {
             Id = id;
             FechaCreacionUtc = fechaCreacionUtc;

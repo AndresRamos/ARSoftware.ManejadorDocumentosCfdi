@@ -3,7 +3,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Core.Application.Permisos.Helpers;
+using Common.Models;
 using Core.Application.Roles.Models;
 using Infrastructure.Persistance;
 using MediatR;
@@ -22,7 +22,7 @@ namespace Core.Application.Roles.Queries.BuscarRoles
         public async Task<IEnumerable<RolDto>> Handle(BuscarRolesQuery request, CancellationToken cancellationToken)
         {
             return (await _context.Roles.ToListAsync(cancellationToken))
-                .Select(r => new RolDto(r.Id, r.Nombre,r.Descripcion, r.Permisos.UnpackToPermisosDto()))
+                .Select(r => new RolDto(r.Id, r.Nombre, r.Descripcion, r.Permisos.UnpackToPermisosDto()))
                 .ToList();
         }
     }

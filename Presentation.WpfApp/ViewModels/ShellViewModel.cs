@@ -1,14 +1,16 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using Caliburn.Micro;
+using Common.Models;
+using Core.Application.Cfdis;
 using Core.Application.Cfdis.Queries.LeerEncabezadosCfdi;
+using Core.Application.Common;
 using Core.Application.Empresas.Queries.BuscarEmpresasPermitidasPorUsuario;
-using Core.Application.Permisos.Models;
 using MahApps.Metro.Controls.Dialogs;
 using MediatR;
 using Microsoft.Win32;
-using Presentation.WpfApp.Models;
 using Presentation.WpfApp.ViewModels.Actualizaciones;
 using Presentation.WpfApp.ViewModels.Autenticacion;
 using Presentation.WpfApp.ViewModels.Cfdis;
@@ -27,7 +29,10 @@ namespace Presentation.WpfApp.ViewModels
         private readonly IMediator _mediator;
         private readonly IWindowManager _windowManager;
 
-        public ShellViewModel(IWindowManager windowManager, IDialogCoordinator dialogCoordinator, ConfiguracionAplicacion configuracionAplicacion, IMediator mediator)
+        public ShellViewModel(IWindowManager windowManager,
+                              IDialogCoordinator dialogCoordinator,
+                              ConfiguracionAplicacion configuracionAplicacion,
+                              IMediator mediator)
         {
             _windowManager = windowManager;
             _dialogCoordinator = dialogCoordinator;
@@ -40,12 +45,35 @@ namespace Presentation.WpfApp.ViewModels
 
         public bool CanIniciarSesionAsync => !ConfiguracionAplicacion.IsUsuarioAutenticado;
         public bool CanCerrarSesionAsync => ConfiguracionAplicacion.IsUsuarioAutenticado;
-        public bool CanVerListaSolicitudesViewAsync => ConfiguracionAplicacion.IsUsuarioAutenticado && ConfiguracionAplicacion.Usuario.TienePermiso(PermisosAplicacion.PuedeVerListaSolicitudes) && ConfiguracionAplicacion.IsEmpresaAbierta;
-        public bool CanVerConfiguracionGeneralViewAsync => ConfiguracionAplicacion.IsUsuarioAutenticado && ConfiguracionAplicacion.Usuario.TienePermiso(PermisosAplicacion.PuedeEditarConfiguracionGeneral) && ConfiguracionAplicacion.IsEmpresaAbierta;
-        public bool CanVerListaRolesViewAsync => ConfiguracionAplicacion.IsUsuarioAutenticado && ConfiguracionAplicacion.Usuario.TienePermiso(PermisosAplicacion.PuedeEditarUsuarios);
-        public bool CanVerListaUsuariosViewAsync => ConfiguracionAplicacion.IsUsuarioAutenticado && ConfiguracionAplicacion.Usuario.TienePermiso(PermisosAplicacion.PuedeEditarUsuarios);
-        public bool CanValidarExistenciaEnAddAsync => ConfiguracionAplicacion.IsUsuarioAutenticado && ConfiguracionAplicacion.Usuario.TienePermiso(PermisosAplicacion.PuedeVerListaSolicitudes) && ConfiguracionAplicacion.IsEmpresaAbierta;
-        public bool CanVerListaEmpresasViewAsync => ConfiguracionAplicacion.IsUsuarioAutenticado && ConfiguracionAplicacion.Usuario.TienePermiso(PermisosAplicacion.PuedeEditarEmpresas) && !ConfiguracionAplicacion.IsEmpresaAbierta;
+
+        public bool CanVerListaSolicitudesViewAsync =>
+            ConfiguracionAplicacion.IsUsuarioAutenticado &&
+            ConfiguracionAplicacion.Usuario.TienePermiso(PermisosAplicacion.PuedeVerListaSolicitudes) &&
+            ConfiguracionAplicacion.IsEmpresaAbierta;
+
+        public bool CanVerConfiguracionGeneralViewAsync =>
+            ConfiguracionAplicacion.IsUsuarioAutenticado &&
+            ConfiguracionAplicacion.Usuario.TienePermiso(PermisosAplicacion.PuedeEditarConfiguracionGeneral) &&
+            ConfiguracionAplicacion.IsEmpresaAbierta;
+
+        public bool CanVerListaRolesViewAsync =>
+            ConfiguracionAplicacion.IsUsuarioAutenticado &&
+            ConfiguracionAplicacion.Usuario.TienePermiso(PermisosAplicacion.PuedeEditarUsuarios);
+
+        public bool CanVerListaUsuariosViewAsync =>
+            ConfiguracionAplicacion.IsUsuarioAutenticado &&
+            ConfiguracionAplicacion.Usuario.TienePermiso(PermisosAplicacion.PuedeEditarUsuarios);
+
+        public bool CanValidarExistenciaEnAddAsync =>
+            ConfiguracionAplicacion.IsUsuarioAutenticado &&
+            ConfiguracionAplicacion.Usuario.TienePermiso(PermisosAplicacion.PuedeVerListaSolicitudes) &&
+            ConfiguracionAplicacion.IsEmpresaAbierta;
+
+        public bool CanVerListaEmpresasViewAsync =>
+            ConfiguracionAplicacion.IsUsuarioAutenticado &&
+            ConfiguracionAplicacion.Usuario.TienePermiso(PermisosAplicacion.PuedeEditarEmpresas) &&
+            !ConfiguracionAplicacion.IsEmpresaAbierta;
+
         public bool CanAbrirEmpresaAsync => ConfiguracionAplicacion.IsUsuarioAutenticado && !ConfiguracionAplicacion.IsEmpresaAbierta;
         public bool CanCerrarEmpresaAsync => ConfiguracionAplicacion.IsEmpresaAbierta;
 
@@ -111,7 +139,8 @@ namespace Presentation.WpfApp.ViewModels
                 }
                 else
                 {
-                    seleccionarEmpresaViewModel.Inicializar(await _mediator.Send(new BuscarEmpresasPermitidasPorUsuarioQuery(ConfiguracionAplicacion.Usuario.Id)));
+                    seleccionarEmpresaViewModel.Inicializar(
+                        await _mediator.Send(new BuscarEmpresasPermitidasPorUsuarioQuery(ConfiguracionAplicacion.Usuario.Id)));
                 }
 
                 await _windowManager.ShowDialogAsync(seleccionarEmpresaViewModel);
@@ -164,21 +193,18 @@ namespace Presentation.WpfApp.ViewModels
         {
             try
             {
-                var openFileDialog = new OpenFileDialog
-                {
-                    Multiselect = true,
-                    Filter = "XML|*.xml"
-                };
+                var openFileDialog = new OpenFileDialog { Multiselect = true, Filter = "XML|*.xml" };
                 if (openFileDialog.ShowDialog() != true)
                 {
                     return;
                 }
 
-                var progressDialogController = await _dialogCoordinator.ShowProgressAsync(this, "Cargando", "Cargando...");
+                ProgressDialogController progressDialogController =
+                    await _dialogCoordinator.ShowProgressAsync(this, "Cargando", "Cargando...");
                 progressDialogController.SetIndeterminate();
                 await Task.Delay(1000);
 
-                var comprobantes = await _mediator.Send(new LeerEncabezadosCfdiQuery(openFileDialog.FileNames));
+                IEnumerable<CfdiEncabezadoDto> comprobantes = await _mediator.Send(new LeerEncabezadosCfdiQuery(openFileDialog.FileNames));
                 var listaCfdisViewModel = IoC.Get<ListaCfdisViewModel>();
                 listaCfdisViewModel.Inicializar(comprobantes);
 
@@ -304,6 +330,7 @@ namespace Presentation.WpfApp.ViewModels
             }
         }
 
+        // ReSharper disable once AsyncVoidMethod
         protected override async void OnViewLoaded(object view)
         {
             base.OnViewLoaded(view);

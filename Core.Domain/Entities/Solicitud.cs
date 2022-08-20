@@ -1,6 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 
+// ReSharper disable UnusedAutoPropertyAccessor.Global
+// ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable UnusedMember.Global
+// ReSharper disable AutoPropertyCanBeMadeGetOnly.Global
+
 namespace Core.Domain.Entities
 {
     public class Solicitud
@@ -44,7 +49,14 @@ namespace Core.Domain.Entities
         public int UsuarioId { get; set; }
         public Usuario Usuario { get; set; }
 
-        public static Solicitud CreateNew(int empresaId,int usuarioId, DateTime fechaInicio, DateTime fechaFin, string rfcEmisor, string rfcReceptor, string rfcSolicitante, string tipoSolicitud)
+        public static Solicitud CreateNew(int empresaId,
+                                          int usuarioId,
+                                          DateTime fechaInicio,
+                                          DateTime fechaFin,
+                                          string rfcEmisor,
+                                          string rfcReceptor,
+                                          string rfcSolicitante,
+                                          string tipoSolicitud)
         {
             var solicitud = new Solicitud
             {

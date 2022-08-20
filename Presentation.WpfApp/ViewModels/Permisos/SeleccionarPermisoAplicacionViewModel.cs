@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Windows.Data;
 using Caliburn.Micro;
-using Core.Application.Permisos.Models;
+using Common.Models;
 
 namespace Presentation.WpfApp.ViewModels.Permisos
 {

@@ -1,4 +1,6 @@
-﻿namespace Core.Domain.Entities
+﻿// ReSharper disable UnusedAutoPropertyAccessor.Local
+
+namespace Core.Domain.Entities
 {
     public class Paquete
     {
@@ -12,11 +14,7 @@
 
         public static Paquete Crear(string idSat, byte[] contenido)
         {
-            return new Paquete
-            {
-                IdSat = idSat,
-                Contenido = contenido
-            };
+            return new Paquete { IdSat = idSat, Contenido = contenido };
         }
     }
 }

@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
-using Core.Application.Permisos.Models;
-using Core.Application.Roles.Models;
+using Common.Models;
 using MediatR;
 
 namespace Core.Application.Roles.Commands.CrearRol

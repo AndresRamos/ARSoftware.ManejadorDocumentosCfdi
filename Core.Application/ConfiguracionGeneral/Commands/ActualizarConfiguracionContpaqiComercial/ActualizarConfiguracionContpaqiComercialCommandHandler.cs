@@ -18,11 +18,13 @@ namespace Core.Application.ConfiguracionGeneral.Commands.ActualizarConfiguracion
 
         public async Task<Unit> Handle(ActualizarConfiguracionContpaqiComercialCommand request, CancellationToken cancellationToken)
         {
-            var configuracionGeneral = await _context.ConfiguracionGeneral.FirstAsync(cancellationToken);
+            Domain.Entities.ConfiguracionGeneral configuracionGeneral = await _context.ConfiguracionGeneral.FirstAsync(cancellationToken);
 
             configuracionGeneral.ConfiguracionContpaqiComercial = ConfiguracionContpaqiComercial.CreateInstance(
                 request.ConfiguracionContpaqiComercial.ContpaqiSqlConnectionString,
-                EmpresaContpaqi.CreateInstance(request.ConfiguracionContpaqiComercial.Empresa.Nombre, request.ConfiguracionContpaqiComercial.Empresa.BaseDatos, request.ConfiguracionContpaqiComercial.Empresa.GuidAdd));
+                EmpresaContpaqi.CreateInstance(request.ConfiguracionContpaqiComercial.Empresa.Nombre,
+                    request.ConfiguracionContpaqiComercial.Empresa.BaseDatos,
+                    request.ConfiguracionContpaqiComercial.Empresa.GuidAdd));
 
             await _context.SaveChangesAsync(cancellationToken);
 

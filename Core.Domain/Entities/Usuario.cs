@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Core.Application.Permisos.Helpers;
-using Core.Application.Permisos.Models;
+using Common.Models;
+
+// ReSharper disable UnusedAutoPropertyAccessor.Local
 
 namespace Core.Domain.Entities
 {
@@ -22,7 +23,12 @@ namespace Core.Domain.Entities
         public ICollection<Empresa> EmpresasPermitidas { get; private set; }
         public ICollection<Solicitud> Solicitudes { get; private set; }
 
-        public static Usuario CreateInstance(string primerNombre, string apellido, string email, string nombreUsuario, string passwordHash, string passwordSalt)
+        public static Usuario CreateInstance(string primerNombre,
+                                             string apellido,
+                                             string email,
+                                             string nombreUsuario,
+                                             string passwordHash,
+                                             string passwordSalt)
         {
             return new Usuario
             {
@@ -66,7 +72,7 @@ namespace Core.Domain.Entities
         {
             var permisosList = new List<PermisosAplicacion>();
 
-            foreach (var permisosString in Roles.Select(r => r.Permisos))
+            foreach (string permisosString in Roles.Select(r => r.Permisos))
             {
                 permisosList.AddRange(permisosString.UnpackPermissionsFromString());
             }

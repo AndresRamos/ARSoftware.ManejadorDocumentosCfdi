@@ -41,7 +41,7 @@ namespace Presentation.WpfApp.ViewModels.Xmls
             var xmlDocument = new XmlDocument();
             xmlDocument.LoadXml(contenido);
             var stringBuilder = new StringBuilder();
-            var settings = new XmlWriterSettings {OmitXmlDeclaration = true, Indent = true};
+            var settings = new XmlWriterSettings { OmitXmlDeclaration = true, Indent = true };
             var xmlWriter = XmlWriter.Create(stringBuilder, settings);
             xmlDocument.Save(xmlWriter);
             xmlWriter.Flush();

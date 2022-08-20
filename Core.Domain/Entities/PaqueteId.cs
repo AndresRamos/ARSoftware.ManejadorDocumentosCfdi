@@ -1,4 +1,6 @@
-﻿namespace Core.Domain.Entities
+﻿// ReSharper disable UnusedAutoPropertyAccessor.Local
+
+namespace Core.Domain.Entities
 {
     public class PaqueteId
     {
@@ -12,10 +14,7 @@
 
         public static PaqueteId Crear(string idPaquete)
         {
-            return new PaqueteId
-            {
-                IdPaquete = idPaquete
-            };
+            return new PaqueteId { IdPaquete = idPaquete };
         }
 
         public void SetDescargado()

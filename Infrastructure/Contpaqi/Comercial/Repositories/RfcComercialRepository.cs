@@ -6,7 +6,7 @@ using Contpaqi.Sql.Comercial.Empresa;
 using Core.Application.Rfcs.Interfaces;
 using Core.Application.Rfcs.Models;
 
-namespace Infrastructure.ContpaqiComercial.Repositories
+namespace Infrastructure.Contpaqi.Comercial.Repositories
 {
     public class RfcComercialRepository : IRfcComercialRepository
     {
@@ -19,8 +19,9 @@ namespace Infrastructure.ContpaqiComercial.Repositories
 
         public async Task<IEnumerable<RfcDto>> BuscarRfcsAsync()
         {
-            return (await _context.admClientes.Select(c => new {c.CCODIGOCLIENTE, c.CRFC, c.CRAZONSOCIAL}).ToListAsync())
-                .Select(c => new RfcDto(c.CCODIGOCLIENTE, c.CRFC, c.CRAZONSOCIAL)).ToList();
+            return (await _context.admClientes.Select(c => new { c.CCODIGOCLIENTE, c.CRFC, c.CRAZONSOCIAL }).ToListAsync())
+                .Select(c => new RfcDto(c.CCODIGOCLIENTE, c.CRFC, c.CRAZONSOCIAL))
+                .ToList();
         }
     }
 }

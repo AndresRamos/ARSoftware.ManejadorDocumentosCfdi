@@ -2,7 +2,12 @@
 using System.Collections.Generic;
 using System.Windows;
 using Autofac;
+using Autofac.Extensions.DependencyInjection;
 using Caliburn.Micro;
+using Core.Application.Common;
+using Infrastructure.Common;
+using Infrastructure.Persistance.Common;
+using Microsoft.Extensions.DependencyInjection;
 using Presentation.WpfApp.Config;
 using Presentation.WpfApp.ViewModels;
 
@@ -19,7 +24,16 @@ namespace Presentation.WpfApp
 
         protected override void Configure()
         {
-            _container = IocContainerConfig.Configure();
+            var serviceCollection = new ServiceCollection();
+            serviceCollection.AddApplicationServices();
+            serviceCollection.AddInfrastructureServices();
+            serviceCollection.AddPersistenceServices();
+
+            var containerBuilder = new ContainerBuilder();
+            containerBuilder.Populate(serviceCollection);
+            containerBuilder.AddWpfAppServices();
+
+            _container = containerBuilder.Build();
         }
 
         protected override object GetInstance(Type service, string key)
@@ -41,7 +55,7 @@ namespace Presentation.WpfApp
                 }
             }
 
-            throw new Exception(string.Format("Could not locate any instances of contract {0}.", key ?? service.Name));
+            throw new Exception($"Could not locate any instances of contract {key ?? service.Name}.");
         }
 
         protected override IEnumerable<object> GetAllInstances(Type service)
@@ -54,6 +68,7 @@ namespace Presentation.WpfApp
             _container.InjectProperties(instance);
         }
 
+        // ReSharper disable once AsyncVoidMethod
         protected override async void OnStartup(object sender, StartupEventArgs e)
         {
             await DisplayRootViewForAsync<ShellViewModel>();

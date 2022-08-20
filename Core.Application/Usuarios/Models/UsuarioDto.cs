@@ -1,14 +1,20 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Core.Application.Permisos.Helpers;
-using Core.Application.Permisos.Models;
+using Common.Models;
 using Core.Application.Roles.Models;
 
 namespace Core.Application.Usuarios.Models
 {
     public class UsuarioDto
     {
-        public UsuarioDto(int id, string primerNombre, string apellido, string email, string nombreUsuario, string passwordHash, string passwordSalt, ICollection<RolDto> roles)
+        public UsuarioDto(int id,
+                          string primerNombre,
+                          string apellido,
+                          string email,
+                          string nombreUsuario,
+                          string passwordHash,
+                          string passwordSalt,
+                          ICollection<RolDto> roles)
         {
             Id = id;
             PrimerNombre = primerNombre;
@@ -32,7 +38,7 @@ namespace Core.Application.Usuarios.Models
 
         public bool TienePermiso(PermisosAplicacion permiso)
         {
-            var permisos = Roles.SelectMany(r => r.Permisos).Select(p => p.PermisoAplicacion).Distinct().ToArray();
+            PermisosAplicacion[] permisos = Roles.SelectMany(r => r.Permisos).Select(p => p.PermisoAplicacion).Distinct().ToArray();
 
             return permisos.UsuarioTieneEstePermiso(permiso);
         }

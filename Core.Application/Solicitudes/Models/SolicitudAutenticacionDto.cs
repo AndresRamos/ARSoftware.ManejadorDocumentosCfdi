@@ -4,7 +4,17 @@ namespace Core.Application.Solicitudes.Models
 {
     public class SolicitudAutenticacionDto
     {
-        public SolicitudAutenticacionDto(int id, DateTime fechaCreacionUtc, DateTime fechaTokenCreacionUtc, DateTime fechaTokenExpiracionUtc, string token, string autorizacion, string faultCode, string faultString, string error, string solicitud, string respuesta)
+        public SolicitudAutenticacionDto(int id,
+                                         DateTime fechaCreacionUtc,
+                                         DateTime fechaTokenCreacionUtc,
+                                         DateTime fechaTokenExpiracionUtc,
+                                         string token,
+                                         string autorizacion,
+                                         string faultCode,
+                                         string faultString,
+                                         string error,
+                                         string solicitud,
+                                         string respuesta)
         {
             Id = id;
             FechaCreacionUtc = fechaCreacionUtc;

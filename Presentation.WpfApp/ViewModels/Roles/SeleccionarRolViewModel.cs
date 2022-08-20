@@ -8,7 +8,7 @@ using Core.Application.Roles.Models;
 
 namespace Presentation.WpfApp.ViewModels.Roles
 {
-    public class SeleccionarRolViewModel : Screen
+    public sealed class SeleccionarRolViewModel : Screen
     {
         private string _filtro;
         private RolDto _rolSeleccionado;

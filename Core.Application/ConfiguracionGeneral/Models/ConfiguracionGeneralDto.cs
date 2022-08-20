@@ -12,7 +12,11 @@ namespace Core.Application.ConfiguracionGeneral.Models
         private int _id;
         private string _rutaDirectorioDescargas;
 
-        public ConfiguracionGeneralDto(int id, CertificadoSatDto certificadoSat, string rutaDirectorioDescargas, ConfiguracionContpaqiComercialDto configuracionContpaqiComercial, ConfiguracionContpaqiContabilidadDto configuracionContpaqiContabilidad)
+        public ConfiguracionGeneralDto(int id,
+                                       CertificadoSatDto certificadoSat,
+                                       string rutaDirectorioDescargas,
+                                       ConfiguracionContpaqiComercialDto configuracionContpaqiComercial,
+                                       ConfiguracionContpaqiContabilidadDto configuracionContpaqiContabilidad)
         {
             Id = id;
             CertificadoSat = certificadoSat;

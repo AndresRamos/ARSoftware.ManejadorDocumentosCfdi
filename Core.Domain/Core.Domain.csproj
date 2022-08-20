@@ -54,9 +54,7 @@
     <Compile Include="ValueObjects\EmpresaContpaqi.cs" />
     <Compile Include="ValueObjects\ValueObject.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Enumerations\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\Common\Common.csproj">
       <Project>{a4122ec4-b420-4238-b5e3-ecb62bae86c3}</Project>

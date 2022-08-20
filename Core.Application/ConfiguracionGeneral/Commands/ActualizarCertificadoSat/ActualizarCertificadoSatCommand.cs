@@ -18,6 +18,6 @@ namespace Core.Application.ConfiguracionGeneral.Commands.ActualizarCertificadoSa
 
         public string RfcEmisor { get; }
 
-        public string RutaDirectorioDescargas { get;  }
+        public string RutaDirectorioDescargas { get; }
     }
 }

@@ -1,11 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Caliburn.Micro;
-using Core.Application.Permisos.Models;
+using Common.Models;
 using Core.Application.Permisos.Queries.BuscarPermisosAplicacion;
 using Core.Application.Roles.Commands.ActualizarRol;
 using Core.Application.Roles.Commands.CrearRol;
+using Core.Application.Roles.Models;
 using Core.Application.Roles.Queries.BuscarRolPorId;
 using MahApps.Metro.Controls.Dialogs;
 using MediatR;
@@ -104,7 +106,7 @@ namespace Presentation.WpfApp.ViewModels.Roles
             }
             else
             {
-                var rol = await _mediator.Send(new BuscarRolPorIdQuery(rolId.Value));
+                RolDto rol = await _mediator.Send(new BuscarRolPorIdQuery(rolId.Value));
                 Id = rol.Id;
                 Nombre = rol.Nombre;
                 Descripcion = rol.Descripcion;
@@ -143,8 +145,9 @@ namespace Presentation.WpfApp.ViewModels.Roles
         {
             try
             {
-                var permisosAplicacion = await _mediator.Send(new BuscarPermisosAplicacionQuery());
-                var permisosUnicos = permisosAplicacion.Where(pa => Permisos.All(p => p.Nombre != pa.Nombre)).ToList();
+                IEnumerable<PermisoAplicacionDto> permisosAplicacion = await _mediator.Send(new BuscarPermisosAplicacionQuery());
+                List<PermisoAplicacionDto> permisosUnicos =
+                    permisosAplicacion.Where(pa => Permisos.All(p => p.Nombre != pa.Nombre)).ToList();
                 var viewModel = IoC.Get<SeleccionarPermisoAplicacionViewModel>();
                 viewModel.Inicializar(permisosUnicos);
                 await _windowManager.ShowDialogAsync(viewModel);

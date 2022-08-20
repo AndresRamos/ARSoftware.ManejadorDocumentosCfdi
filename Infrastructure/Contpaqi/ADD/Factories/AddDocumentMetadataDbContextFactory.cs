@@ -1,7 +1,7 @@
 ﻿using System.Data.SqlClient;
 using Contpaqi.Sql.ADD.DocumentMetadata;
 
-namespace Infrastructure.ContpaqiAdd.Factories
+namespace Infrastructure.Contpaqi.ADD.Factories
 {
     public static class AddDocumentMetadataDbContextFactory
     {

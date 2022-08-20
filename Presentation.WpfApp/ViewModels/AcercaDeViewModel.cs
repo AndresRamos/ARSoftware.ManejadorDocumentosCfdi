@@ -4,7 +4,7 @@ using Caliburn.Micro;
 
 namespace Presentation.WpfApp.ViewModels
 {
-    public class AcercaDeViewModel : Screen
+    public sealed class AcercaDeViewModel : Screen
     {
         public AcercaDeViewModel()
         {
@@ -63,10 +63,9 @@ namespace Presentation.WpfApp.ViewModels
         public string Facebook => "https://www.facebook.com/AndresRamosSoftware/";
         public string Twitter => "https://twitter.com/ar_software";
 
-
         private static string GetExecutingAssemblyAttribute<T>(Func<T, string> value) where T : Attribute
         {
-            var attribute = (T) Attribute.GetCustomAttribute(Assembly.GetExecutingAssembly(), typeof(T));
+            var attribute = (T)Attribute.GetCustomAttribute(Assembly.GetExecutingAssembly(), typeof(T));
             return value.Invoke(attribute);
         }
     }

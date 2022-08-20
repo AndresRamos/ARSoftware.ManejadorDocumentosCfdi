@@ -1,6 +1,8 @@
-﻿using System.Data.Entity;
+﻿using System;
+using System.Data.Entity;
 using System.Threading;
 using System.Threading.Tasks;
+using Core.Domain.Entities;
 using Infrastructure.Persistance;
 using MediatR;
 
@@ -17,7 +19,12 @@ namespace Core.Application.Usuarios.Commands.ActualizarPerfilUsuario
 
         public async Task<Unit> Handle(ActualizarPerfilUsuarioCommand request, CancellationToken cancellationToken)
         {
-            var usuario = await _context.Usuarios.SingleOrDefaultAsync(u => u.Id == request.UsuarioId, cancellationToken);
+            Usuario usuario = await _context.Usuarios.SingleOrDefaultAsync(u => u.Id == request.UsuarioId, cancellationToken);
+
+            if (usuario is null)
+            {
+                throw new Exception($"No se encontro el usuario con ID {request.UsuarioId}");
+            }
 
             usuario.ActualizarPerfil(request.PrimerNombre, request.Apellido, request.Email, request.NombreUsuario);
 

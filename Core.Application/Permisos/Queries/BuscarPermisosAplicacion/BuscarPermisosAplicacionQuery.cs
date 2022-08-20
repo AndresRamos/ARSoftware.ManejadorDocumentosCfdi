@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Core.Application.Permisos.Models;
+using Common.Models;
 using MediatR;
 
 namespace Core.Application.Permisos.Queries.BuscarPermisosAplicacion

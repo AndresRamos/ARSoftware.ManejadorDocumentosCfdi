@@ -14,7 +14,8 @@ namespace Core.Application.Cfdis.Queries.LeerEncabezadosCfdi
         private readonly IComprobanteAddComercialRepository _comprobanteAddComercialRepository;
         private readonly IComprobanteAddContabilidadRepository _comprobanteAddContabilidadRepository;
 
-        public LeerEncabezadosCfdiQueryHandler(IComprobanteAddContabilidadRepository comprobanteAddContabilidadRepository, IComprobanteAddComercialRepository comprobanteAddComercialRepository)
+        public LeerEncabezadosCfdiQueryHandler(IComprobanteAddContabilidadRepository comprobanteAddContabilidadRepository,
+                                               IComprobanteAddComercialRepository comprobanteAddComercialRepository)
         {
             _comprobanteAddContabilidadRepository = comprobanteAddContabilidadRepository;
             _comprobanteAddComercialRepository = comprobanteAddComercialRepository;
@@ -24,17 +25,17 @@ namespace Core.Application.Cfdis.Queries.LeerEncabezadosCfdi
         {
             var cfdiEncabezadoList = new List<CfdiEncabezadoDto>();
 
-            foreach (var archivo in request.ArchivosCfdi)
+            foreach (string archivo in request.ArchivosCfdi)
             {
                 XNamespace cfdiNs = "http://www.sat.gob.mx/cfd/3";
                 XNamespace timbreFiscalDigitalNs = "http://www.sat.gob.mx/TimbreFiscalDigital";
 
-                var doc = XDocument.Load(archivo);
+                XDocument doc = XDocument.Load(archivo);
 
-                var comprobanteElement = doc.Element(cfdiNs + "Comprobante");
-                var emisorElement = doc.Descendants(cfdiNs + "Emisor").FirstOrDefault();
-                var receptorElement = doc.Descendants(cfdiNs + "Receptor").FirstOrDefault();
-                var timbreFiscalDigitalElement = doc.Descendants(timbreFiscalDigitalNs + "TimbreFiscalDigital").FirstOrDefault();
+                XElement comprobanteElement = doc.Element(cfdiNs + "Comprobante");
+                XElement emisorElement = doc.Descendants(cfdiNs + "Emisor").FirstOrDefault();
+                XElement receptorElement = doc.Descendants(cfdiNs + "Receptor").FirstOrDefault();
+                XElement timbreFiscalDigitalElement = doc.Descendants(timbreFiscalDigitalNs + "TimbreFiscalDigital").FirstOrDefault();
 
                 var cfdiEncabezado = new CfdiEncabezadoDto
                 {
@@ -54,10 +55,13 @@ namespace Core.Application.Cfdis.Queries.LeerEncabezadosCfdi
                 cfdiEncabezadoList.Add(cfdiEncabezado);
             }
 
-            foreach (var cfdi in cfdiEncabezadoList.Where(cfdi => !string.IsNullOrWhiteSpace(cfdi.Uuid)))
+            foreach (CfdiEncabezadoDto cfdi in cfdiEncabezadoList.Where(cfdi => !string.IsNullOrWhiteSpace(cfdi.Uuid)))
             {
-                cfdi.ExisteEnComercial = _comprobanteAddComercialRepository != null && await _comprobanteAddComercialRepository.ExisteUuidAsync(new Guid(cfdi.Uuid), cancellationToken);
-                cfdi.ExisteEnContabilidad = _comprobanteAddContabilidadRepository != null && await _comprobanteAddContabilidadRepository.ExisteUuidAsync(new Guid(cfdi.Uuid), cancellationToken);
+                cfdi.ExisteEnComercial = _comprobanteAddComercialRepository != null &&
+                                         await _comprobanteAddComercialRepository.ExisteUuidAsync(new Guid(cfdi.Uuid), cancellationToken);
+                cfdi.ExisteEnContabilidad = _comprobanteAddContabilidadRepository != null &&
+                                            await _comprobanteAddContabilidadRepository.ExisteUuidAsync(new Guid(cfdi.Uuid),
+                                                cancellationToken);
             }
 
             return cfdiEncabezadoList;

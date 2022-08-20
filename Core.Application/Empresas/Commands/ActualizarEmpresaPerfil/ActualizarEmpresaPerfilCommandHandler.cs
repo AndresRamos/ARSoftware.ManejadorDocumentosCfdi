@@ -2,6 +2,7 @@
 using System.Data.Entity.Core;
 using System.Threading;
 using System.Threading.Tasks;
+using Core.Domain.Entities;
 using Infrastructure.Persistance;
 using MediatR;
 
@@ -18,7 +19,7 @@ namespace Core.Application.Empresas.Commands.ActualizarEmpresaPerfil
 
         public async Task<Unit> Handle(ActualizarEmpresaPerfilCommand request, CancellationToken cancellationToken)
         {
-            var empresa = await _context.Empresas.SingleOrDefaultAsync(e => e.Id == request.EmpresaId, cancellationToken);
+            Empresa empresa = await _context.Empresas.SingleOrDefaultAsync(e => e.Id == request.EmpresaId, cancellationToken);
 
             if (empresa is null)
             {

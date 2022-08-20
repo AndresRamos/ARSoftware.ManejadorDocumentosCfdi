@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Contpaqi.Sql.ADD.DocumentMetadata;
 using Core.Application.Comprobantes.Interfaces;
 
-namespace Infrastructure.ContpaqiAdd.Repositories
+namespace Infrastructure.Contpaqi.ADD.Repositories
 {
     public class ComprobanteAddRepository : IComprobanteAddComercialRepository, IComprobanteAddContabilidadRepository
     {

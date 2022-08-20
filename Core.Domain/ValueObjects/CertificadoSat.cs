@@ -14,12 +14,7 @@ namespace Core.Domain.ValueObjects
 
         public static CertificadoSat CreateInstance(byte[] certificado, string contrasena, string rfc)
         {
-            return new CertificadoSat
-            {
-                Certificado = certificado,
-                Contrasena = contrasena,
-                Rfc = rfc
-            };
+            return new CertificadoSat { Certificado = certificado, Contrasena = contrasena, Rfc = rfc };
         }
 
         public static CertificadoSat CreateSinAsignar()
@@ -27,7 +22,7 @@ namespace Core.Domain.ValueObjects
             return CreateInstance(null, "", "");
         }
 
-        protected override IEnumerable<object> GetAtomicValues()
+        protected override IEnumerable<object> GetEqualityComponents()
         {
             yield return Certificado;
             yield return Contrasena;

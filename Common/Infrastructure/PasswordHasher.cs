@@ -22,7 +22,7 @@ namespace Common.Infrastructure
         public static string GetHashString(byte[] hashBytes)
         {
             return Convert.ToBase64String(hashBytes);
-        }                                                                                                                                               
+        }
 
         public static byte[] CreateHash(string password, byte[] salt)
         {
@@ -34,16 +34,16 @@ namespace Common.Infrastructure
 
         public static bool Validate(string password, byte[] passwordHash, byte[] salt)
         {
-            var hash = CreateHash(password, salt);
+            byte[] hash = CreateHash(password, salt);
             return SlowEquals(hash, passwordHash);
         }
 
         private static bool SlowEquals(byte[] a, byte[] b)
         {
-            var diff = (uint) a.Length ^ (uint) b.Length;
+            uint diff = (uint)a.Length ^ (uint)b.Length;
             for (var i = 0; i < a.Length && i < b.Length; i++)
             {
-                diff |= (uint) (a[i] ^ b[i]);
+                diff |= (uint)(a[i] ^ b[i]);
             }
 
             return diff == 0;

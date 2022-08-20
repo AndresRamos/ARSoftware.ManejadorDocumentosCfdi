@@ -3,9 +3,10 @@ using System.Data.Entity.Core;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Core.Application.Permisos.Helpers;
+using Common.Models;
 using Core.Application.Roles.Models;
 using Core.Application.Usuarios.Models;
+using Core.Domain.Entities;
 using Infrastructure.Persistance;
 using MediatR;
 
@@ -22,22 +23,22 @@ namespace Core.Application.Usuarios.Queries.BuscarUsuarioPorId
 
         public async Task<UsuarioDto> Handle(BuscarUsuarioPorIdQuery request, CancellationToken cancellationToken)
         {
-            var usuario = await _context.Usuarios.Include(r => r.Roles).SingleOrDefaultAsync(u => u.Id == request.UsuarioId, cancellationToken);
+            Usuario usuario = await _context.Usuarios.Include(r => r.Roles)
+                .SingleOrDefaultAsync(u => u.Id == request.UsuarioId, cancellationToken);
 
             if (usuario == null)
             {
                 throw new ObjectNotFoundException($"No se encontro el usuario con el Id {request.UsuarioId}");
             }
 
-            return new UsuarioDto(
-                usuario.Id,
+            return new UsuarioDto(usuario.Id,
                 usuario.PrimerNombre,
                 usuario.Apellido,
                 usuario.Email,
                 usuario.NombreUsuario,
                 usuario.PasswordHash,
                 usuario.PasswordSalt,
-                usuario.Roles.Select(r => new RolDto(r.Id, r.Nombre,r.Descripcion, r.Permisos.UnpackToPermisosDto())).ToList());
+                usuario.Roles.Select(r => new RolDto(r.Id, r.Nombre, r.Descripcion, r.Permisos.UnpackToPermisosDto())).ToList());
         }
     }
 }
