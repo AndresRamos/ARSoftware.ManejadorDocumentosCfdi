@@ -108,7 +108,7 @@ namespace Core.Application.Solicitudes.Commands.VerificarSolicitud
 
             Logger.WithProperty(LogPropertyConstants.SolicitudId, solicitud.Id).Info("Creando registro de solicitud de verificacion.");
             var solicitudVerificacion = SolicitudVerificacion.CreateInstance(soapRequestEnvelopeXml,
-                verificacionResult.WebResponse,
+                verificacionResult.ResponseContent,
                 verificacionResult.CodEstatus,
                 verificacionResult.Mensaje,
                 verificacionResult.CodigoEstadoSolicitud,

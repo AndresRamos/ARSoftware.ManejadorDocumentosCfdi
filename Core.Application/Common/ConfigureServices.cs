@@ -1,6 +1,5 @@
 ﻿using System.Reflection;
-using ARSoftware.Cfdi.DescargaMasiva.Interfaces;
-using ARSoftware.Cfdi.DescargaMasiva.Services;
+using ARSoftware.Cfdi.DescargaMasiva;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -14,19 +13,9 @@ namespace Core.Application.Common
 
             services.AddSingleton<ConfiguracionAplicacion>();
 
-            services.AddCfdiDescargaServices();
+            services.AddCfdiDescargaMasivaServices();
 
             return services;
-        }
-
-        private static void AddCfdiDescargaServices(this IServiceCollection services)
-        {
-            services.AddHttpClient();
-            services.AddTransient<IHttpSoapClient, HttpSoapClient>();
-            services.AddTransient<IAutenticacionService, AutenticacionService>();
-            services.AddTransient<ISolicitudService, SolicitudService>();
-            services.AddTransient<IVerificacionService, VerificacionService>();
-            services.AddTransient<IDescargaService, DescargaService>();
         }
     }
 }

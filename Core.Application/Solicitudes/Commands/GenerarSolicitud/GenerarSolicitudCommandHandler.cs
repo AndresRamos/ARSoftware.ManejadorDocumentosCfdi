@@ -7,7 +7,6 @@ using ARSoftware.Cfdi.DescargaMasiva.Enumerations;
 using ARSoftware.Cfdi.DescargaMasiva.Helpers;
 using ARSoftware.Cfdi.DescargaMasiva.Interfaces;
 using ARSoftware.Cfdi.DescargaMasiva.Models;
-using ARSoftware.Cfdi.DescargaMasiva.Services;
 using Common;
 using Core.Domain.Entities;
 using Infrastructure.Persistance;
@@ -68,7 +67,7 @@ namespace Core.Application.Solicitudes.Commands.GenerarSolicitud
                 solicitud.Receptores,
                 solicitud.RfcSolicitante);
 
-            string soapRequestEnvelopeXml = SolicitudService.GenerateSoapRequestEnvelopeXmlContent(solicitudRequest, certificadoSat);
+            string soapRequestEnvelopeXml = _solicitudService.GenerateSoapRequestEnvelopeXmlContent(solicitudRequest, certificadoSat);
             Logger.WithProperty(LogPropertyConstants.SolicitudId, solicitud.Id).Info("SoapRequestEnvelopeXml: {0}", soapRequestEnvelopeXml);
 
             SolicitudResult solicitudResult;
@@ -109,7 +108,7 @@ namespace Core.Application.Solicitudes.Commands.GenerarSolicitud
 
             Logger.WithProperty(LogPropertyConstants.SolicitudId, solicitud.Id).Info("Creando registro de solicitud de solicitud.");
             var solicitudSolicitud = SolicitudSolicitud.CreateInstance(soapRequestEnvelopeXml,
-                solicitudResult.WebResponse,
+                solicitudResult.ResponseContent,
                 solicitud.FechaInicio,
                 solicitud.FechaFin,
                 solicitud.RfcEmisor,

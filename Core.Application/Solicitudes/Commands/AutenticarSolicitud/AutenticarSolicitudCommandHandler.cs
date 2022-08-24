@@ -88,7 +88,7 @@ namespace Core.Application.Solicitudes.Commands.AutenticarSolicitud
 
             Logger.WithProperty(LogPropertyConstants.SolicitudId, solicitud.Id).Info("Creando registro de solicitud de autenticacion.");
             var solicitudAutenticacion = SolicitudAutenticacion.CreateInstance(soapRequestEnvelopeXml,
-                autenticacionResult.WebResponse,
+                autenticacionResult.ResponseContent,
                 autenticacionRequest.TokenCreatedDateUtc,
                 autenticacionRequest.TokenExpiresDateUtc,
                 autenticacionResult.Token,

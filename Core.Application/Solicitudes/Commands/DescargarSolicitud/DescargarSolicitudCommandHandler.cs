@@ -123,7 +123,7 @@ namespace Core.Application.Solicitudes.Commands.DescargarSolicitud
                     .Info("DescargaSolicitudResult: {@DescargaSolicitudResult}", descargaResult);
 
                 var solicitudDescarga = SolicitudDescarga.CreateInstance(soapRequestEnvelopeXml,
-                    descargaResult.WebResponse,
+                    descargaResult.ResponseContent,
                     descargaResult.CodEstatus,
                     descargaResult.Mensaje,
                     paqueteId.IdPaquete,
