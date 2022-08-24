@@ -4,42 +4,45 @@ using Core.Domain.Entities;
 using Core.Domain.ValueObjects;
 using Infrastructure.Persistance.Migrations;
 
-namespace Infrastructure.Persistance
+namespace Infrastructure.Persistance;
+
+public class ManejadorDocumentosCfdiDbContext : DbContext
 {
-    public class ManejadorDocumentosCfdiDbContext : DbContext
+    static ManejadorDocumentosCfdiDbContext()
     {
-        public ManejadorDocumentosCfdiDbContext() : base("ManejadorDocumentosCfdiDbContext")
-        {
-            Database.SetInitializer(new MigrateDatabaseToLatestVersion<ManejadorDocumentosCfdiDbContext, Configuration>());
-        }
+        Database.SetInitializer(new MigrateDatabaseToLatestVersion<ManejadorDocumentosCfdiDbContext, Configuration>(true));
+    }
 
-        public DbSet<Empresa> Empresas { get; set; }
+    public ManejadorDocumentosCfdiDbContext(string nameOrConnectionString) : base(nameOrConnectionString)
+    {
+    }
 
-        public DbSet<ConfiguracionGeneral> ConfiguracionGeneral { get; set; }
+    public DbSet<Empresa> Empresas { get; set; }
 
-        public DbSet<Solicitud> Solicitudes { get; set; }
+    public DbSet<ConfiguracionGeneral> ConfiguracionGeneral { get; set; }
 
-        public DbSet<SolicitudWebBase> SolicitudesWeb { get; set; }
+    public DbSet<Solicitud> Solicitudes { get; set; }
 
-        public DbSet<Paquete> Paquetes { get; set; }
+    public DbSet<SolicitudWebBase> SolicitudesWeb { get; set; }
 
-        public DbSet<Usuario> Usuarios { get; set; }
+    public DbSet<Paquete> Paquetes { get; set; }
 
-        public DbSet<Rol> Roles { get; set; }
+    public DbSet<Usuario> Usuarios { get; set; }
 
-        protected override void OnModelCreating(DbModelBuilder modelBuilder)
-        {
-            modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
+    public DbSet<Rol> Roles { get; set; }
 
-            modelBuilder.Entity<ConfiguracionGeneral>().HasKey(c => c.Id);
-            modelBuilder.Entity<Empresa>().HasRequired(e => e.ConfiguracionGeneral).WithRequiredPrincipal();
-            modelBuilder.Entity<Usuario>().HasMany(u => u.EmpresasPermitidas).WithMany();
-            modelBuilder.Entity<Solicitud>().HasRequired(u => u.Usuario).WithMany(s => s.Solicitudes).HasForeignKey(s => s.UsuarioId);
+    protected override void OnModelCreating(DbModelBuilder modelBuilder)
+    {
+        modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
 
-            modelBuilder.ComplexType<CertificadoSat>();
-            modelBuilder.ComplexType<ConfiguracionContpaqiComercial>();
-            modelBuilder.ComplexType<ConfiguracionContpaqiContabilidad>();
-            modelBuilder.ComplexType<EmpresaContpaqi>();
-        }
+        modelBuilder.Entity<ConfiguracionGeneral>().HasKey(c => c.Id);
+        modelBuilder.Entity<Empresa>().HasRequired(e => e.ConfiguracionGeneral).WithRequiredPrincipal();
+        modelBuilder.Entity<Usuario>().HasMany(u => u.EmpresasPermitidas).WithMany();
+        modelBuilder.Entity<Solicitud>().HasRequired(u => u.Usuario).WithMany(s => s.Solicitudes).HasForeignKey(s => s.UsuarioId);
+
+        modelBuilder.ComplexType<CertificadoSat>();
+        modelBuilder.ComplexType<ConfiguracionContpaqiComercial>();
+        modelBuilder.ComplexType<ConfiguracionContpaqiContabilidad>();
+        modelBuilder.ComplexType<EmpresaContpaqi>();
     }
 }

@@ -8,70 +8,52 @@ using Core.Application.Common;
 using Infrastructure.Common;
 using Infrastructure.Persistance.Common;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Presentation.WpfApp.Config;
 using Presentation.WpfApp.ViewModels;
 
-namespace Presentation.WpfApp
+namespace Presentation.WpfApp;
+
+public class AppBootstrapper : BootstrapperBase
 {
-    public class AppBootstrapper : BootstrapperBase
+    private readonly IHost _host;
+
+    public AppBootstrapper()
     {
-        private IContainer _container;
-
-        public AppBootstrapper()
-        {
-            Initialize();
-        }
-
-        protected override void Configure()
-        {
-            var serviceCollection = new ServiceCollection();
-            serviceCollection.AddApplicationServices();
-            serviceCollection.AddInfrastructureServices();
-            serviceCollection.AddPersistenceServices();
-
-            var containerBuilder = new ContainerBuilder();
-            containerBuilder.Populate(serviceCollection);
-            containerBuilder.AddWpfAppServices();
-
-            _container = containerBuilder.Build();
-        }
-
-        protected override object GetInstance(Type service, string key)
-        {
-            object instance;
-
-            if (string.IsNullOrWhiteSpace(key))
+        _host = Host.CreateDefaultBuilder()
+            .UseServiceProviderFactory(new AutofacServiceProviderFactory())
+            .ConfigureServices((context, serviceCollection) =>
             {
-                if (_container.TryResolve(service, out instance))
-                {
-                    return instance;
-                }
-            }
-            else
-            {
-                if (_container.TryResolveNamed(key, service, out instance))
-                {
-                    return instance;
-                }
-            }
+                serviceCollection.AddApplicationServices();
+                serviceCollection.AddInfrastructureServices();
+                serviceCollection.AddPersistenceServices(context.Configuration);
+            })
+            .ConfigureContainer<ContainerBuilder>(containerBuilder => { containerBuilder.AddWpfAppServices(); })
+            .Build();
+        Initialize();
+    }
 
-            throw new Exception($"Could not locate any instances of contract {key ?? service.Name}.");
-        }
+    protected override object GetInstance(Type service, string key)
+    {
+        return _host.Services.GetService(service);
+    }
 
-        protected override IEnumerable<object> GetAllInstances(Type service)
-        {
-            return _container.Resolve(typeof(IEnumerable<>).MakeGenericType(service)) as IEnumerable<object>;
-        }
+    protected override IEnumerable<object> GetAllInstances(Type service)
+    {
+        return _host.Services.GetServices(service);
+    }
 
-        protected override void BuildUp(object instance)
-        {
-            _container.InjectProperties(instance);
-        }
+    // ReSharper disable once AsyncVoidMethod
+    protected override async void OnStartup(object sender, StartupEventArgs e)
+    {
+        await _host.StartAsync();
+        await DisplayRootViewForAsync<ShellViewModel>();
+    }
 
-        // ReSharper disable once AsyncVoidMethod
-        protected override async void OnStartup(object sender, StartupEventArgs e)
-        {
-            await DisplayRootViewForAsync<ShellViewModel>();
-        }
+    // ReSharper disable once AsyncVoidMethod
+    protected override async void OnExit(object sender, EventArgs e)
+    {
+        await _host.StopAsync();
+        base.OnExit(sender, e);
     }
 }

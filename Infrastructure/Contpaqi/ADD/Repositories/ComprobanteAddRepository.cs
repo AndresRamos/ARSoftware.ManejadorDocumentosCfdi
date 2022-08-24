@@ -1,25 +1,24 @@
 ﻿using System;
-using System.Data.Entity;
 using System.Threading;
 using System.Threading.Tasks;
-using Contpaqi.Sql.ADD.DocumentMetadata;
+using ARSoftware.Contpaqi.Add.Sql.Contexts;
 using Core.Application.Comprobantes.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
-namespace Infrastructure.Contpaqi.ADD.Repositories
+namespace Infrastructure.Contpaqi.ADD.Repositories;
+
+public class ComprobanteAddRepository : IComprobanteAddComercialRepository, IComprobanteAddContabilidadRepository
 {
-    public class ComprobanteAddRepository : IComprobanteAddComercialRepository, IComprobanteAddContabilidadRepository
+    private readonly ContpaqiAddDocumentMetadataDbContext _context;
+
+    public ComprobanteAddRepository(ContpaqiAddDocumentMetadataDbContext context)
     {
-        private readonly AddDocumentMetadataDbContext _context;
+        _context = context;
+    }
 
-        public ComprobanteAddRepository(AddDocumentMetadataDbContext context)
-        {
-            _context = context;
-        }
-
-        public async Task<bool> ExisteUuidAsync(Guid uuid, CancellationToken cancellationToken)
-        {
-            cancellationToken.ThrowIfCancellationRequested();
-            return await _context.Comprobante.AnyAsync(c => c.UUID == uuid, cancellationToken);
-        }
+    public async Task<bool> ExisteUuidAsync(Guid uuid, CancellationToken cancellationToken)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+        return await _context.Comprobante.AnyAsync(c => c.UUID == uuid, cancellationToken);
     }
 }

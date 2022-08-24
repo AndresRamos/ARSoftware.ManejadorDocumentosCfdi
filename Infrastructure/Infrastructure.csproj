@@ -1,81 +1,20 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
-  <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{72EA57DD-0FC1-4946-95DB-542F40CE9CFD}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Infrastructure</RootNamespace>
-    <AssemblyName>Infrastructure</AssemblyName>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <Deterministic>true</Deterministic>
-    <TargetFrameworkProfile />
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Data" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Common\ConfigureServices.cs" />
-    <Compile Include="Contpaqi\ADD\Factories\AddDocumentMetadataDbContextFactory.cs" />
-    <Compile Include="Contpaqi\ADD\Repositories\ComprobanteAddRepository.cs" />
-    <Compile Include="Contpaqi\Comercial\Factories\ComercialEmpresaDbContextFactory.cs" />
-    <Compile Include="Contpaqi\Comercial\Factories\ComercialGeneralesDbContextFactory.cs" />
-    <Compile Include="Contpaqi\Comercial\Repositories\EmpresaComercialRepository.cs" />
-    <Compile Include="Contpaqi\Comercial\Repositories\RfcComercialRepository.cs" />
-    <Compile Include="Contpaqi\Contabilidad\Factories\ContabilidadEmpresaDbContextFactory.cs" />
-    <Compile Include="Contpaqi\Contabilidad\Factories\ContabilidadGeneralesDbContextFactory.cs" />
-    <Compile Include="Contpaqi\Contabilidad\Repositories\EmpresaContabilidadRepository.cs" />
-    <Compile Include="Contpaqi\Contabilidad\Repositories\RfcContabilidadRepository.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="Contpaqi.Sql.ADD.DocumentMetadata">
-      <Version>1.0.1</Version>
-    </PackageReference>
-    <PackageReference Include="Contpaqi.Sql.Comercial.Empresa">
-      <Version>1.1.0</Version>
-    </PackageReference>
-    <PackageReference Include="Contpaqi.Sql.Comercial.Generales">
-      <Version>1.1.0</Version>
-    </PackageReference>
-    <PackageReference Include="Contpaqi.Sql.Contabilidad.Empresa">
-      <Version>1.0.4</Version>
-    </PackageReference>
-    <PackageReference Include="Contpaqi.Sql.Contabilidad.Generales">
-      <Version>1.0.4</Version>
-    </PackageReference>
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions">
-      <Version>6.0.0</Version>
-    </PackageReference>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Core.Application\Core.Application.csproj">
-      <Project>{7512d690-55fc-496d-a1c4-ed2cc05ff1d0}</Project>
-      <Name>Core.Application</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup />
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<OutputType>Library</OutputType>
+	</PropertyGroup>
+	<ItemGroup>
+		<PackageReference Include="ARSoftware.Contpaqi.Add.Sql" Version="2.0.0" />
+		<PackageReference Include="ARSoftware.Contpaqi.Comercial.Sql" Version="3.2.0" />
+		<PackageReference Include="ARSoftware.Contpaqi.Contabilidad.Sql" Version="2.1.0" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions">
+			<Version>6.0.0</Version>
+		</PackageReference>
+	</ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\Core.Application\Core.Application.csproj" />
+	</ItemGroup>
+	<ItemGroup>
+	  <Folder Include="Properties\" />
+	</ItemGroup>
 </Project>

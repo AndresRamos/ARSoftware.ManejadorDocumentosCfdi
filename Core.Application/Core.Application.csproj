@@ -1,220 +1,40 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
-  <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{7512D690-55FC-496D-A1C4-ED2CC05FF1D0}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Core.Application</RootNamespace>
-    <AssemblyName>Core.Application</AssemblyName>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <Deterministic>true</Deterministic>
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
-    <TargetFrameworkProfile />
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.IO.Compression" />
-    <Reference Include="System.IO.Compression.FileSystem" />
-    <Reference Include="System.Net" />
-    <Reference Include="System.Web" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
-    <Reference Include="WindowsBase" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Autenticacion\Queries\ValidarCredencialesUsuario\ValidarCredencialesUsuarioQuery.cs" />
-    <Compile Include="Autenticacion\Queries\ValidarCredencialesUsuario\ValidarCredencialesUsuarioQueryHandler.cs" />
-    <Compile Include="Cfdis\CfdiEncabezadoDto.cs" />
-    <Compile Include="Cfdis\ExtraerCfdi\ExtraerCfdiCommand.cs" />
-    <Compile Include="Cfdis\ExtraerCfdi\ExtraerCfdiCommandHandler.cs" />
-    <Compile Include="Cfdis\Queries\LeerEncabezadosCfdi\LeerEncabezadosCfdiQuery.cs" />
-    <Compile Include="Cfdis\Queries\LeerEncabezadosCfdi\LeerEncabezadosCfdiQueryHandler.cs" />
-    <Compile Include="Common\ConfiguracionAplicacion.cs" />
-    <Compile Include="Common\ConfigureServices.cs" />
-    <Compile Include="Comprobantes\Interfaces\IComprobanteAddComercialRepository.cs" />
-    <Compile Include="Comprobantes\Interfaces\IComprobanteAddContabilidadRepository.cs" />
-    <Compile Include="Comprobantes\Interfaces\IComprobanteAddRepository.cs" />
-    <Compile Include="ConfiguracionGeneral\Commands\ActualizarConfiguracionContpaqiComercial\ActualizarConfiguracionContpaqiComercialCommand.cs" />
-    <Compile Include="ConfiguracionGeneral\Commands\ActualizarConfiguracionContpaqiComercial\ActualizarConfiguracionContpaqiComercialCommandHandler.cs" />
-    <Compile Include="ConfiguracionGeneral\Commands\ActualizarConfiguracionContpaqiContabilidad\ActualizarConfiguracionContpaqiContabilidadCommand.cs" />
-    <Compile Include="ConfiguracionGeneral\Commands\ActualizarConfiguracionContpaqiContabilidad\ActualizarConfiguracionContpaqiContabilidadCommandHandler.cs" />
-    <Compile Include="ConfiguracionGeneral\Models\ConfiguracionContpaqiComercialDto.cs" />
-    <Compile Include="ConfiguracionGeneral\Models\ConfiguracionContpaqiContabilidadDto.cs" />
-    <Compile Include="Empresas\Commands\ActualizarEmpresaPerfil\ActualizarEmpresaPerfilCommand.cs" />
-    <Compile Include="Empresas\Commands\ActualizarEmpresaPerfil\ActualizarEmpresaPerfilCommandHandler.cs" />
-    <Compile Include="Empresas\Commands\CrearEmpresa\CrearEmpresaCommand.cs" />
-    <Compile Include="Empresas\Commands\CrearEmpresa\CrearEmpresaCommandHandler.cs" />
-    <Compile Include="Empresas\Commands\EliminarEmpresa\EliminarEmpresaCommand.cs" />
-    <Compile Include="Empresas\Commands\EliminarEmpresa\EliminarEmpresaCommandHandler.cs" />
-    <Compile Include="Empresas\Interfaces\IEmpresaComercialRepository.cs" />
-    <Compile Include="Empresas\Interfaces\IEmpresaContabilidadRepository.cs" />
-    <Compile Include="Empresas\Models\EmpresaContpaqiDto.cs" />
-    <Compile Include="Empresas\Models\EmpresaPerfilDto.cs" />
-    <Compile Include="Empresas\Queries\BuscarEmpresaPorId\BuscarEmpresaPorIdQuery.cs" />
-    <Compile Include="Empresas\Queries\BuscarEmpresaPorId\BuscarEmpresaPorIdQueryHandler.cs" />
-    <Compile Include="Empresas\Queries\BuscarEmpresaPorNombre\BuscarEmpresaPorNombreQuery.cs" />
-    <Compile Include="Empresas\Queries\BuscarEmpresaPorNombre\BuscarEmpresaPorNombreQueryHandler.cs" />
-    <Compile Include="Empresas\Queries\BuscarEmpresasComercial\BuscarEmpresasComercialQuery.cs" />
-    <Compile Include="Empresas\Queries\BuscarEmpresasComercial\BuscarEmpresasComercialQueryHandler.cs" />
-    <Compile Include="Empresas\Queries\BuscarEmpresasContabilidad\BuscarEmpresasContabilidadQuery.cs" />
-    <Compile Include="Empresas\Queries\BuscarEmpresasContabilidad\BuscarEmpresasContabilidadQueryHandler.cs" />
-    <Compile Include="Empresas\Queries\BuscarEmpresasPermitidasPorUsuario\BuscarEmpresasPermitidasPorUsuarioQuery.cs" />
-    <Compile Include="Empresas\Queries\BuscarEmpresasPermitidasPorUsuario\BuscarEmpresasPermitidasPorUsuarioQueryHandler.cs" />
-    <Compile Include="Empresas\Queries\BuscarEmpresas\BuscarEmpresasQuery.cs" />
-    <Compile Include="Empresas\Queries\BuscarEmpresas\BuscarEmpresasQueryHandler.cs" />
-    <Compile Include="Paquetes\Commands\ExportarArchivoZip\ExportarArchivoZipCommand.cs" />
-    <Compile Include="Paquetes\Commands\ExportarArchivoZip\ExportarArchivoZipCommandHandler.cs" />
-    <Compile Include="Paquetes\Models\PaqueteDto.cs" />
-    <Compile Include="Paquetes\Models\PaqueteIdDto.cs" />
-    <Compile Include="Permisos\Queries\BuscarPermisosAplicacion\BuscarPermisosAplicacionQuery.cs" />
-    <Compile Include="Permisos\Queries\BuscarPermisosAplicacion\BuscarPermisosAplicacionQueryHandler.cs" />
-    <Compile Include="Properties\Annotations.cs" />
-    <Compile Include="Rfcs\Interfaces\IRfcComercialRepository.cs" />
-    <Compile Include="Rfcs\Interfaces\IRfcContabilidadRepository.cs" />
-    <Compile Include="Rfcs\Models\RfcDto.cs" />
-    <Compile Include="Rfcs\Queries\BuscarRfcsComercial\BuscarRfcsComercialQuery.cs" />
-    <Compile Include="Rfcs\Queries\BuscarRfcsComercial\BuscarRfcsComercialQueryHandler.cs" />
-    <Compile Include="Rfcs\Queries\BuscarRfcsContabilidad\BuscarRfcsContabilidadQuery.cs" />
-    <Compile Include="Rfcs\Queries\BuscarRfcsContabilidad\BuscarRfcsContabilidadQueryHandler.cs" />
-    <Compile Include="Roles\Commands\ActualizarRol\ActualizarRolCommand.cs" />
-    <Compile Include="Roles\Commands\ActualizarRol\ActualizarRolCommandHandler.cs" />
-    <Compile Include="Roles\Commands\CrearRol\CrearRolCommand.cs" />
-    <Compile Include="Roles\Commands\CrearRol\CrearRolCommandHandler.cs" />
-    <Compile Include="Roles\Commands\EliminarRol\EliminarRolCommand.cs" />
-    <Compile Include="Roles\Commands\EliminarRol\EliminarRolCommandHandler.cs" />
-    <Compile Include="Roles\Models\RolDto.cs" />
-    <Compile Include="Roles\Queries\BuscarRoles\BuscarRolesQuery.cs" />
-    <Compile Include="Roles\Queries\BuscarRoles\BuscarRolesQueryHandler.cs" />
-    <Compile Include="Roles\Queries\BuscarRolPorId\BuscarRolPorIdQuery.cs" />
-    <Compile Include="Roles\Queries\BuscarRolPorId\BuscarRolPorIdQueryHandler.cs" />
-    <Compile Include="Solicitudes\Commands\CrearSolicitud\CrearSolicitudCommand.cs" />
-    <Compile Include="Solicitudes\Commands\CrearSolicitud\CrearSolicitudCommandHandler.cs" />
-    <Compile Include="Cfdis\Queries\ObtenerCertificado\ObtenerCertificadoQuery.cs" />
-    <Compile Include="Cfdis\Queries\ObtenerCertificado\ObtenerCertificadoQueryHandler.cs" />
-    <Compile Include="ConfiguracionGeneral\Commands\ActualizarCertificadoSat\ActualizarCertificadoSatCommand.cs" />
-    <Compile Include="ConfiguracionGeneral\Commands\ActualizarCertificadoSat\ActualizarCertificadoSatCommandHandler.cs" />
-    <Compile Include="ConfiguracionGeneral\Models\CertificadoSatDto.cs" />
-    <Compile Include="ConfiguracionGeneral\Models\ConfiguracionGeneralDto.cs" />
-    <Compile Include="ConfiguracionGeneral\Queries\BuscarConfiguracionGeneral\BuscarConfiguracionGeneralQuery.cs" />
-    <Compile Include="ConfiguracionGeneral\Queries\BuscarConfiguracionGeneral\BuscarConfiguracionGeneralQueryHandler.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Solicitudes\Commands\AutenticarSolicitud\AutenticarSolicitudCommand.cs" />
-    <Compile Include="Solicitudes\Commands\AutenticarSolicitud\AutenticarSolicitudCommandHandler.cs" />
-    <Compile Include="Solicitudes\Commands\CrearSolicitud\CrearSolicitudCommandValidator.cs" />
-    <Compile Include="Solicitudes\Commands\DescargarSolicitud\DescargarSolicitudCommand.cs" />
-    <Compile Include="Solicitudes\Commands\DescargarSolicitud\DescargarSolicitudCommandHandler.cs" />
-    <Compile Include="Solicitudes\Commands\GenerarSolicitud\GenerarSolicitudCommand.cs" />
-    <Compile Include="Solicitudes\Commands\GenerarSolicitud\GenerarSolicitudCommandHandler.cs" />
-    <Compile Include="Solicitudes\Commands\ProcesarSolicitud\ProcesarSolicitudCommand.cs" />
-    <Compile Include="Solicitudes\Commands\ProcesarSolicitud\ProcesarSolicitudCommandHandler.cs" />
-    <Compile Include="Solicitudes\Commands\VerificarSolicitud\VerificarSolicitudCommand.cs" />
-    <Compile Include="Solicitudes\Commands\VerificarSolicitud\VerificarSolicitudCommandHandler.cs" />
-    <Compile Include="Solicitudes\Models\CodigoEstadoSolicitudDto.cs" />
-    <Compile Include="Solicitudes\Models\CodigoEstatusSolicitudDto.cs" />
-    <Compile Include="Solicitudes\Models\EstadoSolicitudDto.cs" />
-    <Compile Include="Solicitudes\Models\SolicitudAutenticacionDto.cs" />
-    <Compile Include="Solicitudes\Models\SolicitudDescargaDto.cs" />
-    <Compile Include="Solicitudes\Models\SolicitudDto.cs" />
-    <Compile Include="Solicitudes\Models\SolicitudSolicitudDto.cs" />
-    <Compile Include="Solicitudes\Models\SolicitudVerificacionDto.cs" />
-    <Compile Include="Solicitudes\Queries\BuscarSolicitudesPorRangoFecha\BuscarSolicitudesPorRangoFechaQuery.cs" />
-    <Compile Include="Solicitudes\Queries\BuscarSolicitudesPorRangoFecha\BuscarSolicitudesPorRangoFechaQueryHandler.cs" />
-    <Compile Include="Solicitudes\Queries\BuscarSolicitudPorId\BuscarSolicitudPorIdQuery.cs" />
-    <Compile Include="Solicitudes\Queries\BuscarSolicitudPorId\BuscarSolicitudPorIdQueryHandler.cs" />
-    <Compile Include="TiposSolicitud\Models\TipoSolicitudDto.cs" />
-    <Compile Include="TiposSolicitud\Queries\BuscarTiposSolicitud\BuscarTiposSolicitudQuery.cs" />
-    <Compile Include="TiposSolicitud\Queries\BuscarTiposSolicitud\BuscarTiposSolicitudQueryHandler.cs" />
-    <Compile Include="Usuarios\Commands\ActualizarPerfilUsuario\ActualizarPerfilUsuarioCommand.cs" />
-    <Compile Include="Usuarios\Commands\ActualizarPerfilUsuario\ActualizarPerfilUsuarioCommandHandler.cs" />
-    <Compile Include="Usuarios\Commands\AgregarEmpresaPermitida\AgregarEmpresaPermitidaCommand.cs" />
-    <Compile Include="Usuarios\Commands\AgregarEmpresaPermitida\AgregarEmpresaPermitidaCommandHandler.cs" />
-    <Compile Include="Usuarios\Commands\AgregarRol\AgregarRolCommand.cs" />
-    <Compile Include="Usuarios\Commands\AgregarRol\AgregarRolCommandHandler.cs" />
-    <Compile Include="Usuarios\Commands\CambiarContrasena\CambiarContrasenaCommand.cs" />
-    <Compile Include="Usuarios\Commands\CambiarContrasena\CambiarContrasenaCommandHandler.cs" />
-    <Compile Include="Usuarios\Commands\CrearUsuarioAdministrador\CrearUsuarioAdministradorCommand.cs" />
-    <Compile Include="Usuarios\Commands\CrearUsuarioAdministrador\CrearUsuarioAdministradorCommandHandler.cs" />
-    <Compile Include="Usuarios\Commands\CrearUsuario\CrearUsuarioCommand.cs" />
-    <Compile Include="Usuarios\Commands\CrearUsuario\CrearUsuarioCommandHandler.cs" />
-    <Compile Include="Usuarios\Commands\RemoverEmpresaPermitida\RemoverEmpresaPermitidaCommand.cs" />
-    <Compile Include="Usuarios\Commands\RemoverEmpresaPermitida\RemoverEmpresaPermitidaCommandHandler.cs" />
-    <Compile Include="Usuarios\Commands\RemoverRol\RemoverRolCommand.cs" />
-    <Compile Include="Usuarios\Commands\RemoverRol\RemoverRolCommandHandler.cs" />
-    <Compile Include="Usuarios\Models\UsuarioDto.cs" />
-    <Compile Include="Usuarios\Queries\BuscarUsuarioPorId\BuscarUsuarioPorIdQuery.cs" />
-    <Compile Include="Usuarios\Queries\BuscarUsuarioPorId\BuscarUsuarioPorIdQueryHandler.cs" />
-    <Compile Include="Usuarios\Queries\BuscarUsuarios\BuscarUsuariosQuery.cs" />
-    <Compile Include="Usuarios\Queries\BuscarUsuarios\BuscarUsuariosQueryHandler.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Common\Common.csproj">
-      <Project>{a4122ec4-b420-4238-b5e3-ecb62bae86c3}</Project>
-      <Name>Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Core.Domain\Core.Domain.csproj">
-      <Project>{21a5d6dd-e68f-4cf7-b1f0-a66a47913ff5}</Project>
-      <Name>Core.Domain</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Infrastructure.Persistance\Infrastructure.Persistance.csproj">
-      <Project>{9d31259c-aa7a-46c5-88a6-25b2a3e97194}</Project>
-      <Name>Infrastructure.Persistance</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Permisos\Helpers\" />
-    <Folder Include="Permisos\Models\" />
-    <Folder Include="Solicitudes\Interfces\" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="ARSoftware.Cfdi.DescargaMasiva">
-      <Version>2.0.0-beta</Version>
-    </PackageReference>
-    <PackageReference Include="EntityFramework">
-      <Version>6.4.4</Version>
-    </PackageReference>
-    <PackageReference Include="FluentValidation">
-      <Version>11.2.0</Version>
-    </PackageReference>
-    <PackageReference Include="MediatR">
-      <Version>9.0.0</Version>
-    </PackageReference>
-    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection">
-      <Version>9.0.0</Version>
-    </PackageReference>
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions">
-      <Version>6.0.0</Version>
-    </PackageReference>
-    <PackageReference Include="NLog">
-      <Version>5.0.2</Version>
-    </PackageReference>
-    <PackageReference Include="System.ValueTuple">
-      <Version>4.5.0</Version>
-    </PackageReference>
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<OutputType>Library</OutputType>
+	</PropertyGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\Common\Common.csproj" />
+		<ProjectReference Include="..\Core.Domain\Core.Domain.csproj" />
+		<ProjectReference Include="..\Infrastructure.Persistance\Infrastructure.Persistance.csproj" />
+	</ItemGroup>
+	<ItemGroup>
+		<Folder Include="Permisos\Helpers\" />
+		<Folder Include="Permisos\Models\" />
+		<Folder Include="Solicitudes\Interfces\" />
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="ARSoftware.Cfdi.DescargaMasiva">
+			<Version>2.0.0-beta</Version>
+		</PackageReference>
+		<PackageReference Include="EntityFramework">
+			<Version>6.4.4</Version>
+		</PackageReference>
+		<PackageReference Include="FluentValidation">
+			<Version>11.2.0</Version>
+		</PackageReference>
+		<PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection">
+			<Version>10.0.1</Version>
+		</PackageReference>
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions">
+			<Version>6.0.0</Version>
+		</PackageReference>
+		<PackageReference Include="NLog">
+			<Version>5.0.2</Version>
+		</PackageReference>
+		<PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
+	</ItemGroup>
+	<ItemGroup>
+		<FrameworkReference Include="Microsoft.AspNetCore.App" />
+	</ItemGroup>
 </Project>

@@ -1,50 +1,55 @@
 ﻿using System.Collections.Generic;
-using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Contpaqi.Sql.Contabilidad.Empresa;
-using Contpaqi.Sql.Contabilidad.Generales;
+using ARSoftware.Contpaqi.Contabilidad.Sql.Contexts;
+using ARSoftware.Contpaqi.Contabilidad.Sql.Factories;
 using Core.Application.Empresas.Interfaces;
 using Core.Application.Empresas.Models;
-using Infrastructure.Contpaqi.Contabilidad.Factories;
+using Microsoft.EntityFrameworkCore;
 
-namespace Infrastructure.Contpaqi.Contabilidad.Repositories
+namespace Infrastructure.Contpaqi.Contabilidad.Repositories;
+
+public class EmpresaContabilidadRepository : IEmpresaContabilidadRepository
 {
-    public class EmpresaContabilidadRepository : IEmpresaContabilidadRepository
+    private readonly ContpaqiContabilidadGeneralesDbContext _context;
+
+    public EmpresaContabilidadRepository(ContpaqiContabilidadGeneralesDbContext context)
     {
-        private readonly ContabilidadGeneralesDbContext _context;
+        _context = context;
+    }
 
-        public EmpresaContabilidadRepository(ContabilidadGeneralesDbContext context)
+    public async Task<IEnumerable<EmpresaContpaqiDto>> BuscarEmpresasAsync()
+    {
+        var empresasContabilidad = await _context.ListaEmpresas.Select(e => new { e.Nombre, e.AliasBDD }).ToListAsync();
+
+        var empresasList = new List<EmpresaContpaqiDto>();
+
+        foreach (var empresaContabilidad in empresasContabilidad)
         {
-            _context = context;
-        }
+            string empresaConnectionString =
+                ContpaqiContabilidadSqlConnectionStringFactory.CreateContpaqiContabilidadEmpresaConnectionString(
+                    _context.Database.GetConnectionString(),
+                    new DirectoryInfo(empresaContabilidad.AliasBDD).Name);
 
-        public async Task<IEnumerable<EmpresaContpaqiDto>> BuscarEmpresasAsync()
-        {
-            var empresasContabilidad = await _context.ListaEmpresas.Select(e => new { e.Nombre, e.AliasBDD }).ToListAsync();
+            DbContextOptions<ContpaqiContabilidadEmpresaDbContext> empresaOptions =
+                new DbContextOptionsBuilder<ContpaqiContabilidadEmpresaDbContext>().UseSqlServer(empresaConnectionString).Options;
 
-            var empresasList = new List<EmpresaContpaqiDto>();
-
-            foreach (var empresaContabilidad in empresasContabilidad)
+            using (var contabilidadEmpresaDbContext = new ContpaqiContabilidadEmpresaDbContext(empresaOptions))
             {
-                using (ContabilidadEmpresaDbContext contabilidadEmpresaDbContext =
-                       ContabilidadEmpresaDbContextFactory.Crear(_context.Database.Connection.ConnectionString,
-                           empresaContabilidad.AliasBDD))
+                if (!await contabilidadEmpresaDbContext.Database.CanConnectAsync())
                 {
-                    if (!contabilidadEmpresaDbContext.Database.Exists())
-                    {
-                        continue;
-                    }
-
-                    string guidAddEmpresaContabilidad = await contabilidadEmpresaDbContext.Parametros.Select(p => p.GuidDSL).FirstAsync();
-
-                    empresasList.Add(new EmpresaContpaqiDto(empresaContabilidad.Nombre,
-                        empresaContabilidad.AliasBDD,
-                        guidAddEmpresaContabilidad));
+                    continue;
                 }
-            }
 
-            return empresasList;
+                string guidAddEmpresaContabilidad = await contabilidadEmpresaDbContext.Parametros.Select(p => p.GuidDSL).FirstAsync();
+
+                empresasList.Add(new EmpresaContpaqiDto(empresaContabilidad.Nombre,
+                    empresaContabilidad.AliasBDD,
+                    guidAddEmpresaContabilidad));
+            }
         }
+
+        return empresasList;
     }
 }
