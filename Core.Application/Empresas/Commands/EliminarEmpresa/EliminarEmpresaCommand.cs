@@ -1,14 +1,13 @@
 ﻿using MediatR;
 
-namespace Core.Application.Empresas.Commands.EliminarEmpresa
-{
-    public class EliminarEmpresaCommand : IRequest
-    {
-        public EliminarEmpresaCommand(int empresaId)
-        {
-            EmpresaId = empresaId;
-        }
+namespace Core.Application.Empresas.Commands.EliminarEmpresa;
 
-        public int EmpresaId { get; }
+public class EliminarEmpresaCommand : IRequest
+{
+    public EliminarEmpresaCommand(int empresaId)
+    {
+        EmpresaId = empresaId;
     }
+
+    public int EmpresaId { get; }
 }

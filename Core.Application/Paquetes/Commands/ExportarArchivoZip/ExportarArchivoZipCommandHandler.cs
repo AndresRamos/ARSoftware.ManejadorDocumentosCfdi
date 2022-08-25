@@ -7,29 +7,28 @@ using Infrastructure.Persistance;
 using MediatR;
 using NLog;
 
-namespace Core.Application.Paquetes.Commands.ExportarArchivoZip
+namespace Core.Application.Paquetes.Commands.ExportarArchivoZip;
+
+public class ExportarArchivoZipCommandHandler : IRequestHandler<ExportarArchivoZipCommand>
 {
-    public class ExportarArchivoZipCommandHandler : IRequestHandler<ExportarArchivoZipCommand>
+    private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+    private readonly ManejadorDocumentosCfdiDbContext _context;
+
+    public ExportarArchivoZipCommandHandler(ManejadorDocumentosCfdiDbContext context)
     {
-        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-        private readonly ManejadorDocumentosCfdiDbContext _context;
+        _context = context;
+    }
 
-        public ExportarArchivoZipCommandHandler(ManejadorDocumentosCfdiDbContext context)
+    public async Task<Unit> Handle(ExportarArchivoZipCommand request, CancellationToken cancellationToken)
+    {
+        Paquete paquete = await _context.Paquetes.SingleAsync(s => s.Id == request.PaquteId, cancellationToken);
+
+        Logger.Info("Creando archivo .zip");
+        using (FileStream fileStream = File.Create(request.FileName, paquete.Contenido.Length))
         {
-            _context = context;
+            fileStream.Write(paquete.Contenido, 0, paquete.Contenido.Length);
         }
 
-        public async Task<Unit> Handle(ExportarArchivoZipCommand request, CancellationToken cancellationToken)
-        {
-            Paquete paquete = await _context.Paquetes.SingleAsync(s => s.Id == request.PaquteId, cancellationToken);
-
-            Logger.Info("Creando archivo .zip");
-            using (FileStream fileStream = File.Create(request.FileName, paquete.Contenido.Length))
-            {
-                fileStream.Write(paquete.Contenido, 0, paquete.Contenido.Length);
-            }
-
-            return Unit.Value;
-        }
+        return Unit.Value;
     }
 }

@@ -1,10 +1,9 @@
-﻿namespace Presentation.WpfApp.Views.Roles
+﻿namespace Presentation.WpfApp.Views.Roles;
+
+public partial class SeleccionarRolView
 {
-    public partial class SeleccionarRolView
+    public SeleccionarRolView()
     {
-        public SeleccionarRolView()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

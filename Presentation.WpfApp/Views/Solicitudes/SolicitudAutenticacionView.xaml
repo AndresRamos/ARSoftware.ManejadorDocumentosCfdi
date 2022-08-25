@@ -171,6 +171,7 @@
                     <TextBlock Grid.Row="5"
                                Grid.Column="1"
                                Text="{Binding Solicitud.Autorizacion}"
+                               ToolTip="{Binding RelativeSource={RelativeSource Self}, Path=Text}"
                                VerticalAlignment="Center"
                                Margin="5" />
                     <Label Grid.Row="6"

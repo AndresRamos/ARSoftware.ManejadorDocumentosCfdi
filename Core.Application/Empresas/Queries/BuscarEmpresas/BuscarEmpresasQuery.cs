@@ -2,9 +2,8 @@
 using Core.Application.Empresas.Models;
 using MediatR;
 
-namespace Core.Application.Empresas.Queries.BuscarEmpresas
+namespace Core.Application.Empresas.Queries.BuscarEmpresas;
+
+public class BuscarEmpresasQuery : IRequest<IEnumerable<EmpresaPerfilDto>>
 {
-    public class BuscarEmpresasQuery : IRequest<IEnumerable<EmpresaPerfilDto>>
-    {
-    }
 }

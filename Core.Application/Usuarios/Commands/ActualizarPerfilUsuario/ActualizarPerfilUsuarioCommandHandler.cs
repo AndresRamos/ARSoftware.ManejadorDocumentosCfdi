@@ -6,31 +6,30 @@ using Core.Domain.Entities;
 using Infrastructure.Persistance;
 using MediatR;
 
-namespace Core.Application.Usuarios.Commands.ActualizarPerfilUsuario
+namespace Core.Application.Usuarios.Commands.ActualizarPerfilUsuario;
+
+public class ActualizarPerfilUsuarioCommandHandler : IRequestHandler<ActualizarPerfilUsuarioCommand, Unit>
 {
-    public class ActualizarPerfilUsuarioCommandHandler : IRequestHandler<ActualizarPerfilUsuarioCommand, Unit>
+    private readonly ManejadorDocumentosCfdiDbContext _context;
+
+    public ActualizarPerfilUsuarioCommandHandler(ManejadorDocumentosCfdiDbContext context)
     {
-        private readonly ManejadorDocumentosCfdiDbContext _context;
+        _context = context;
+    }
 
-        public ActualizarPerfilUsuarioCommandHandler(ManejadorDocumentosCfdiDbContext context)
+    public async Task<Unit> Handle(ActualizarPerfilUsuarioCommand request, CancellationToken cancellationToken)
+    {
+        Usuario usuario = await _context.Usuarios.SingleOrDefaultAsync(u => u.Id == request.UsuarioId, cancellationToken);
+
+        if (usuario is null)
         {
-            _context = context;
+            throw new Exception($"No se encontro el usuario con ID {request.UsuarioId}");
         }
 
-        public async Task<Unit> Handle(ActualizarPerfilUsuarioCommand request, CancellationToken cancellationToken)
-        {
-            Usuario usuario = await _context.Usuarios.SingleOrDefaultAsync(u => u.Id == request.UsuarioId, cancellationToken);
+        usuario.ActualizarPerfil(request.PrimerNombre, request.Apellido, request.Email, request.NombreUsuario);
 
-            if (usuario is null)
-            {
-                throw new Exception($"No se encontro el usuario con ID {request.UsuarioId}");
-            }
+        await _context.SaveChangesAsync(cancellationToken);
 
-            usuario.ActualizarPerfil(request.PrimerNombre, request.Apellido, request.Email, request.NombreUsuario);
-
-            await _context.SaveChangesAsync(cancellationToken);
-
-            return Unit.Value;
-        }
+        return Unit.Value;
     }
 }

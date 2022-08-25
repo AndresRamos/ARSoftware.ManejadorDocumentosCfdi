@@ -1,35 +1,34 @@
 ﻿using Caliburn.Micro;
 using Core.Application.Solicitudes.Models;
 
-namespace Presentation.WpfApp.ViewModels.Solicitudes
+namespace Presentation.WpfApp.ViewModels.Solicitudes;
+
+public sealed class SolicitudViewModel : Screen
 {
-    public sealed class SolicitudViewModel : Screen
+    private SolicitudDto _solicitud;
+
+    public SolicitudViewModel()
     {
-        private SolicitudDto _solicitud;
+        DisplayName = "Solicitud";
+    }
 
-        public SolicitudViewModel()
+    public SolicitudDto Solicitud
+    {
+        get => _solicitud;
+        private set
         {
-            DisplayName = "Solicitud";
-        }
-
-        public SolicitudDto Solicitud
-        {
-            get => _solicitud;
-            private set
+            if (Equals(value, _solicitud))
             {
-                if (Equals(value, _solicitud))
-                {
-                    return;
-                }
-
-                _solicitud = value;
-                NotifyOfPropertyChange(() => Solicitud);
+                return;
             }
-        }
 
-        public void Inicializar(SolicitudDto solicitud)
-        {
-            Solicitud = solicitud;
+            _solicitud = value;
+            NotifyOfPropertyChange(() => Solicitud);
         }
+    }
+
+    public void Inicializar(SolicitudDto solicitud)
+    {
+        Solicitud = solicitud;
     }
 }

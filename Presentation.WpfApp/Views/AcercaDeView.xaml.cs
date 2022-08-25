@@ -1,13 +1,12 @@
-﻿namespace Presentation.WpfApp.Views
+﻿namespace Presentation.WpfApp.Views;
+
+/// <summary>
+///     Interaction logic for AcercaDeView.xaml
+/// </summary>
+public partial class AcercaDeView
 {
-    /// <summary>
-    ///     Interaction logic for AcercaDeView.xaml
-    /// </summary>
-    public partial class AcercaDeView
+    public AcercaDeView()
     {
-        public AcercaDeView()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

@@ -2,9 +2,8 @@
 using Common.Models;
 using MediatR;
 
-namespace Core.Application.Permisos.Queries.BuscarPermisosAplicacion
+namespace Core.Application.Permisos.Queries.BuscarPermisosAplicacion;
+
+public class BuscarPermisosAplicacionQuery : IRequest<IEnumerable<PermisoAplicacionDto>>
 {
-    public class BuscarPermisosAplicacionQuery : IRequest<IEnumerable<PermisoAplicacionDto>>
-    {
-    }
 }

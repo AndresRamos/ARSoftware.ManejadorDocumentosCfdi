@@ -1,10 +1,9 @@
-﻿namespace Presentation.WpfApp.Views.Usuarios
+﻿namespace Presentation.WpfApp.Views.Usuarios;
+
+public partial class EditarUsuarioView
 {
-    public partial class EditarUsuarioView
+    public EditarUsuarioView()
     {
-        public EditarUsuarioView()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

@@ -1,10 +1,9 @@
-﻿namespace Presentation.WpfApp.Views.Empresas
+﻿namespace Presentation.WpfApp.Views.Empresas;
+
+public partial class ListaEmpresasView
 {
-    public partial class ListaEmpresasView
+    public ListaEmpresasView()
     {
-        public ListaEmpresasView()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

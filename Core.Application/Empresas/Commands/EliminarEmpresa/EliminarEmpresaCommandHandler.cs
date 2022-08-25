@@ -7,38 +7,37 @@ using Core.Domain.Entities;
 using Infrastructure.Persistance;
 using MediatR;
 
-namespace Core.Application.Empresas.Commands.EliminarEmpresa
+namespace Core.Application.Empresas.Commands.EliminarEmpresa;
+
+public class EliminarEmpresaCommandHandler : IRequestHandler<EliminarEmpresaCommand>
 {
-    public class EliminarEmpresaCommandHandler : IRequestHandler<EliminarEmpresaCommand>
+    private readonly ManejadorDocumentosCfdiDbContext _context;
+
+    public EliminarEmpresaCommandHandler(ManejadorDocumentosCfdiDbContext context)
     {
-        private readonly ManejadorDocumentosCfdiDbContext _context;
+        _context = context;
+    }
 
-        public EliminarEmpresaCommandHandler(ManejadorDocumentosCfdiDbContext context)
+    public async Task<Unit> Handle(EliminarEmpresaCommand request, CancellationToken cancellationToken)
+    {
+        Empresa empresa = await _context.Empresas.Include(e => e.ConfiguracionGeneral)
+            .Include(e => e.Solicitudes)
+            .SingleOrDefaultAsync(e => e.Id == request.EmpresaId, cancellationToken);
+
+        if (empresa is null)
         {
-            _context = context;
+            throw new ObjectNotFoundException($"No se encontro la empresa con id {request.EmpresaId}.");
         }
 
-        public async Task<Unit> Handle(EliminarEmpresaCommand request, CancellationToken cancellationToken)
+        if (!empresa.CanEliminar)
         {
-            Empresa empresa = await _context.Empresas.Include(e => e.ConfiguracionGeneral)
-                .Include(e => e.Solicitudes)
-                .SingleOrDefaultAsync(e => e.Id == request.EmpresaId, cancellationToken);
-
-            if (empresa is null)
-            {
-                throw new ObjectNotFoundException($"No se encontro la empresa con id {request.EmpresaId}.");
-            }
-
-            if (!empresa.CanEliminar)
-            {
-                throw new InvalidOperationException("No se puede eliminar la empresa.");
-            }
-
-            _context.Empresas.Remove(empresa);
-
-            await _context.SaveChangesAsync(cancellationToken);
-
-            return Unit.Value;
+            throw new InvalidOperationException("No se puede eliminar la empresa.");
         }
+
+        _context.Empresas.Remove(empresa);
+
+        await _context.SaveChangesAsync(cancellationToken);
+
+        return Unit.Value;
     }
 }

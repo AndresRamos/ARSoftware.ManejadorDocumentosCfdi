@@ -2,10 +2,9 @@
 using System.Threading.Tasks;
 using Core.Application.Empresas.Models;
 
-namespace Core.Application.Empresas.Interfaces
+namespace Core.Application.Empresas.Interfaces;
+
+public interface IEmpresaContabilidadRepository
 {
-    public interface IEmpresaContabilidadRepository
-    {
-        Task<IEnumerable<EmpresaContpaqiDto>> BuscarEmpresasAsync();
-    }
+    Task<IEnumerable<EmpresaContpaqiDto>> BuscarEmpresasAsync();
 }

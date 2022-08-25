@@ -10,35 +10,34 @@ using Core.Domain.Entities;
 using Infrastructure.Persistance;
 using MediatR;
 
-namespace Core.Application.Usuarios.Queries.BuscarUsuarioPorId
+namespace Core.Application.Usuarios.Queries.BuscarUsuarioPorId;
+
+public class BuscarUsuarioPorIdQueryHandler : IRequestHandler<BuscarUsuarioPorIdQuery, UsuarioDto>
 {
-    public class BuscarUsuarioPorIdQueryHandler : IRequestHandler<BuscarUsuarioPorIdQuery, UsuarioDto>
+    private readonly ManejadorDocumentosCfdiDbContext _context;
+
+    public BuscarUsuarioPorIdQueryHandler(ManejadorDocumentosCfdiDbContext context)
     {
-        private readonly ManejadorDocumentosCfdiDbContext _context;
+        _context = context;
+    }
 
-        public BuscarUsuarioPorIdQueryHandler(ManejadorDocumentosCfdiDbContext context)
+    public async Task<UsuarioDto> Handle(BuscarUsuarioPorIdQuery request, CancellationToken cancellationToken)
+    {
+        Usuario usuario = await _context.Usuarios.Include(r => r.Roles)
+            .SingleOrDefaultAsync(u => u.Id == request.UsuarioId, cancellationToken);
+
+        if (usuario == null)
         {
-            _context = context;
+            throw new ObjectNotFoundException($"No se encontro el usuario con el Id {request.UsuarioId}");
         }
 
-        public async Task<UsuarioDto> Handle(BuscarUsuarioPorIdQuery request, CancellationToken cancellationToken)
-        {
-            Usuario usuario = await _context.Usuarios.Include(r => r.Roles)
-                .SingleOrDefaultAsync(u => u.Id == request.UsuarioId, cancellationToken);
-
-            if (usuario == null)
-            {
-                throw new ObjectNotFoundException($"No se encontro el usuario con el Id {request.UsuarioId}");
-            }
-
-            return new UsuarioDto(usuario.Id,
-                usuario.PrimerNombre,
-                usuario.Apellido,
-                usuario.Email,
-                usuario.NombreUsuario,
-                usuario.PasswordHash,
-                usuario.PasswordSalt,
-                usuario.Roles.Select(r => new RolDto(r.Id, r.Nombre, r.Descripcion, r.Permisos.UnpackToPermisosDto())).ToList());
-        }
+        return new UsuarioDto(usuario.Id,
+            usuario.PrimerNombre,
+            usuario.Apellido,
+            usuario.Email,
+            usuario.NombreUsuario,
+            usuario.PasswordHash,
+            usuario.PasswordSalt,
+            usuario.Roles.Select(r => new RolDto(r.Id, r.Nombre, r.Descripcion, r.Permisos.UnpackToPermisosDto())).ToList());
     }
 }

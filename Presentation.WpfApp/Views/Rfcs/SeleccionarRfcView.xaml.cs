@@ -1,10 +1,9 @@
-﻿namespace Presentation.WpfApp.Views.Rfcs
+﻿namespace Presentation.WpfApp.Views.Rfcs;
+
+public partial class SeleccionarRfcView
 {
-    public partial class SeleccionarRfcView
+    public SeleccionarRfcView()
     {
-        public SeleccionarRfcView()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

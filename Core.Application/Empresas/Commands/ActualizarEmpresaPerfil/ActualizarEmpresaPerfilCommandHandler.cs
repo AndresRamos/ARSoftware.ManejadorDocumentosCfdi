@@ -6,31 +6,30 @@ using Core.Domain.Entities;
 using Infrastructure.Persistance;
 using MediatR;
 
-namespace Core.Application.Empresas.Commands.ActualizarEmpresaPerfil
+namespace Core.Application.Empresas.Commands.ActualizarEmpresaPerfil;
+
+public class ActualizarEmpresaPerfilCommandHandler : IRequestHandler<ActualizarEmpresaPerfilCommand>
 {
-    public class ActualizarEmpresaPerfilCommandHandler : IRequestHandler<ActualizarEmpresaPerfilCommand>
+    private readonly ManejadorDocumentosCfdiDbContext _context;
+
+    public ActualizarEmpresaPerfilCommandHandler(ManejadorDocumentosCfdiDbContext context)
     {
-        private readonly ManejadorDocumentosCfdiDbContext _context;
+        _context = context;
+    }
 
-        public ActualizarEmpresaPerfilCommandHandler(ManejadorDocumentosCfdiDbContext context)
+    public async Task<Unit> Handle(ActualizarEmpresaPerfilCommand request, CancellationToken cancellationToken)
+    {
+        Empresa empresa = await _context.Empresas.SingleOrDefaultAsync(e => e.Id == request.EmpresaId, cancellationToken);
+
+        if (empresa is null)
         {
-            _context = context;
+            throw new ObjectNotFoundException($"No se encontro la empresa con id {request.EmpresaId}.");
         }
 
-        public async Task<Unit> Handle(ActualizarEmpresaPerfilCommand request, CancellationToken cancellationToken)
-        {
-            Empresa empresa = await _context.Empresas.SingleOrDefaultAsync(e => e.Id == request.EmpresaId, cancellationToken);
+        empresa.SetNombre(request.Nombre);
 
-            if (empresa is null)
-            {
-                throw new ObjectNotFoundException($"No se encontro la empresa con id {request.EmpresaId}.");
-            }
+        await _context.SaveChangesAsync(cancellationToken);
 
-            empresa.SetNombre(request.Nombre);
-
-            await _context.SaveChangesAsync(cancellationToken);
-
-            return Unit.Value;
-        }
+        return Unit.Value;
     }
 }

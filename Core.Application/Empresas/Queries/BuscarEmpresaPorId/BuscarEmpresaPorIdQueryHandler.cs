@@ -7,27 +7,26 @@ using Core.Domain.Entities;
 using Infrastructure.Persistance;
 using MediatR;
 
-namespace Core.Application.Empresas.Queries.BuscarEmpresaPorId
+namespace Core.Application.Empresas.Queries.BuscarEmpresaPorId;
+
+public class BuscarEmpresaPorIdQueryHandler : IRequestHandler<BuscarEmpresaPorIdQuery, EmpresaPerfilDto>
 {
-    public class BuscarEmpresaPorIdQueryHandler : IRequestHandler<BuscarEmpresaPorIdQuery, EmpresaPerfilDto>
+    private readonly ManejadorDocumentosCfdiDbContext _context;
+
+    public BuscarEmpresaPorIdQueryHandler(ManejadorDocumentosCfdiDbContext context)
     {
-        private readonly ManejadorDocumentosCfdiDbContext _context;
+        _context = context;
+    }
 
-        public BuscarEmpresaPorIdQueryHandler(ManejadorDocumentosCfdiDbContext context)
+    public async Task<EmpresaPerfilDto> Handle(BuscarEmpresaPorIdQuery request, CancellationToken cancellationToken)
+    {
+        Empresa empresa = await _context.Empresas.SingleOrDefaultAsync(e => e.Id == request.EmpresaId, cancellationToken);
+
+        if (empresa is null)
         {
-            _context = context;
+            throw new ObjectNotFoundException($"No se encontro la empresa con id {request.EmpresaId}.");
         }
 
-        public async Task<EmpresaPerfilDto> Handle(BuscarEmpresaPorIdQuery request, CancellationToken cancellationToken)
-        {
-            Empresa empresa = await _context.Empresas.SingleOrDefaultAsync(e => e.Id == request.EmpresaId, cancellationToken);
-
-            if (empresa is null)
-            {
-                throw new ObjectNotFoundException($"No se encontro la empresa con id {request.EmpresaId}.");
-            }
-
-            return new EmpresaPerfilDto { Id = empresa.Id, Nombre = empresa.Nombre };
-        }
+        return new EmpresaPerfilDto { Id = empresa.Id, Nombre = empresa.Nombre };
     }
 }

@@ -1,8 +1,7 @@
-﻿namespace Presentation.ConsoleApp.Models
+﻿namespace Presentation.ConsoleApp.Models;
+
+public enum TipoSolicitudEnum
 {
-    public enum TipoSolicitudEnum
-    {
-        Recibidos,
-        Emitidos
-    }
+    Recibidos,
+    Emitidos
 }

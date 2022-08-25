@@ -1,10 +1,9 @@
-﻿namespace Presentation.WpfApp.Views
+﻿namespace Presentation.WpfApp.Views;
+
+public partial class ShellView
 {
-    public partial class ShellView
+    public ShellView()
     {
-        public ShellView()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

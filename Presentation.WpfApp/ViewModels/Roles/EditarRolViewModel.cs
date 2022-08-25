@@ -13,170 +13,168 @@ using MahApps.Metro.Controls.Dialogs;
 using MediatR;
 using Presentation.WpfApp.ViewModels.Permisos;
 
-namespace Presentation.WpfApp.ViewModels.Roles
+namespace Presentation.WpfApp.ViewModels.Roles;
+
+public sealed class EditarRolViewModel : Screen
 {
-    public sealed class EditarRolViewModel : Screen
+    private readonly IDialogCoordinator _dialogCoordinator;
+    private readonly IMediator _mediator;
+    private readonly IWindowManager _windowManager;
+    private string _descripcion;
+    private int _id;
+    private string _nombre;
+    private PermisoAplicacionDto _permisoAplicacionSeleccionado;
+
+    public EditarRolViewModel(IMediator mediator, IWindowManager windowManager, IDialogCoordinator dialogCoordinator)
     {
-        private readonly IDialogCoordinator _dialogCoordinator;
-        private readonly IMediator _mediator;
-        private readonly IWindowManager _windowManager;
-        private string _descripcion;
-        private int _id;
-        private string _nombre;
-        private PermisoAplicacionDto _permisoAplicacionSeleccionado;
+        _mediator = mediator;
+        _windowManager = windowManager;
+        _dialogCoordinator = dialogCoordinator;
+        DisplayName = "Editar Rol";
+    }
 
-        public EditarRolViewModel(IMediator mediator, IWindowManager windowManager, IDialogCoordinator dialogCoordinator)
+    public int Id
+    {
+        get => _id;
+        set
         {
-            _mediator = mediator;
-            _windowManager = windowManager;
-            _dialogCoordinator = dialogCoordinator;
-            DisplayName = "Editar Rol";
-        }
-
-        public int Id
-        {
-            get => _id;
-            set
+            if (value == _id)
             {
-                if (value == _id)
-                {
-                    return;
-                }
-
-                _id = value;
-                NotifyOfPropertyChange(() => Id);
+                return;
             }
+
+            _id = value;
+            NotifyOfPropertyChange(() => Id);
         }
+    }
 
-        public string Nombre
+    public string Nombre
+    {
+        get => _nombre;
+        set
         {
-            get => _nombre;
-            set
+            if (value == _nombre)
             {
-                if (value == _nombre)
-                {
-                    return;
-                }
-
-                _nombre = value;
-                NotifyOfPropertyChange(() => Nombre);
+                return;
             }
+
+            _nombre = value;
+            NotifyOfPropertyChange(() => Nombre);
         }
+    }
 
-        public string Descripcion
+    public string Descripcion
+    {
+        get => _descripcion;
+        set
         {
-            get => _descripcion;
-            set
+            if (value == _descripcion)
             {
-                if (value == _descripcion)
-                {
-                    return;
-                }
-
-                _descripcion = value;
-                NotifyOfPropertyChange(() => Descripcion);
+                return;
             }
+
+            _descripcion = value;
+            NotifyOfPropertyChange(() => Descripcion);
         }
+    }
 
-        public BindableCollection<PermisoAplicacionDto> Permisos { get; } = new BindableCollection<PermisoAplicacionDto>();
+    public BindableCollection<PermisoAplicacionDto> Permisos { get; } = new();
 
-        public PermisoAplicacionDto PermisoAplicacionSeleccionado
+    public PermisoAplicacionDto PermisoAplicacionSeleccionado
+    {
+        get => _permisoAplicacionSeleccionado;
+        set
         {
-            get => _permisoAplicacionSeleccionado;
-            set
+            if (Equals(value, _permisoAplicacionSeleccionado))
             {
-                if (Equals(value, _permisoAplicacionSeleccionado))
-                {
-                    return;
-                }
-
-                _permisoAplicacionSeleccionado = value;
-                NotifyOfPropertyChange(() => PermisoAplicacionSeleccionado);
-                RaiseGuards();
+                return;
             }
+
+            _permisoAplicacionSeleccionado = value;
+            NotifyOfPropertyChange(() => PermisoAplicacionSeleccionado);
+            RaiseGuards();
         }
+    }
 
-        public bool CanRemoverPermisoAsync => PermisoAplicacionSeleccionado != null;
+    public bool CanRemoverPermisoAsync => PermisoAplicacionSeleccionado != null;
 
-        public async Task InicializarAsync(int? rolId)
+    public async Task InicializarAsync(int? rolId)
+    {
+        if (rolId == null)
         {
-            if (rolId == null)
+            Permisos.Clear();
+        }
+        else
+        {
+            RolDto rol = await _mediator.Send(new BuscarRolPorIdQuery(rolId.Value));
+            Id = rol.Id;
+            Nombre = rol.Nombre;
+            Descripcion = rol.Descripcion;
+            Permisos.Clear();
+            Permisos.AddRange(rol.Permisos);
+        }
+    }
+
+    public async Task GuardarAsync()
+    {
+        try
+        {
+            if (Id == 0)
             {
-                Permisos.Clear();
+                await _mediator.Send(new CrearRolCommand(Nombre, Descripcion, Permisos));
             }
             else
             {
-                RolDto rol = await _mediator.Send(new BuscarRolPorIdQuery(rolId.Value));
-                Id = rol.Id;
-                Nombre = rol.Nombre;
-                Descripcion = rol.Descripcion;
-                Permisos.Clear();
-                Permisos.AddRange(rol.Permisos);
+                await _mediator.Send(new ActualizarRolCommand(Id, Nombre, Descripcion, Permisos));
             }
-        }
 
-        public async Task GuardarAsync()
+            await _dialogCoordinator.ShowMessageAsync(this, "Rol Guardado", "Rol guardado exitosamente.");
+        }
+        catch (Exception e)
         {
-            try
-            {
-                if (Id == 0)
-                {
-                    await _mediator.Send(new CrearRolCommand(Nombre, Descripcion, Permisos));
-                }
-                else
-                {
-                    await _mediator.Send(new ActualizarRolCommand(Id, Nombre, Descripcion, Permisos));
-                }
-
-                await _dialogCoordinator.ShowMessageAsync(this, "Rol Guardado", "Rol guardado exitosamente.");
-            }
-            catch (Exception e)
-            {
-                await _dialogCoordinator.ShowMessageAsync(this, "Error", e.ToString());
-            }
+            await _dialogCoordinator.ShowMessageAsync(this, "Error", e.ToString());
         }
+    }
 
-        public async Task Cancelar()
+    public async Task Cancelar()
+    {
+        await TryCloseAsync();
+    }
+
+    public async Task AgregarPermisoAsync()
+    {
+        try
         {
-            await TryCloseAsync();
+            IEnumerable<PermisoAplicacionDto> permisosAplicacion = await _mediator.Send(new BuscarPermisosAplicacionQuery());
+            List<PermisoAplicacionDto> permisosUnicos = permisosAplicacion.Where(pa => Permisos.All(p => p.Nombre != pa.Nombre)).ToList();
+            var viewModel = IoC.Get<SeleccionarPermisoAplicacionViewModel>();
+            viewModel.Inicializar(permisosUnicos);
+            await _windowManager.ShowDialogAsync(viewModel);
+            if (viewModel.SeleccionoPermiso)
+            {
+                Permisos.Add(viewModel.PermisoAplicacionSeleccionado);
+            }
         }
-
-        public async Task AgregarPermisoAsync()
+        catch (Exception e)
         {
-            try
-            {
-                IEnumerable<PermisoAplicacionDto> permisosAplicacion = await _mediator.Send(new BuscarPermisosAplicacionQuery());
-                List<PermisoAplicacionDto> permisosUnicos =
-                    permisosAplicacion.Where(pa => Permisos.All(p => p.Nombre != pa.Nombre)).ToList();
-                var viewModel = IoC.Get<SeleccionarPermisoAplicacionViewModel>();
-                viewModel.Inicializar(permisosUnicos);
-                await _windowManager.ShowDialogAsync(viewModel);
-                if (viewModel.SeleccionoPermiso)
-                {
-                    Permisos.Add(viewModel.PermisoAplicacionSeleccionado);
-                }
-            }
-            catch (Exception e)
-            {
-                await _dialogCoordinator.ShowMessageAsync(this, "Error", e.ToString());
-            }
+            await _dialogCoordinator.ShowMessageAsync(this, "Error", e.ToString());
         }
+    }
 
-        public async Task RemoverPermisoAsync()
+    public async Task RemoverPermisoAsync()
+    {
+        try
         {
-            try
-            {
-                Permisos.Remove(PermisoAplicacionSeleccionado);
-            }
-            catch (Exception e)
-            {
-                await _dialogCoordinator.ShowMessageAsync(this, "Error", e.ToString());
-            }
+            Permisos.Remove(PermisoAplicacionSeleccionado);
         }
+        catch (Exception e)
+        {
+            await _dialogCoordinator.ShowMessageAsync(this, "Error", e.ToString());
+        }
+    }
 
-        private void RaiseGuards()
-        {
-            NotifyOfPropertyChange(() => CanRemoverPermisoAsync);
-        }
+    private void RaiseGuards()
+    {
+        NotifyOfPropertyChange(() => CanRemoverPermisoAsync);
     }
 }

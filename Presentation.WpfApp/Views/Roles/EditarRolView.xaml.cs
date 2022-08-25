@@ -1,10 +1,9 @@
-﻿namespace Presentation.WpfApp.Views.Roles
+﻿namespace Presentation.WpfApp.Views.Roles;
+
+public partial class EditarRolView
 {
-    public partial class EditarRolView
+    public EditarRolView()
     {
-        public EditarRolView()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

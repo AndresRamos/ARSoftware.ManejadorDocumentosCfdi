@@ -8,46 +8,45 @@ using Core.Domain.Entities;
 using Infrastructure.Persistance;
 using MediatR;
 
-namespace Core.Application.Solicitudes.Commands.CrearSolicitud
+namespace Core.Application.Solicitudes.Commands.CrearSolicitud;
+
+public class CrearSolicitudCommandHandler : IRequestHandler<CrearSolicitudCommand, int>
 {
-    public class CrearSolicitudCommandHandler : IRequestHandler<CrearSolicitudCommand, int>
+    private readonly ManejadorDocumentosCfdiDbContext _context;
+
+    public CrearSolicitudCommandHandler(ManejadorDocumentosCfdiDbContext context)
     {
-        private readonly ManejadorDocumentosCfdiDbContext _context;
+        _context = context;
+    }
 
-        public CrearSolicitudCommandHandler(ManejadorDocumentosCfdiDbContext context)
+    public async Task<int> Handle(CrearSolicitudCommand request, CancellationToken cancellationToken)
+    {
+        Usuario usuario = await _context.Usuarios.Include(u => u.Roles)
+            .SingleOrDefaultAsync(u => u.Id == request.UsuarioId, cancellationToken);
+
+        if (usuario is null)
         {
-            _context = context;
+            throw new ObjectNotFoundException("No se encontro el usuario.");
         }
 
-        public async Task<int> Handle(CrearSolicitudCommand request, CancellationToken cancellationToken)
+        if (!usuario.TienePermiso(PermisosAplicacion.PuedeCrearSolicitud))
         {
-            Usuario usuario = await _context.Usuarios.Include(u => u.Roles)
-                .SingleOrDefaultAsync(u => u.Id == request.UsuarioId, cancellationToken);
-
-            if (usuario is null)
-            {
-                throw new ObjectNotFoundException("No se encontro el usuario.");
-            }
-
-            if (!usuario.TienePermiso(PermisosAplicacion.PuedeCrearSolicitud))
-            {
-                throw new InvalidOperationException("El usuario no tiene permiso de crear solicitudes.");
-            }
-
-            var nuevaSolicitud = Solicitud.CreateNew(request.EmpresaId,
-                request.UsuarioId,
-                request.FechaInicio,
-                request.FechaFin,
-                request.RfcEmisor,
-                request.RfcReceptor,
-                request.RfcSolicitante,
-                request.TipoSolicitud);
-
-            _context.Entry(nuevaSolicitud).State = EntityState.Added;
-
-            await _context.SaveChangesAsync(cancellationToken);
-
-            return nuevaSolicitud.Id;
+            throw new InvalidOperationException("El usuario no tiene permiso de crear solicitudes.");
         }
+
+        var nuevaSolicitud = Solicitud.CreateNew(request.EmpresaId,
+            request.UsuarioId,
+            request.FechaInicio,
+            request.FechaFin,
+            request.RfcEmisor,
+            request.RfcReceptor,
+            request.RfcSolicitante,
+            request.TipoSolicitud);
+
+        _context.Entry(nuevaSolicitud).State = EntityState.Added;
+
+        await _context.SaveChangesAsync(cancellationToken);
+
+        return nuevaSolicitud.Id;
     }
 }

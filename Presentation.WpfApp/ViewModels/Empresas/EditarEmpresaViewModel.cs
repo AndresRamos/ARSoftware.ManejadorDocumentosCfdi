@@ -8,75 +8,74 @@ using Core.Application.Empresas.Queries.BuscarEmpresaPorId;
 using MahApps.Metro.Controls.Dialogs;
 using MediatR;
 
-namespace Presentation.WpfApp.ViewModels.Empresas
+namespace Presentation.WpfApp.ViewModels.Empresas;
+
+public sealed class EditarEmpresaViewModel : Screen
 {
-    public sealed class EditarEmpresaViewModel : Screen
+    private readonly IDialogCoordinator _dialogCoordinator;
+    private readonly IMediator _mediator;
+    private string _nombre;
+
+    public EditarEmpresaViewModel(IMediator mediator, IDialogCoordinator dialogCoordinator)
     {
-        private readonly IDialogCoordinator _dialogCoordinator;
-        private readonly IMediator _mediator;
-        private string _nombre;
+        _mediator = mediator;
+        _dialogCoordinator = dialogCoordinator;
+        DisplayName = "Editar Empresa";
+    }
 
-        public EditarEmpresaViewModel(IMediator mediator, IDialogCoordinator dialogCoordinator)
+    public int? EmpresaId { get; private set; }
+
+    public string Nombre
+    {
+        get => _nombre;
+        set
         {
-            _mediator = mediator;
-            _dialogCoordinator = dialogCoordinator;
-            DisplayName = "Editar Empresa";
-        }
-
-        public int? EmpresaId { get; private set; }
-
-        public string Nombre
-        {
-            get => _nombre;
-            set
+            if (_nombre == value)
             {
-                if (_nombre == value)
-                {
-                    return;
-                }
-
-                _nombre = value;
-                NotifyOfPropertyChange(() => Nombre);
+                return;
             }
-        }
 
-        public async Task InicializarAsync(int? id)
+            _nombre = value;
+            NotifyOfPropertyChange(() => Nombre);
+        }
+    }
+
+    public async Task InicializarAsync(int? id)
+    {
+        if (id == null)
         {
-            if (id == null)
+        }
+        else
+        {
+            EmpresaPerfilDto empresa = await _mediator.Send(new BuscarEmpresaPorIdQuery(id.Value));
+            EmpresaId = empresa.Id;
+            Nombre = empresa.Nombre;
+        }
+    }
+
+    public async Task GuardarAsync()
+    {
+        try
+        {
+            if (EmpresaId == null)
             {
+                EmpresaId = await _mediator.Send(new CrearEmpresaCommand(Nombre));
             }
             else
             {
-                EmpresaPerfilDto empresa = await _mediator.Send(new BuscarEmpresaPorIdQuery(id.Value));
-                EmpresaId = empresa.Id;
-                Nombre = empresa.Nombre;
+                await _mediator.Send(new ActualizarEmpresaPerfilCommand(EmpresaId.Value, Nombre));
             }
-        }
 
-        public async Task GuardarAsync()
+            await _dialogCoordinator.ShowMessageAsync(this, "Empresa Guardada", "La empresa se guardo exitosamente.");
+        }
+        catch (Exception e)
         {
-            try
-            {
-                if (EmpresaId == null)
-                {
-                    EmpresaId = await _mediator.Send(new CrearEmpresaCommand(Nombre));
-                }
-                else
-                {
-                    await _mediator.Send(new ActualizarEmpresaPerfilCommand(EmpresaId.Value, Nombre));
-                }
-
-                await _dialogCoordinator.ShowMessageAsync(this, "Empresa Guardada", "La empresa se guardo exitosamente.");
-            }
-            catch (Exception e)
-            {
-                await _dialogCoordinator.ShowMessageAsync(this, "Error", e.ToString());
-            }
+            await _dialogCoordinator.ShowMessageAsync(this, "Error", e.ToString());
         }
+    }
 
-        public async Task CancelarAsync()
-        {
-            await TryCloseAsync();
-        }
+    public async Task CancelarAsync()
+    {
+        await TryCloseAsync();
     }
 }

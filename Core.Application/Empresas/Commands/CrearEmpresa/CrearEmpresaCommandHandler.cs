@@ -4,26 +4,25 @@ using Core.Domain.Entities;
 using Infrastructure.Persistance;
 using MediatR;
 
-namespace Core.Application.Empresas.Commands.CrearEmpresa
+namespace Core.Application.Empresas.Commands.CrearEmpresa;
+
+public class CrearEmpresaCommandHandler : IRequestHandler<CrearEmpresaCommand, int>
 {
-    public class CrearEmpresaCommandHandler : IRequestHandler<CrearEmpresaCommand, int>
+    private readonly ManejadorDocumentosCfdiDbContext _context;
+
+    public CrearEmpresaCommandHandler(ManejadorDocumentosCfdiDbContext context)
     {
-        private readonly ManejadorDocumentosCfdiDbContext _context;
+        _context = context;
+    }
 
-        public CrearEmpresaCommandHandler(ManejadorDocumentosCfdiDbContext context)
-        {
-            _context = context;
-        }
+    public async Task<int> Handle(CrearEmpresaCommand request, CancellationToken cancellationToken)
+    {
+        var empresa = Empresa.CreateInstance(request.Nombre);
 
-        public async Task<int> Handle(CrearEmpresaCommand request, CancellationToken cancellationToken)
-        {
-            var empresa = Empresa.CreateInstance(request.Nombre);
+        _context.Empresas.Add(empresa);
 
-            _context.Empresas.Add(empresa);
+        await _context.SaveChangesAsync(cancellationToken);
 
-            await _context.SaveChangesAsync(cancellationToken);
-
-            return empresa.Id;
-        }
+        return empresa.Id;
     }
 }

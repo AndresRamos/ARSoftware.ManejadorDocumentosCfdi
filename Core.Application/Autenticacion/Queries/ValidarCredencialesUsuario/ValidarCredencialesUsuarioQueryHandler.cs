@@ -12,41 +12,40 @@ using Core.Domain.Entities;
 using Infrastructure.Persistance;
 using MediatR;
 
-namespace Core.Application.Autenticacion.Queries.ValidarCredencialesUsuario
+namespace Core.Application.Autenticacion.Queries.ValidarCredencialesUsuario;
+
+public class ValidarCredencialesUsuarioQueryHandler : IRequestHandler<ValidarCredencialesUsuarioQuery, UsuarioDto>
 {
-    public class ValidarCredencialesUsuarioQueryHandler : IRequestHandler<ValidarCredencialesUsuarioQuery, UsuarioDto>
+    private readonly ManejadorDocumentosCfdiDbContext _context;
+
+    public ValidarCredencialesUsuarioQueryHandler(ManejadorDocumentosCfdiDbContext context)
     {
-        private readonly ManejadorDocumentosCfdiDbContext _context;
+        _context = context;
+    }
 
-        public ValidarCredencialesUsuarioQueryHandler(ManejadorDocumentosCfdiDbContext context)
+    public async Task<UsuarioDto> Handle(ValidarCredencialesUsuarioQuery request, CancellationToken cancellationToken)
+    {
+        Usuario usuario = await _context.Usuarios.Include(u => u.Roles)
+            .SingleOrDefaultAsync(u => u.NombreUsuario == request.NombreUsuario, cancellationToken);
+        if (usuario == null)
         {
-            _context = context;
+            throw new ObjectNotFoundException($"No se encontro un usuario con el nombre de usaurio {request.NombreUsuario}.");
         }
 
-        public async Task<UsuarioDto> Handle(ValidarCredencialesUsuarioQuery request, CancellationToken cancellationToken)
+        if (PasswordHasher.Validate(request.Contrasena,
+                Convert.FromBase64String(usuario.PasswordHash),
+                Convert.FromBase64String(usuario.PasswordSalt)))
         {
-            Usuario usuario = await _context.Usuarios.Include(u => u.Roles)
-                .SingleOrDefaultAsync(u => u.NombreUsuario == request.NombreUsuario, cancellationToken);
-            if (usuario == null)
-            {
-                throw new ObjectNotFoundException($"No se encontro un usuario con el nombre de usaurio {request.NombreUsuario}.");
-            }
-
-            if (PasswordHasher.Validate(request.Contrasena,
-                    Convert.FromBase64String(usuario.PasswordHash),
-                    Convert.FromBase64String(usuario.PasswordSalt)))
-            {
-                return new UsuarioDto(usuario.Id,
-                    usuario.PrimerNombre,
-                    usuario.Apellido,
-                    usuario.Email,
-                    usuario.NombreUsuario,
-                    usuario.PasswordHash,
-                    usuario.PasswordSalt,
-                    usuario.Roles.Select(r => new RolDto(r.Id, r.Nombre, r.Descripcion, r.Permisos.UnpackToPermisosDto())).ToList());
-            }
-
-            return null;
+            return new UsuarioDto(usuario.Id,
+                usuario.PrimerNombre,
+                usuario.Apellido,
+                usuario.Email,
+                usuario.NombreUsuario,
+                usuario.PasswordHash,
+                usuario.PasswordSalt,
+                usuario.Roles.Select(r => new RolDto(r.Id, r.Nombre, r.Descripcion, r.Permisos.UnpackToPermisosDto())).ToList());
         }
+
+        return null;
     }
 }

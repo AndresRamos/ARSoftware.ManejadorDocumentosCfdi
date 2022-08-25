@@ -1,14 +1,13 @@
 ﻿using MediatR;
 
-namespace Core.Application.Roles.Commands.EliminarRol
-{
-    public class EliminarRolCommand : IRequest
-    {
-        public EliminarRolCommand(int rolId)
-        {
-            RolId = rolId;
-        }
+namespace Core.Application.Roles.Commands.EliminarRol;
 
-        public int RolId { get; }
+public class EliminarRolCommand : IRequest
+{
+    public EliminarRolCommand(int rolId)
+    {
+        RolId = rolId;
     }
+
+    public int RolId { get; }
 }

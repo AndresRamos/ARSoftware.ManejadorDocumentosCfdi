@@ -1,14 +1,13 @@
 ﻿using MediatR;
 
-namespace Core.Application.Solicitudes.Commands.DescargarSolicitud
-{
-    public class DescargarSolicitudCommand : IRequest
-    {
-        public DescargarSolicitudCommand(int solicitudId)
-        {
-            SolicitudId = solicitudId;
-        }
+namespace Core.Application.Solicitudes.Commands.DescargarSolicitud;
 
-        public int SolicitudId { get; }
+public class DescargarSolicitudCommand : IRequest
+{
+    public DescargarSolicitudCommand(int solicitudId)
+    {
+        SolicitudId = solicitudId;
     }
+
+    public int SolicitudId { get; }
 }

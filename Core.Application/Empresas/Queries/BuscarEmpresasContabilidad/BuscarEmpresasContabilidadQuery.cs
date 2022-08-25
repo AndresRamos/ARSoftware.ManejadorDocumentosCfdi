@@ -2,9 +2,8 @@
 using Core.Application.Empresas.Models;
 using MediatR;
 
-namespace Core.Application.Empresas.Queries.BuscarEmpresasContabilidad
+namespace Core.Application.Empresas.Queries.BuscarEmpresasContabilidad;
+
+public class BuscarEmpresasContabilidadQuery : IRequest<IEnumerable<EmpresaContpaqiDto>>
 {
-    public class BuscarEmpresasContabilidadQuery : IRequest<IEnumerable<EmpresaContpaqiDto>>
-    {
-    }
 }

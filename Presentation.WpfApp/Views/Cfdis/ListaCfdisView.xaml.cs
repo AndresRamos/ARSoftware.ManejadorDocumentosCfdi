@@ -1,13 +1,12 @@
-﻿namespace Presentation.WpfApp.Views.Cfdis
+﻿namespace Presentation.WpfApp.Views.Cfdis;
+
+/// <summary>
+///     Interaction logic for ListaCfdisView.xaml
+/// </summary>
+public partial class ListaCfdisView
 {
-    /// <summary>
-    ///     Interaction logic for ListaCfdisView.xaml
-    /// </summary>
-    public partial class ListaCfdisView
+    public ListaCfdisView()
     {
-        public ListaCfdisView()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

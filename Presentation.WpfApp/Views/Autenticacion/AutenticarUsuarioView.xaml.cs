@@ -1,13 +1,12 @@
-﻿namespace Presentation.WpfApp.Views.Autenticacion
+﻿namespace Presentation.WpfApp.Views.Autenticacion;
+
+/// <summary>
+///     Interaction logic for AutenticarUsuarioView.xaml
+/// </summary>
+public partial class AutenticarUsuarioView
 {
-    /// <summary>
-    ///     Interaction logic for AutenticarUsuarioView.xaml
-    /// </summary>
-    public partial class AutenticarUsuarioView
+    public AutenticarUsuarioView()
     {
-        public AutenticarUsuarioView()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

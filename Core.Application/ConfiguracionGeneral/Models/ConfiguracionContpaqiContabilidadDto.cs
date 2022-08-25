@@ -3,55 +3,54 @@ using System.Runtime.CompilerServices;
 using Core.Application.Annotations;
 using Core.Application.Empresas.Models;
 
-namespace Core.Application.ConfiguracionGeneral.Models
+namespace Core.Application.ConfiguracionGeneral.Models;
+
+public class ConfiguracionContpaqiContabilidadDto : INotifyPropertyChanged
 {
-    public class ConfiguracionContpaqiContabilidadDto : INotifyPropertyChanged
+    private string _contpaqiSqlConnectionString;
+    private EmpresaContpaqiDto _empresa;
+
+    public ConfiguracionContpaqiContabilidadDto(string contpaqiSqlConnectionString, EmpresaContpaqiDto empresa)
     {
-        private string _contpaqiSqlConnectionString;
-        private EmpresaContpaqiDto _empresa;
+        ContpaqiSqlConnectionString = contpaqiSqlConnectionString;
+        Empresa = empresa;
+    }
 
-        public ConfiguracionContpaqiContabilidadDto(string contpaqiSqlConnectionString, EmpresaContpaqiDto empresa)
+    public string ContpaqiSqlConnectionString
+    {
+        get => _contpaqiSqlConnectionString;
+        set
         {
-            ContpaqiSqlConnectionString = contpaqiSqlConnectionString;
-            Empresa = empresa;
-        }
-
-        public string ContpaqiSqlConnectionString
-        {
-            get => _contpaqiSqlConnectionString;
-            set
+            if (value == _contpaqiSqlConnectionString)
             {
-                if (value == _contpaqiSqlConnectionString)
-                {
-                    return;
-                }
-
-                _contpaqiSqlConnectionString = value;
-                OnPropertyChanged();
+                return;
             }
-        }
 
-        public EmpresaContpaqiDto Empresa
+            _contpaqiSqlConnectionString = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public EmpresaContpaqiDto Empresa
+    {
+        get => _empresa;
+        set
         {
-            get => _empresa;
-            set
+            if (Equals(value, _empresa))
             {
-                if (Equals(value, _empresa))
-                {
-                    return;
-                }
-
-                _empresa = value;
-                OnPropertyChanged();
+                return;
             }
-        }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        [NotifyPropertyChangedInvocator]
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            _empresa = value;
+            OnPropertyChanged();
         }
+    }
+
+    public event PropertyChangedEventHandler PropertyChanged;
+
+    [NotifyPropertyChangedInvocator]
+    protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }

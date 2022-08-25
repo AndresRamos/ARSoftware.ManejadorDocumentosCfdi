@@ -2,72 +2,71 @@
 using System.Runtime.CompilerServices;
 using Core.Application.Annotations;
 
-namespace Core.Application.Empresas.Models
+namespace Core.Application.Empresas.Models;
+
+public class EmpresaContpaqiDto : INotifyPropertyChanged
 {
-    public class EmpresaContpaqiDto : INotifyPropertyChanged
+    private string _baseDatos;
+    private string _guidAdd;
+    private string _nombre;
+
+    public EmpresaContpaqiDto(string nombre, string baseDatos, string guidAdd)
     {
-        private string _baseDatos;
-        private string _guidAdd;
-        private string _nombre;
+        Nombre = nombre;
+        BaseDatos = baseDatos;
+        GuidAdd = guidAdd;
+    }
 
-        public EmpresaContpaqiDto(string nombre, string baseDatos, string guidAdd)
+    public string Nombre
+    {
+        get => _nombre;
+        set
         {
-            Nombre = nombre;
-            BaseDatos = baseDatos;
-            GuidAdd = guidAdd;
-        }
-
-        public string Nombre
-        {
-            get => _nombre;
-            set
+            if (value == _nombre)
             {
-                if (value == _nombre)
-                {
-                    return;
-                }
-
-                _nombre = value;
-                OnPropertyChanged();
+                return;
             }
-        }
 
-        public string BaseDatos
+            _nombre = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public string BaseDatos
+    {
+        get => _baseDatos;
+        set
         {
-            get => _baseDatos;
-            set
+            if (value == _baseDatos)
             {
-                if (value == _baseDatos)
-                {
-                    return;
-                }
-
-                _baseDatos = value;
-                OnPropertyChanged();
+                return;
             }
-        }
 
-        public string GuidAdd
+            _baseDatos = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public string GuidAdd
+    {
+        get => _guidAdd;
+        set
         {
-            get => _guidAdd;
-            set
+            if (value == _guidAdd)
             {
-                if (value == _guidAdd)
-                {
-                    return;
-                }
-
-                _guidAdd = value;
-                OnPropertyChanged();
+                return;
             }
-        }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        [NotifyPropertyChangedInvocator]
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            _guidAdd = value;
+            OnPropertyChanged();
         }
+    }
+
+    public event PropertyChangedEventHandler PropertyChanged;
+
+    [NotifyPropertyChangedInvocator]
+    protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }

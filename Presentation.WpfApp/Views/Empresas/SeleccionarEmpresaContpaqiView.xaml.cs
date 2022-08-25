@@ -1,10 +1,9 @@
-﻿namespace Presentation.WpfApp.Views.Empresas
+﻿namespace Presentation.WpfApp.Views.Empresas;
+
+public partial class SeleccionarEmpresaContpaqiView
 {
-    public partial class SeleccionarEmpresaContpaqiView
+    public SeleccionarEmpresaContpaqiView()
     {
-        public SeleccionarEmpresaContpaqiView()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

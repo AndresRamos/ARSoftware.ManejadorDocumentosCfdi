@@ -1,10 +1,9 @@
-﻿namespace Presentation.WpfApp.Views.Roles
+﻿namespace Presentation.WpfApp.Views.Roles;
+
+public partial class ListaRolesView
 {
-    public partial class ListaRolesView
+    public ListaRolesView()
     {
-        public ListaRolesView()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

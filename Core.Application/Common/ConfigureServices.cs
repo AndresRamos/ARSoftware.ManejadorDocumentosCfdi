@@ -3,19 +3,18 @@ using ARSoftware.Cfdi.DescargaMasiva;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Core.Application.Common
+namespace Core.Application.Common;
+
+public static class ConfigureServices
 {
-    public static class ConfigureServices
+    public static IServiceCollection AddApplicationServices(this IServiceCollection services)
     {
-        public static IServiceCollection AddApplicationServices(this IServiceCollection services)
-        {
-            services.AddMediatR(Assembly.GetExecutingAssembly());
+        services.AddMediatR(Assembly.GetExecutingAssembly());
 
-            services.AddSingleton<ConfiguracionAplicacion>();
+        services.AddSingleton<ConfiguracionAplicacion>();
 
-            services.AddCfdiDescargaMasivaServices();
+        services.AddCfdiDescargaMasivaServices();
 
-            return services;
-        }
+        return services;
     }
 }

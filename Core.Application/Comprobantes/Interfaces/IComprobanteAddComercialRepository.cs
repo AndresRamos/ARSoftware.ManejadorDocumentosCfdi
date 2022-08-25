@@ -1,6 +1,5 @@
-﻿namespace Core.Application.Comprobantes.Interfaces
+﻿namespace Core.Application.Comprobantes.Interfaces;
+
+public interface IComprobanteAddComercialRepository : IComprobanteAddRepository
 {
-    public interface IComprobanteAddComercialRepository : IComprobanteAddRepository
-    {
-    }
 }

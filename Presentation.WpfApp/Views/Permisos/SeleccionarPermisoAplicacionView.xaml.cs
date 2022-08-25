@@ -1,10 +1,9 @@
-﻿namespace Presentation.WpfApp.Views.Permisos
+﻿namespace Presentation.WpfApp.Views.Permisos;
+
+public partial class SeleccionarPermisoAplicacionView
 {
-    public partial class SeleccionarPermisoAplicacionView
+    public SeleccionarPermisoAplicacionView()
     {
-        public SeleccionarPermisoAplicacionView()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

@@ -2,9 +2,8 @@
 using Core.Application.Usuarios.Models;
 using MediatR;
 
-namespace Core.Application.Usuarios.Queries.BuscarUsuarios
+namespace Core.Application.Usuarios.Queries.BuscarUsuarios;
+
+public class BuscarUsuariosQuery : IRequest<IEnumerable<UsuarioDto>>
 {
-    public class BuscarUsuariosQuery : IRequest<IEnumerable<UsuarioDto>>
-    {
-    }
 }

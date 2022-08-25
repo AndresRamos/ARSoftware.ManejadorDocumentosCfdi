@@ -8,27 +8,26 @@ using Core.Domain.Entities;
 using Infrastructure.Persistance;
 using MediatR;
 
-namespace Core.Application.Roles.Queries.BuscarRolPorId
+namespace Core.Application.Roles.Queries.BuscarRolPorId;
+
+public class BuscarRolPorIdQueryHandler : IRequestHandler<BuscarRolPorIdQuery, RolDto>
 {
-    public class BuscarRolPorIdQueryHandler : IRequestHandler<BuscarRolPorIdQuery, RolDto>
+    private readonly ManejadorDocumentosCfdiDbContext _context;
+
+    public BuscarRolPorIdQueryHandler(ManejadorDocumentosCfdiDbContext context)
     {
-        private readonly ManejadorDocumentosCfdiDbContext _context;
+        _context = context;
+    }
 
-        public BuscarRolPorIdQueryHandler(ManejadorDocumentosCfdiDbContext context)
+    public async Task<RolDto> Handle(BuscarRolPorIdQuery request, CancellationToken cancellationToken)
+    {
+        Rol rol = await _context.Roles.SingleOrDefaultAsync(r => r.Id == request.RolId, cancellationToken);
+
+        if (rol == null)
         {
-            _context = context;
+            throw new ObjectNotFoundException($"No se encontro el rol con el id {request.RolId}");
         }
 
-        public async Task<RolDto> Handle(BuscarRolPorIdQuery request, CancellationToken cancellationToken)
-        {
-            Rol rol = await _context.Roles.SingleOrDefaultAsync(r => r.Id == request.RolId, cancellationToken);
-
-            if (rol == null)
-            {
-                throw new ObjectNotFoundException($"No se encontro el rol con el id {request.RolId}");
-            }
-
-            return new RolDto(rol.Id, rol.Nombre, rol.Descripcion, rol.Permisos.UnpackToPermisosDto());
-        }
+        return new RolDto(rol.Id, rol.Nombre, rol.Descripcion, rol.Permisos.UnpackToPermisosDto());
     }
 }

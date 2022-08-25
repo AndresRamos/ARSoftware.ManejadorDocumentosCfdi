@@ -7,79 +7,78 @@ using MahApps.Metro.Controls.Dialogs;
 using MediatR;
 using Presentation.WpfApp.ViewModels.Xmls;
 
-namespace Presentation.WpfApp.ViewModels.Solicitudes
+namespace Presentation.WpfApp.ViewModels.Solicitudes;
+
+public sealed class DetalleSolicitudViewModel : Conductor<Screen>.Collection.OneActive
 {
-    public sealed class DetalleSolicitudViewModel : Conductor<Screen>.Collection.OneActive
+    private readonly IDialogCoordinator _dialogCoordinator;
+    private readonly IMediator _mediator;
+    private readonly IWindowManager _windowManager;
+    private SolicitudDto _solicitud;
+
+    public DetalleSolicitudViewModel(IMediator mediator, IWindowManager windowManager, IDialogCoordinator dialogCoordinator)
     {
-        private readonly IDialogCoordinator _dialogCoordinator;
-        private readonly IMediator _mediator;
-        private readonly IWindowManager _windowManager;
-        private SolicitudDto _solicitud;
+        _mediator = mediator;
+        _windowManager = windowManager;
+        _dialogCoordinator = dialogCoordinator;
+        DisplayName = "Detalle Solicitud";
+    }
 
-        public DetalleSolicitudViewModel(IMediator mediator, IWindowManager windowManager, IDialogCoordinator dialogCoordinator)
+    public SolicitudDto Solicitud
+    {
+        get => _solicitud;
+        private set
         {
-            _mediator = mediator;
-            _windowManager = windowManager;
-            _dialogCoordinator = dialogCoordinator;
-            DisplayName = "Detalle Solicitud";
-        }
-
-        public SolicitudDto Solicitud
-        {
-            get => _solicitud;
-            private set
+            if (Equals(value, _solicitud))
             {
-                if (Equals(value, _solicitud))
-                {
-                    return;
-                }
-
-                _solicitud = value;
-                NotifyOfPropertyChange(() => Solicitud);
+                return;
             }
+
+            _solicitud = value;
+            NotifyOfPropertyChange(() => Solicitud);
         }
+    }
 
-        public async Task InicializarAsync(int solicitudId)
+    public async Task InicializarAsync(int solicitudId)
+    {
+        Solicitud = await _mediator.Send(new BuscarSolicitudPorIdQuery(solicitudId));
+
+        var solicitudViewModel = IoC.Get<SolicitudViewModel>();
+        solicitudViewModel.Inicializar(Solicitud);
+        Items.Add(solicitudViewModel);
+
+        var solicitudAutenticacionViewModel = IoC.Get<SolicitudAutenticacionViewModel>();
+        solicitudAutenticacionViewModel.Inicializar(Solicitud.Id, Solicitud.SolicitudAutenticacion, Solicitud.SolicitudesAutenticacion);
+        Items.Add(solicitudAutenticacionViewModel);
+
+        var solicitudSolicitudViewModel = IoC.Get<SolicitudSolicitudViewModel>();
+        solicitudSolicitudViewModel.Inicializar(Solicitud.Id, Solicitud.SolicitudSolicitud, Solicitud.SolicitudesSolicitud);
+        Items.Add(solicitudSolicitudViewModel);
+
+        var solicitudVerificacionViewModel = IoC.Get<SolicitudVerificacionViewModel>();
+        solicitudVerificacionViewModel.Inicializar(Solicitud.Id, Solicitud.SolicitudVerificacion, Solicitud.SolicitudesVerificacion);
+        Items.Add(solicitudVerificacionViewModel);
+
+        var solicitudDescargaViewModel = IoC.Get<SolicitudDescargaViewModel>();
+        solicitudDescargaViewModel.Inicializar(Solicitud.Id, Solicitud.SolicitudDescarga, Solicitud.SolicitudesDescarga);
+        Items.Add(solicitudDescargaViewModel);
+
+        var solicitudPaquetesViewModel = IoC.Get<SolicitudPaquetesViewModel>();
+        solicitudPaquetesViewModel.Inicializar(Solicitud.Paquetes);
+        Items.Add(solicitudPaquetesViewModel);
+    }
+
+    public async Task VerXmlSolicitudAutenticaacionAsync()
+    {
+        try
         {
-            Solicitud = await _mediator.Send(new BuscarSolicitudPorIdQuery(solicitudId));
-
-            var solicitudViewModel = IoC.Get<SolicitudViewModel>();
-            solicitudViewModel.Inicializar(Solicitud);
-            Items.Add(solicitudViewModel);
-
-            var solicitudAutenticacionViewModel = IoC.Get<SolicitudAutenticacionViewModel>();
-            solicitudAutenticacionViewModel.Inicializar(Solicitud.Id, Solicitud.SolicitudAutenticacion, Solicitud.SolicitudesAutenticacion);
-            Items.Add(solicitudAutenticacionViewModel);
-
-            var solicitudSolicitudViewModel = IoC.Get<SolicitudSolicitudViewModel>();
-            solicitudSolicitudViewModel.Inicializar(Solicitud.Id, Solicitud.SolicitudSolicitud, Solicitud.SolicitudesSolicitud);
-            Items.Add(solicitudSolicitudViewModel);
-
-            var solicitudVerificacionViewModel = IoC.Get<SolicitudVerificacionViewModel>();
-            solicitudVerificacionViewModel.Inicializar(Solicitud.Id, Solicitud.SolicitudVerificacion, Solicitud.SolicitudesVerificacion);
-            Items.Add(solicitudVerificacionViewModel);
-
-            var solicitudDescargaViewModel = IoC.Get<SolicitudDescargaViewModel>();
-            solicitudDescargaViewModel.Inicializar(Solicitud.Id, Solicitud.SolicitudDescarga, Solicitud.SolicitudesDescarga);
-            Items.Add(solicitudDescargaViewModel);
-
-            var solicitudPaquetesViewModel = IoC.Get<SolicitudPaquetesViewModel>();
-            solicitudPaquetesViewModel.Inicializar(Solicitud.Paquetes);
-            Items.Add(solicitudPaquetesViewModel);
+            var viewModel = IoC.Get<XmlViewerViewModel>();
+            viewModel.Inicializar(Solicitud.SolicitudAutenticacion.Solicitud);
+            await _windowManager.ShowDialogAsync(viewModel);
         }
-
-        public async Task VerXmlSolicitudAutenticaacionAsync()
+        catch (Exception e)
         {
-            try
-            {
-                var viewModel = IoC.Get<XmlViewerViewModel>();
-                viewModel.Inicializar(Solicitud.SolicitudAutenticacion.Solicitud);
-                await _windowManager.ShowDialogAsync(viewModel);
-            }
-            catch (Exception e)
-            {
-                await _dialogCoordinator.ShowMessageAsync(this, "Error", e.ToString());
-            }
+            await _dialogCoordinator.ShowMessageAsync(this, "Error", e.ToString());
         }
     }
 }

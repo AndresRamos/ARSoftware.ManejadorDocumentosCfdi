@@ -1,13 +1,12 @@
-﻿namespace Presentation.WpfApp.Views.Empresas
+﻿namespace Presentation.WpfApp.Views.Empresas;
+
+/// <summary>
+///     Interaction logic for EditarEmpresaView.xaml
+/// </summary>
+public partial class EditarEmpresaView
 {
-    /// <summary>
-    ///     Interaction logic for EditarEmpresaView.xaml
-    /// </summary>
-    public partial class EditarEmpresaView
+    public EditarEmpresaView()
     {
-        public EditarEmpresaView()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

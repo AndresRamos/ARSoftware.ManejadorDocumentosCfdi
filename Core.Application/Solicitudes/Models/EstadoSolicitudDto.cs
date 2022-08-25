@@ -1,19 +1,18 @@
-﻿namespace Core.Application.Solicitudes.Models
+﻿namespace Core.Application.Solicitudes.Models;
+
+public class EstadoSolicitudDto
 {
-    public class EstadoSolicitudDto
+    public EstadoSolicitudDto(int id, string estado)
     {
-        public EstadoSolicitudDto(int id, string estado)
-        {
-            Id = id;
-            Estado = estado;
-        }
+        Id = id;
+        Estado = estado;
+    }
 
-        public int Id { get; set; }
-        public string Estado { get; set; }
+    public int Id { get; set; }
+    public string Estado { get; set; }
 
-        public override string ToString()
-        {
-            return $"{Id} | {Estado}";
-        }
+    public override string ToString()
+    {
+        return $"{Id} | {Estado}";
     }
 }

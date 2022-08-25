@@ -7,34 +7,33 @@ using Core.Domain.Entities;
 using Infrastructure.Persistance;
 using MediatR;
 
-namespace Core.Application.Usuarios.Commands.CambiarContrasena
+namespace Core.Application.Usuarios.Commands.CambiarContrasena;
+
+public class CambiarContrasenaCommandHandler : IRequestHandler<CambiarContrasenaCommand, Unit>
 {
-    public class CambiarContrasenaCommandHandler : IRequestHandler<CambiarContrasenaCommand, Unit>
+    private readonly ManejadorDocumentosCfdiDbContext _context;
+
+    public CambiarContrasenaCommandHandler(ManejadorDocumentosCfdiDbContext context)
     {
-        private readonly ManejadorDocumentosCfdiDbContext _context;
+        _context = context;
+    }
 
-        public CambiarContrasenaCommandHandler(ManejadorDocumentosCfdiDbContext context)
+    public async Task<Unit> Handle(CambiarContrasenaCommand request, CancellationToken cancellationToken)
+    {
+        byte[] passwordSalt = PasswordHasher.CreateSalt();
+        byte[] passwordHash = PasswordHasher.CreateHash(request.PasswordNueva, passwordSalt);
+
+        Usuario usuario = await _context.Usuarios.SingleOrDefaultAsync(u => u.Id == request.UsuarioId, cancellationToken);
+
+        if (usuario == null)
         {
-            _context = context;
+            throw new ObjectNotFoundException("No se encontro el usuario.");
         }
 
-        public async Task<Unit> Handle(CambiarContrasenaCommand request, CancellationToken cancellationToken)
-        {
-            byte[] passwordSalt = PasswordHasher.CreateSalt();
-            byte[] passwordHash = PasswordHasher.CreateHash(request.PasswordNueva, passwordSalt);
+        usuario.CambiarContrasena(PasswordHasher.GetHashString(passwordHash), PasswordHasher.GetHashString(passwordSalt));
 
-            Usuario usuario = await _context.Usuarios.SingleOrDefaultAsync(u => u.Id == request.UsuarioId, cancellationToken);
+        await _context.SaveChangesAsync(cancellationToken);
 
-            if (usuario == null)
-            {
-                throw new ObjectNotFoundException("No se encontro el usuario.");
-            }
-
-            usuario.CambiarContrasena(PasswordHasher.GetHashString(passwordHash), PasswordHasher.GetHashString(passwordSalt));
-
-            await _context.SaveChangesAsync(cancellationToken);
-
-            return Unit.Value;
-        }
+        return Unit.Value;
     }
 }

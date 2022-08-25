@@ -6,27 +6,26 @@ using Core.Domain.Entities;
 using Infrastructure.Persistance;
 using MediatR;
 
-namespace Core.Application.Empresas.Queries.BuscarEmpresaPorNombre
+namespace Core.Application.Empresas.Queries.BuscarEmpresaPorNombre;
+
+public class BuscarEmpresaPorNombreQueryHandler : IRequestHandler<BuscarEmpresaPorNombreQuery, EmpresaPerfilDto>
 {
-    public class BuscarEmpresaPorNombreQueryHandler : IRequestHandler<BuscarEmpresaPorNombreQuery, EmpresaPerfilDto>
+    private readonly ManejadorDocumentosCfdiDbContext _context;
+
+    public BuscarEmpresaPorNombreQueryHandler(ManejadorDocumentosCfdiDbContext context)
     {
-        private readonly ManejadorDocumentosCfdiDbContext _context;
+        _context = context;
+    }
 
-        public BuscarEmpresaPorNombreQueryHandler(ManejadorDocumentosCfdiDbContext context)
+    public async Task<EmpresaPerfilDto> Handle(BuscarEmpresaPorNombreQuery request, CancellationToken cancellationToken)
+    {
+        Empresa empresa = await _context.Empresas.SingleOrDefaultAsync(e => e.Nombre == request.EmpresaNombre, cancellationToken);
+
+        if (empresa is null)
         {
-            _context = context;
+            return null;
         }
 
-        public async Task<EmpresaPerfilDto> Handle(BuscarEmpresaPorNombreQuery request, CancellationToken cancellationToken)
-        {
-            Empresa empresa = await _context.Empresas.SingleOrDefaultAsync(e => e.Nombre == request.EmpresaNombre, cancellationToken);
-
-            if (empresa is null)
-            {
-                return null;
-            }
-
-            return new EmpresaPerfilDto { Id = empresa.Id, Nombre = empresa.Nombre };
-        }
+        return new EmpresaPerfilDto { Id = empresa.Id, Nombre = empresa.Nombre };
     }
 }

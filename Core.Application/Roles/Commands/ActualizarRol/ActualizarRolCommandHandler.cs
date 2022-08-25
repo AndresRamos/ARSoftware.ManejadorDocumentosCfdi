@@ -8,32 +8,31 @@ using Core.Domain.Entities;
 using Infrastructure.Persistance;
 using MediatR;
 
-namespace Core.Application.Roles.Commands.ActualizarRol
+namespace Core.Application.Roles.Commands.ActualizarRol;
+
+public class ActualizarRolCommandHandler : IRequestHandler<ActualizarRolCommand, Unit>
 {
-    public class ActualizarRolCommandHandler : IRequestHandler<ActualizarRolCommand, Unit>
+    private readonly ManejadorDocumentosCfdiDbContext _context;
+
+    public ActualizarRolCommandHandler(ManejadorDocumentosCfdiDbContext context)
     {
-        private readonly ManejadorDocumentosCfdiDbContext _context;
+        _context = context;
+    }
 
-        public ActualizarRolCommandHandler(ManejadorDocumentosCfdiDbContext context)
+    public async Task<Unit> Handle(ActualizarRolCommand request, CancellationToken cancellationToken)
+    {
+        Rol rol = await _context.Roles.SingleOrDefaultAsync(r => r.Id == request.Id, cancellationToken);
+
+        if (rol == null)
         {
-            _context = context;
+            throw new ObjectNotFoundException($"No se encontrol el rol con id {request.Id}.");
         }
 
-        public async Task<Unit> Handle(ActualizarRolCommand request, CancellationToken cancellationToken)
-        {
-            Rol rol = await _context.Roles.SingleOrDefaultAsync(r => r.Id == request.Id, cancellationToken);
+        rol.ActualizarRol(request.Nombre, request.Descripcion);
+        rol.ActualizarPermisos(request.Permisos.Select(p => p.PermisoAplicacion).PackPermissionsIntoString());
 
-            if (rol == null)
-            {
-                throw new ObjectNotFoundException($"No se encontrol el rol con id {request.Id}.");
-            }
+        await _context.SaveChangesAsync(cancellationToken);
 
-            rol.ActualizarRol(request.Nombre, request.Descripcion);
-            rol.ActualizarPermisos(request.Permisos.Select(p => p.PermisoAplicacion).PackPermissionsIntoString());
-
-            await _context.SaveChangesAsync(cancellationToken);
-
-            return Unit.Value;
-        }
+        return Unit.Value;
     }
 }

@@ -1,10 +1,9 @@
-﻿namespace Presentation.WpfApp.Views.Usuarios
+﻿namespace Presentation.WpfApp.Views.Usuarios;
+
+public partial class CrearUsuarioView
 {
-    public partial class CrearUsuarioView
+    public CrearUsuarioView()
     {
-        public CrearUsuarioView()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

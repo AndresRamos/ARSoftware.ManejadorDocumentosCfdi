@@ -8,52 +8,51 @@ using Core.Domain.Entities;
 using Infrastructure.Persistance;
 using MediatR;
 
-namespace Core.Application.Usuarios.Commands.CrearUsuarioAdministrador
+namespace Core.Application.Usuarios.Commands.CrearUsuarioAdministrador;
+
+public class CrearUsuarioAdministradorCommandHandler : IRequestHandler<CrearUsuarioAdministradorCommand, Unit>
 {
-    public class CrearUsuarioAdministradorCommandHandler : IRequestHandler<CrearUsuarioAdministradorCommand, Unit>
+    private readonly ManejadorDocumentosCfdiDbContext _context;
+
+    public CrearUsuarioAdministradorCommandHandler(ManejadorDocumentosCfdiDbContext context)
     {
-        private readonly ManejadorDocumentosCfdiDbContext _context;
+        _context = context;
+    }
 
-        public CrearUsuarioAdministradorCommandHandler(ManejadorDocumentosCfdiDbContext context)
+    public async Task<Unit> Handle(CrearUsuarioAdministradorCommand request, CancellationToken cancellationToken)
+    {
+        const string rolAdministradorNombre = "Administrador";
+        Rol rolAdministrador = await _context.Roles.SingleOrDefaultAsync(r => r.Nombre == rolAdministradorNombre, cancellationToken);
+        if (rolAdministrador == null)
         {
-            _context = context;
+            var permisos = new List<PermisosAplicacion> { PermisosAplicacion.TodosLosPermisos };
+            rolAdministrador = Rol.CreateInstance("Administrador", "Rol de administrador", permisos.PackPermissionsIntoString());
+            _context.Roles.Add(rolAdministrador);
+            await _context.SaveChangesAsync(cancellationToken);
         }
 
-        public async Task<Unit> Handle(CrearUsuarioAdministradorCommand request, CancellationToken cancellationToken)
+        const string usuarioAdministradorNombreUsuario = "admin";
+        Usuario usuarioAdministrador =
+            await _context.Usuarios.SingleOrDefaultAsync(u => u.NombreUsuario == usuarioAdministradorNombreUsuario, cancellationToken);
+
+        if (usuarioAdministrador == null)
         {
-            const string rolAdministradorNombre = "Administrador";
-            Rol rolAdministrador = await _context.Roles.SingleOrDefaultAsync(r => r.Nombre == rolAdministradorNombre, cancellationToken);
-            if (rolAdministrador == null)
-            {
-                var permisos = new List<PermisosAplicacion> { PermisosAplicacion.TodosLosPermisos };
-                rolAdministrador = Rol.CreateInstance("Administrador", "Rol de administrador", permisos.PackPermissionsIntoString());
-                _context.Roles.Add(rolAdministrador);
-                await _context.SaveChangesAsync(cancellationToken);
-            }
+            byte[] passwordSalt = PasswordHasher.CreateSalt();
+            byte[] passwordHash = PasswordHasher.CreateHash("admin", passwordSalt);
+            usuarioAdministrador = Usuario.CreateInstance("Admin",
+                "Admin",
+                "",
+                usuarioAdministradorNombreUsuario,
+                PasswordHasher.GetHashString(passwordHash),
+                PasswordHasher.GetHashString(passwordSalt));
 
-            const string usuarioAdministradorNombreUsuario = "admin";
-            Usuario usuarioAdministrador =
-                await _context.Usuarios.SingleOrDefaultAsync(u => u.NombreUsuario == usuarioAdministradorNombreUsuario, cancellationToken);
+            _context.Usuarios.Add(usuarioAdministrador);
+            await _context.SaveChangesAsync(cancellationToken);
 
-            if (usuarioAdministrador == null)
-            {
-                byte[] passwordSalt = PasswordHasher.CreateSalt();
-                byte[] passwordHash = PasswordHasher.CreateHash("admin", passwordSalt);
-                usuarioAdministrador = Usuario.CreateInstance("Admin",
-                    "Admin",
-                    "",
-                    usuarioAdministradorNombreUsuario,
-                    PasswordHasher.GetHashString(passwordHash),
-                    PasswordHasher.GetHashString(passwordSalt));
-
-                _context.Usuarios.Add(usuarioAdministrador);
-                await _context.SaveChangesAsync(cancellationToken);
-
-                usuarioAdministrador.Roles.Add(rolAdministrador);
-                await _context.SaveChangesAsync(cancellationToken);
-            }
-
-            return Unit.Value;
+            usuarioAdministrador.Roles.Add(rolAdministrador);
+            await _context.SaveChangesAsync(cancellationToken);
         }
+
+        return Unit.Value;
     }
 }

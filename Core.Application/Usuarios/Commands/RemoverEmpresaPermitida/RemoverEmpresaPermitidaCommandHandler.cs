@@ -6,38 +6,37 @@ using Core.Domain.Entities;
 using Infrastructure.Persistance;
 using MediatR;
 
-namespace Core.Application.Usuarios.Commands.RemoverEmpresaPermitida
+namespace Core.Application.Usuarios.Commands.RemoverEmpresaPermitida;
+
+public class RemoverEmpresaPermitidaCommandHandler : IRequestHandler<RemoverEmpresaPermitidaCommand>
 {
-    public class RemoverEmpresaPermitidaCommandHandler : IRequestHandler<RemoverEmpresaPermitidaCommand>
+    private readonly ManejadorDocumentosCfdiDbContext _context;
+
+    public RemoverEmpresaPermitidaCommandHandler(ManejadorDocumentosCfdiDbContext context)
     {
-        private readonly ManejadorDocumentosCfdiDbContext _context;
+        _context = context;
+    }
 
-        public RemoverEmpresaPermitidaCommandHandler(ManejadorDocumentosCfdiDbContext context)
+    public async Task<Unit> Handle(RemoverEmpresaPermitidaCommand request, CancellationToken cancellationToken)
+    {
+        Usuario usuario = await _context.Usuarios.Include(u => u.EmpresasPermitidas)
+            .SingleOrDefaultAsync(u => u.Id == request.UsuarioId, cancellationToken);
+
+        if (usuario is null)
         {
-            _context = context;
+            throw new ObjectNotFoundException($"No se encontro le usuario con id {request.UsuarioId}.");
         }
 
-        public async Task<Unit> Handle(RemoverEmpresaPermitidaCommand request, CancellationToken cancellationToken)
+        Empresa empresa = await _context.Empresas.SingleOrDefaultAsync(e => e.Id == request.EmpresaId, cancellationToken);
+        if (empresa is null)
         {
-            Usuario usuario = await _context.Usuarios.Include(u => u.EmpresasPermitidas)
-                .SingleOrDefaultAsync(u => u.Id == request.UsuarioId, cancellationToken);
-
-            if (usuario is null)
-            {
-                throw new ObjectNotFoundException($"No se encontro le usuario con id {request.UsuarioId}.");
-            }
-
-            Empresa empresa = await _context.Empresas.SingleOrDefaultAsync(e => e.Id == request.EmpresaId, cancellationToken);
-            if (empresa is null)
-            {
-                throw new ObjectNotFoundException($"No se encontro la empresa con id {request.EmpresaId}.");
-            }
-
-            usuario.RemoverEmpresaPermitida(empresa);
-
-            await _context.SaveChangesAsync(cancellationToken);
-
-            return Unit.Value;
+            throw new ObjectNotFoundException($"No se encontro la empresa con id {request.EmpresaId}.");
         }
+
+        usuario.RemoverEmpresaPermitida(empresa);
+
+        await _context.SaveChangesAsync(cancellationToken);
+
+        return Unit.Value;
     }
 }

@@ -1,10 +1,9 @@
-﻿namespace Presentation.WpfApp.Views.Xmls
+﻿namespace Presentation.WpfApp.Views.Xmls;
+
+public partial class XmlViewerView
 {
-    public partial class XmlViewerView
+    public XmlViewerView()
     {
-        public XmlViewerView()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

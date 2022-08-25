@@ -1,10 +1,9 @@
-﻿namespace Presentation.WpfApp.Views.Solicitudes
+﻿namespace Presentation.WpfApp.Views.Solicitudes;
+
+public partial class SolicitudView
 {
-    public partial class SolicitudView
+    public SolicitudView()
     {
-        public SolicitudView()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

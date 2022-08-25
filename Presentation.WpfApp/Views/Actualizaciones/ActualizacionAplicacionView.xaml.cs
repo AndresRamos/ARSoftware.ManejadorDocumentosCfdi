@@ -1,13 +1,12 @@
-﻿namespace Presentation.WpfApp.Views.Actualizaciones
+﻿namespace Presentation.WpfApp.Views.Actualizaciones;
+
+/// <summary>
+///     Interaction logic for ActualizacionAplicacionView.xaml
+/// </summary>
+public partial class ActualizacionAplicacionView
 {
-    /// <summary>
-    ///     Interaction logic for ActualizacionAplicacionView.xaml
-    /// </summary>
-    public partial class ActualizacionAplicacionView
+    public ActualizacionAplicacionView()
     {
-        public ActualizacionAplicacionView()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

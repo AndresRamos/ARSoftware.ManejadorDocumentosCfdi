@@ -236,7 +236,7 @@
                             Margin="5">
                         <b:Interaction.Triggers>
                             <b:EventTrigger EventName="Click">
-                                <cal:ActionMessage MethodName="VerRespuestaXmlAsync">
+                                <cal:ActionMessage MethodName="VerSolicitudXmlAsync">
                                     <cal:Parameter Value="{Binding Solicitud}" />
                                 </cal:ActionMessage>
                             </b:EventTrigger>
