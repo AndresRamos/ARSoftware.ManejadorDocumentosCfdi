@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Data;
 using Caliburn.Micro;
@@ -180,15 +181,24 @@ public sealed class ListaSolicitudesViewModel : Screen
             return;
         }
 
+        using var cancellationTokenSource = new CancellationTokenSource();
+
         ProgressDialogController progressDialogController = await _dialogCoordinator.ShowProgressAsync(this,
             "Procesando Solicitud",
-            "Procesando solicitud. Este proceso puede tardar hasta 5 minutos.");
+            "Procesando solicitud. Este proceso puede tardar hasta 5 minutos.",
+            true);
+        progressDialogController.Canceled += (_, _) =>
+        {
+            // ReSharper disable once AccessToDisposedClosure
+            cancellationTokenSource.Cancel();
+        };
         progressDialogController.SetIndeterminate();
         await Task.Delay(1000);
 
         try
         {
-            await _mediator.Send(new ProcesarSolicitudCommand(solicitudId, _configuracionAplicacion.Usuario.Id));
+            await _mediator.Send(new ProcesarSolicitudCommand(solicitudId, _configuracionAplicacion.Usuario.Id),
+                cancellationTokenSource.Token);
             var viewModel = IoC.Get<DetalleSolicitudViewModel>();
             await viewModel.InicializarAsync(solicitudId);
             await _windowManager.ShowWindowAsync(viewModel);

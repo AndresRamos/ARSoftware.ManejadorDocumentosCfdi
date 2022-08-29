@@ -41,7 +41,7 @@
 			<Version>12.13.1</Version>
 		</PackageReference>
 		<PackageReference Include="Caliburn.Micro">
-			<Version>4.0.210</Version>
+			<Version>4.0.212</Version>
 		</PackageReference>
 		<PackageReference Include="EPPlus">
 			<Version>4.5.3.3</Version>

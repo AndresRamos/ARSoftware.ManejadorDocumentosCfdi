@@ -24,9 +24,9 @@ public sealed class NuevaSolicitudViewModel : Screen
     private readonly IWindowManager _windowManager;
     private DateTime _fechaFin;
     private DateTime _fechaInicio;
-    private string _rfcEmisor;
-    private string _rfcReceptor;
-    private string _rfcSolicitante;
+    private string _rfcEmisor = string.Empty;
+    private string _rfcReceptor = string.Empty;
+    private string _rfcSolicitante = string.Empty;
     private TipoRangoFechaEnum _tipoRangoFechaSeleccionado;
     private TipoSolicitudDto _tipoSolicitudSeleccionado;
 

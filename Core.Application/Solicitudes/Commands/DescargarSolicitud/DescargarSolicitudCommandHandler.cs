@@ -83,7 +83,9 @@ public class DescargarSolicitudCommandHandler : IRequestHandler<DescargarSolicit
         {
             Logger.WithProperty(LogPropertyConstants.SolicitudId, solicitud.Id).Info("Descargando paquete {0}", paqueteId.IdPaquete);
             Logger.WithProperty(LogPropertyConstants.SolicitudId, solicitud.Id).Info("Generando XML SOAP de solicitud.");
-            var descargaRequest = DescargaRequest.CreateInstace(paqueteId.IdPaquete, solicitud.SolicitudSolicitud.RfcSolicitante);
+            var descargaRequest = DescargaRequest.CreateInstace(paqueteId.IdPaquete,
+                solicitud.SolicitudSolicitud.RfcSolicitante,
+                AccessToken.CreateInstance(solicitud.SolicitudAutenticacion.Token));
             string soapRequestEnvelopeXml = _descargaService.GenerateSoapRequestEnvelopeXmlContent(descargaRequest, certificadoSat);
             Logger.WithProperty(LogPropertyConstants.SolicitudId, solicitud.Id).Info("SoapRequestEnvelopeXml: {0}", soapRequestEnvelopeXml);
 
@@ -91,9 +93,10 @@ public class DescargarSolicitudCommandHandler : IRequestHandler<DescargarSolicit
             try
             {
                 Logger.WithProperty(LogPropertyConstants.SolicitudId, solicitud.Id).Info("Enviando solicitud SOAP.");
-                descargaResult = await _descargaService.SendSoapRequestAsync(soapRequestEnvelopeXml,
-                    solicitud.SolicitudAutenticacion.Autorizacion,
+                SoapRequestResult soapResult = await _descargaService.SendSoapRequestAsync(soapRequestEnvelopeXml,
+                    AccessToken.CreateInstance(solicitud.SolicitudAutenticacion.Token),
                     cancellationToken);
+                descargaResult = _descargaService.GetSoapResponseResult(soapResult);
             }
             catch (Exception e)
             {
@@ -120,10 +123,10 @@ public class DescargarSolicitudCommandHandler : IRequestHandler<DescargarSolicit
 
             var solicitudDescarga = SolicitudDescarga.CreateInstance(soapRequestEnvelopeXml,
                 descargaResult.ResponseContent,
-                descargaResult.CodEstatus,
-                descargaResult.Mensaje,
+                descargaResult.RequestStatusCode,
+                descargaResult.RequestStatusMessage,
                 paqueteId.IdPaquete,
-                descargaResult.Paquete,
+                descargaResult.Package,
                 null);
 
             solicitud.SolicitudesWeb.Add(solicitudDescarga);

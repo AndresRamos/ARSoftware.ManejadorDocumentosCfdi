@@ -66,7 +66,9 @@ public class VerificarSolicitudCommandHandler : IRequestHandler<VerificarSolicit
             configuracionGeneral.CertificadoSat.Contrasena);
 
         Logger.WithProperty(LogPropertyConstants.SolicitudId, solicitud.Id).Info("Generando XML SOAP de solicitud.");
-        var verificacionRequest = VerificacionRequest.CreateInstance(solicitud.SolicitudSolicitud.IdSolicitud, solicitud.RfcSolicitante);
+        var verificacionRequest = VerificacionRequest.CreateInstance(solicitud.SolicitudSolicitud.IdSolicitud,
+            solicitud.RfcSolicitante,
+            AccessToken.CreateInstance(solicitud.SolicitudAutenticacion.Token));
         string soapRequestEnvelopeXml = _verificacionService.GenerateSoapRequestEnvelopeXmlContent(verificacionRequest, certificadoSat);
         Logger.WithProperty(LogPropertyConstants.SolicitudId, solicitud.Id).Info("SoapRequestEnvelopeXml: {0}", soapRequestEnvelopeXml);
 
@@ -74,9 +76,11 @@ public class VerificarSolicitudCommandHandler : IRequestHandler<VerificarSolicit
         try
         {
             Logger.WithProperty(LogPropertyConstants.SolicitudId, solicitud.Id).Info("Enviando solicitud SOAP de verificacion.");
-            verificacionResult = await _verificacionService.SendSoapRequestAsync(soapRequestEnvelopeXml,
-                solicitud.SolicitudAutenticacion.Autorizacion,
+            SoapRequestResult soapRequestResult = await _verificacionService.SendSoapRequestAsync(soapRequestEnvelopeXml,
+                AccessToken.CreateInstance(solicitud.SolicitudAutenticacion.Token),
                 cancellationToken);
+
+            verificacionResult = _verificacionService.GetSoapResponseResult(soapRequestResult);
         }
         catch (Exception e)
         {
@@ -107,12 +111,12 @@ public class VerificarSolicitudCommandHandler : IRequestHandler<VerificarSolicit
         Logger.WithProperty(LogPropertyConstants.SolicitudId, solicitud.Id).Info("Creando registro de solicitud de verificacion.");
         var solicitudVerificacion = SolicitudVerificacion.CreateInstance(soapRequestEnvelopeXml,
             verificacionResult.ResponseContent,
-            verificacionResult.CodEstatus,
-            verificacionResult.Mensaje,
-            verificacionResult.CodigoEstadoSolicitud,
-            verificacionResult.EstadoSolicitud,
-            verificacionResult.NumeroCfdis,
-            verificacionResult.IdsPaquetes.Select(idPaquete => PaqueteId.Crear(idPaquete)).ToList(),
+            verificacionResult.RequestStatusCode,
+            verificacionResult.RequestStatusMessage,
+            verificacionResult.DownloadRequestStatusCode,
+            verificacionResult.DownloadRequestStatusNumber,
+            verificacionResult.NumberOfCfdis,
+            verificacionResult.PackageIds.Select(idPaquete => PaqueteId.Crear(idPaquete)).ToList(),
             null);
 
         Logger.WithProperty(LogPropertyConstants.SolicitudId, solicitud.Id)

@@ -56,7 +56,8 @@ public class AutenticarSolicitudCommandHandler : IRequestHandler<AutenticarSolic
         try
         {
             Logger.WithProperty(LogPropertyConstants.SolicitudId, solicitud.Id).Info("Enviando solicitud SOAP de autenticacion.");
-            autenticacionResult = await _autenticacionService.SendSoapRequestAsync(soapRequestEnvelopeXml, cancellationToken);
+            SoapRequestResult soapResult = await _autenticacionService.SendSoapRequestAsync(soapRequestEnvelopeXml, cancellationToken);
+            autenticacionResult = _autenticacionService.GetSoapResponseResult(soapResult);
         }
         catch (Exception e)
         {
@@ -88,10 +89,8 @@ public class AutenticarSolicitudCommandHandler : IRequestHandler<AutenticarSolic
             autenticacionResult.ResponseContent,
             autenticacionRequest.TokenCreatedDateUtc,
             autenticacionRequest.TokenExpiresDateUtc,
-            autenticacionResult.Token,
-            autenticacionResult.Token != null
-                ? SoapRequestHelper.CreateAutorizationHttpHeaderStringFromToken(autenticacionResult.Token)
-                : null,
+            autenticacionResult.AccessToken.Value,
+            autenticacionResult.AccessToken.IsValid ? autenticacionResult.AccessToken.HttpAuthorizationHeader : null,
             autenticacionResult.FaultCode,
             autenticacionResult.FaultString,
             null);

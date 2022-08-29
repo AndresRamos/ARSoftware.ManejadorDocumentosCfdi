@@ -63,9 +63,10 @@ public class GenerarSolicitudCommandHandler : IRequestHandler<GenerarSolicitudCo
             solicitud.TipoSolicitud == TipoSolicitud.Cfdi.Name ? TipoSolicitud.Cfdi :
             solicitud.TipoSolicitud == TipoSolicitud.Metadata.Name ? TipoSolicitud.Metadata :
             throw new ArgumentException("El tipo de solicitud no es un tipo valido."),
-            solicitud.RfcEmisor,
+            solicitud.RfcEmisor ?? "",
             solicitud.Receptores,
-            solicitud.RfcSolicitante);
+            solicitud.RfcSolicitante,
+            AccessToken.CreateInstance(solicitud.SolicitudAutenticacion.Token));
 
         string soapRequestEnvelopeXml = _solicitudService.GenerateSoapRequestEnvelopeXmlContent(solicitudRequest, certificadoSat);
         Logger.WithProperty(LogPropertyConstants.SolicitudId, solicitud.Id).Info("SoapRequestEnvelopeXml: {0}", soapRequestEnvelopeXml);
@@ -74,9 +75,11 @@ public class GenerarSolicitudCommandHandler : IRequestHandler<GenerarSolicitudCo
         try
         {
             Logger.WithProperty(LogPropertyConstants.SolicitudId, solicitud.Id).Info("Enviando solicitud SOAP de generacion.");
-            solicitudResult = await _solicitudService.SendSoapRequestAsync(soapRequestEnvelopeXml,
-                solicitud.SolicitudAutenticacion.Autorizacion,
+            SoapRequestResult soapRequestResult = await _solicitudService.SendSoapRequestAsync(soapRequestEnvelopeXml,
+                AccessToken.CreateInstance(solicitud.SolicitudAutenticacion.Token),
                 cancellationToken);
+
+            solicitudResult = _solicitudService.GetSoapResponseResult(soapRequestResult);
         }
         catch (Exception e)
         {
@@ -115,9 +118,9 @@ public class GenerarSolicitudCommandHandler : IRequestHandler<GenerarSolicitudCo
             solicitud.RfcReceptor,
             solicitud.RfcSolicitante,
             solicitud.TipoSolicitud,
-            solicitudResult.CodEstatus,
-            solicitudResult.Mensaje,
-            solicitudResult.IdSolicitud,
+            solicitudResult.RequestStatusCode,
+            solicitudResult.RequestStatusMessage,
+            solicitudResult.RequestId,
             null);
 
         Logger.WithProperty(LogPropertyConstants.SolicitudId, solicitud.Id)

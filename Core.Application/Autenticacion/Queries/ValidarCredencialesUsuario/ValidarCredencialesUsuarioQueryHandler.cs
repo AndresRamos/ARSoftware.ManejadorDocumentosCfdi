@@ -26,7 +26,7 @@ public class ValidarCredencialesUsuarioQueryHandler : IRequestHandler<ValidarCre
     public async Task<UsuarioDto> Handle(ValidarCredencialesUsuarioQuery request, CancellationToken cancellationToken)
     {
         Usuario usuario = await _context.Usuarios.Include(u => u.Roles)
-            .SingleOrDefaultAsync(u => u.NombreUsuario == request.NombreUsuario, cancellationToken);
+            .FirstOrDefaultAsync(u => u.NombreUsuario == request.NombreUsuario, cancellationToken);
         if (usuario == null)
         {
             throw new ObjectNotFoundException($"No se encontro un usuario con el nombre de usaurio {request.NombreUsuario}.");

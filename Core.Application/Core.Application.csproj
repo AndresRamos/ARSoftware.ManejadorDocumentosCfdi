@@ -9,19 +9,12 @@
 		<ProjectReference Include="..\Infrastructure.Persistance\Infrastructure.Persistance.csproj" />
 	</ItemGroup>
 	<ItemGroup>
-		<Folder Include="Permisos\Helpers\" />
-		<Folder Include="Permisos\Models\" />
-		<Folder Include="Solicitudes\Interfces\" />
-	</ItemGroup>
-	<ItemGroup>
-		<PackageReference Include="ARSoftware.Cfdi.DescargaMasiva">
-			<Version>2.0.0-beta.2</Version>
-		</PackageReference>
+		<PackageReference Include="ARSoftware.Cfdi.DescargaMasiva" Version="2.0.0" />
 		<PackageReference Include="EntityFramework">
 			<Version>6.4.4</Version>
 		</PackageReference>
 		<PackageReference Include="FluentValidation">
-			<Version>11.2.0</Version>
+			<Version>11.2.1</Version>
 		</PackageReference>
 		<PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection">
 			<Version>10.0.1</Version>
