@@ -1,10 +1,15 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-		<TargetFramework>net6.0</TargetFramework>
+		<TargetFramework>net7.0</TargetFramework>
 		<OutputType>Exe</OutputType>
 		<Version>3.0.0</Version>
 		<Copyright>Copyright © AR Software 2022</Copyright>
 	</PropertyGroup>
+	<ItemGroup>
+	  <Compile Remove="Properties\**" />
+	  <EmbeddedResource Remove="Properties\**" />
+	  <None Remove="Properties\**" />
+	</ItemGroup>
 	<ItemGroup>
 	  <None Remove="appsettings.json" />
 	</ItemGroup>
@@ -33,8 +38,5 @@
 		<PackageReference Include="System.CommandLine">
 			<Version>2.0.0-beta1.20371.2</Version>
 		</PackageReference>
-	</ItemGroup>
-	<ItemGroup>
-		<Folder Include="Properties\" />
 	</ItemGroup>
 </Project>
