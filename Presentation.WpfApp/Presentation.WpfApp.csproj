@@ -4,6 +4,8 @@
 		<OutputType>WinExe</OutputType>
 		<UseWPF>True</UseWPF>
 		<PlatformTarget>AnyCPU</PlatformTarget>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
 	</PropertyGroup>
 	<PropertyGroup>
 		<ApplicationIcon>AR_LOGO03.ico</ApplicationIcon>
