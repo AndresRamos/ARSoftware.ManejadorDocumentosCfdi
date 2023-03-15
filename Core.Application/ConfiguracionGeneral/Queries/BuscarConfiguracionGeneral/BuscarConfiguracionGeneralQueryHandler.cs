@@ -1,6 +1,4 @@
 ﻿using System.Data.Entity;
-using System.Threading;
-using System.Threading.Tasks;
 using Core.Application.ConfiguracionGeneral.Models;
 using Core.Application.Empresas.Models;
 using Infrastructure.Persistance;
@@ -23,12 +21,9 @@ public class BuscarConfiguracionGeneralQueryHandler : IRequestHandler<BuscarConf
             await _context.ConfiguracionGeneral.SingleAsync(c => c.Id == request.EmpresaId, cancellationToken);
 
         return new ConfiguracionGeneralDto(configuracionGeneral.Id,
-            new CertificadoSatDto
-            {
-                Certificado = configuracionGeneral.CertificadoSat.Certificado,
-                Contrasena = configuracionGeneral.CertificadoSat.Contrasena,
-                Rfc = configuracionGeneral.CertificadoSat.Rfc
-            },
+            new CertificadoSatDto(configuracionGeneral.CertificadoSat.Certificado,
+                configuracionGeneral.CertificadoSat.Contrasena,
+                configuracionGeneral.CertificadoSat.Rfc),
             configuracionGeneral.RutaDirectorioDescargas,
             new ConfiguracionContpaqiComercialDto(configuracionGeneral.ConfiguracionContpaqiComercial.ContpaqiSqlConnectionString,
                 new EmpresaContpaqiDto(configuracionGeneral.ConfiguracionContpaqiComercial.Empresa.Nombre,

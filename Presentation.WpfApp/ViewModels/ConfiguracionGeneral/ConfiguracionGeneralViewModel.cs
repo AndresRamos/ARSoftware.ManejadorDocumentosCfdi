@@ -1,11 +1,7 @@
-﻿using System;
-using System.IO;
-using System.Threading.Tasks;
+﻿using System.IO;
 using Caliburn.Micro;
 using Core.Application.Common;
-using Core.Application.ConfiguracionGeneral.Commands.ActualizarCertificadoSat;
-using Core.Application.ConfiguracionGeneral.Commands.ActualizarConfiguracionContpaqiComercial;
-using Core.Application.ConfiguracionGeneral.Commands.ActualizarConfiguracionContpaqiContabilidad;
+using Core.Application.ConfiguracionGeneral.Commands.ActualizarConfiguracionGeneral;
 using Core.Application.ConfiguracionGeneral.Models;
 using Core.Application.ConfiguracionGeneral.Queries.BuscarConfiguracionGeneral;
 using Core.Application.Empresas.Queries.BuscarEmpresasComercial;
@@ -55,9 +51,7 @@ public sealed class ConfiguracionGeneralViewModel : Screen
             var openFileDialog = new OpenFileDialog();
             bool? dialogResult = openFileDialog.ShowDialog();
             if (dialogResult == true)
-            {
                 ConfiguracionGeneral.CertificadoSat.Certificado = File.ReadAllBytes(openFileDialog.FileName);
-            }
         }
         catch (Exception e)
         {
@@ -69,16 +63,7 @@ public sealed class ConfiguracionGeneralViewModel : Screen
     {
         try
         {
-            await _mediator.Send(new ActualizarCertificadoSatCommand(ConfiguracionGeneral.CertificadoSat.Certificado,
-                ConfiguracionGeneral.CertificadoSat.Contrasena,
-                ConfiguracionGeneral.CertificadoSat.Rfc,
-                ConfiguracionGeneral.RutaDirectorioDescargas));
-
-            await _mediator.Send(new ActualizarConfiguracionContpaqiComercialCommand(ConfiguracionGeneral.ConfiguracionContpaqiComercial));
-
-            await _mediator.Send(
-                new ActualizarConfiguracionContpaqiContabilidadCommand(ConfiguracionGeneral.ConfiguracionContpaqiContabilidad));
-
+            await _mediator.Send(new ActualizarConfiguracionGeneralCommand(_configuracionAplicacion.Empresa.Id, ConfiguracionGeneral));
             await _configuracionAplicacion.CargarConfiguracionAsync();
 
             await TryCloseAsync();
@@ -99,9 +84,7 @@ public sealed class ConfiguracionGeneralViewModel : Screen
             viewModel.Inicializar(await _mediator.Send(new BuscarEmpresasComercialQuery()));
             await _windowManager.ShowDialogAsync(viewModel);
             if (viewModel.SeleccionoEmpresa)
-            {
                 ConfiguracionGeneral.ConfiguracionContpaqiComercial.Empresa = viewModel.EmpresaSeleccionada;
-            }
         }
         catch (Exception e)
         {
@@ -119,9 +102,7 @@ public sealed class ConfiguracionGeneralViewModel : Screen
             viewModel.Inicializar(await _mediator.Send(new BuscarEmpresasContabilidadQuery()));
             await _windowManager.ShowDialogAsync(viewModel);
             if (viewModel.SeleccionoEmpresa)
-            {
                 ConfiguracionGeneral.ConfiguracionContpaqiContabilidad.Empresa = viewModel.EmpresaSeleccionada;
-            }
         }
         catch (Exception e)
         {
