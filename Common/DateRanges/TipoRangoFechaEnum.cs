@@ -1,15 +1,14 @@
-﻿namespace Common.DateRanges
+﻿namespace Common.DateRanges;
+
+public enum TipoRangoFechaEnum
 {
-    public enum TipoRangoFechaEnum
-    {
-        Custumizado,
-        Hoy,
-        Ayer,
-        EstaSemana,
-        EstaSemanaAlDia,
-        EsteMes,
-        EsteMesAlDia,
-        EsteAno,
-        EsteAnoAlDia
-    }
+    Custumizado,
+    Hoy,
+    Ayer,
+    EstaSemana,
+    EstaSemanaAlDia,
+    EsteMes,
+    EsteMesAlDia,
+    EsteAno,
+    EsteAnoAlDia
 }

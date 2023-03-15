@@ -1,7 +1,6 @@
-﻿namespace Common
+﻿namespace Common;
+
+public static class LogPropertyConstants
 {
-    public static class LogPropertyConstants
-    {
-        public static string SolicitudId = "SOLICITUD_ID";
-    }
+    public static string SolicitudId = "SOLICITUD_ID";
 }

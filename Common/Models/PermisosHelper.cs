@@ -1,60 +1,53 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
+﻿using System.ComponentModel.DataAnnotations;
 using System.Reflection;
 
-namespace Common.Models
+namespace Common.Models;
+
+public static class PermisosHelper
 {
-    public static class PermisosHelper
+    public static string PackPermissionsIntoString(this IEnumerable<PermisosAplicacion> permissions)
     {
-        public static string PackPermissionsIntoString(this IEnumerable<PermisosAplicacion> permissions)
-        {
-            return permissions.Aggregate("", (s, permission) => s + (char)permission);
-        }
+        return permissions.Aggregate("", (s, permission) => s + (char)permission);
+    }
 
-        public static IEnumerable<PermisosAplicacion> UnpackPermissionsFromString(this string packedPermissions)
-        {
-            if (packedPermissions == null)
-            {
-                throw new ArgumentNullException(nameof(packedPermissions));
-            }
+    public static IEnumerable<PermisosAplicacion> UnpackPermissionsFromString(this string packedPermissions)
+    {
+        if (packedPermissions == null)
+            throw new ArgumentNullException(nameof(packedPermissions));
 
-            foreach (char character in packedPermissions)
-            {
-                yield return (PermisosAplicacion)character;
-            }
-        }
+        foreach (char character in packedPermissions)
+            yield return (PermisosAplicacion)character;
+    }
 
-        public static PermisosAplicacion? BuscarPermisoPorNombre(this string permissionName)
-        {
-            return Enum.TryParse(permissionName, out PermisosAplicacion permission) ? (PermisosAplicacion?)permission : null;
-        }
+    public static PermisosAplicacion? BuscarPermisoPorNombre(this string permissionName)
+    {
+        return Enum.TryParse(permissionName, out PermisosAplicacion permission) ? permission : null;
+    }
 
-        public static PermisoAplicacionDto ToPermisoDto(this PermisosAplicacion permisoApplicacion)
-        {
-            Type enumType = typeof(PermisosAplicacion);
+    public static PermisoAplicacionDto ToPermisoDto(this PermisosAplicacion permisoApplicacion)
+    {
+        Type enumType = typeof(PermisosAplicacion);
 
-            MemberInfo[] member = enumType.GetMember(permisoApplicacion.ToString());
-            var displayAttribute = member[0].GetCustomAttribute<DisplayAttribute>();
-            if (displayAttribute == null)
-            {
-                return null;
-            }
+        MemberInfo[] member = enumType.GetMember(permisoApplicacion.ToString());
+        var displayAttribute = member[0].GetCustomAttribute<DisplayAttribute>();
+        if (displayAttribute is null)
+            throw new InvalidOperationException($"Display attribute not found for permiso {permisoApplicacion}");
 
-            var permiso = (PermisosAplicacion)Enum.Parse(enumType, permisoApplicacion.ToString(), false);
+        var permiso = (PermisosAplicacion)Enum.Parse(enumType, permisoApplicacion.ToString(), false);
 
-            return new PermisoAplicacionDto(permiso, displayAttribute.Name, displayAttribute.GroupName, displayAttribute.Description);
-        }
+        return new PermisoAplicacionDto(permiso,
+            displayAttribute.Name ?? throw new InvalidOperationException("Name is null."),
+            displayAttribute.GroupName ?? throw new InvalidOperationException("Group name is null."),
+            displayAttribute.Description ?? throw new InvalidOperationException("Description is null."));
+    }
 
-        public static IEnumerable<PermisoAplicacionDto> UnpackToPermisosDto(this string packedPermissions)
-        {
-            return packedPermissions.UnpackPermissionsFromString().Select(p => p.ToPermisoDto()).Where(p => p != null).ToList();
-        }
+    public static IEnumerable<PermisoAplicacionDto> UnpackToPermisosDto(this string packedPermissions)
+    {
+        return packedPermissions.UnpackPermissionsFromString().Select(p => p.ToPermisoDto()).ToList();
+    }
 
-        public static bool UsuarioTieneEstePermiso(this PermisosAplicacion[] permisosUsuario, PermisosAplicacion permisoAValidar)
-        {
-            return permisosUsuario.Contains(permisoAValidar) || permisosUsuario.Contains(PermisosAplicacion.TodosLosPermisos);
-        }
+    public static bool UsuarioTieneEstePermiso(this PermisosAplicacion[] permisosUsuario, PermisosAplicacion permisoAValidar)
+    {
+        return permisosUsuario.Contains(permisoAValidar) || permisosUsuario.Contains(PermisosAplicacion.TodosLosPermisos);
     }
 }
