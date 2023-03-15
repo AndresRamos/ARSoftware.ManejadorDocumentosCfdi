@@ -10,8 +10,8 @@
 
 	<PropertyGroup>
 		<ApplicationIcon>AR_LOGO03.ico</ApplicationIcon>
-		<Version>3.0.0</Version>
-		<Copyright>Copyright © AR Software 2022</Copyright>
+		<Version>3.1.0</Version>
+		<Copyright>Copyright © AR Software 2023</Copyright>
 		<Description>Descarga masiva de CFDI usando el Web Service del SAT</Description>
 		<Company>AR Software</Company>
 		<Authors>AR Software</Authors>
