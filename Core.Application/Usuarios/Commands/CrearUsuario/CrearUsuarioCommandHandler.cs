@@ -1,13 +1,11 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
-using Common.Infrastructure;
+﻿using Common.Infrastructure;
 using Core.Domain.Entities;
 using Infrastructure.Persistance;
 using MediatR;
 
 namespace Core.Application.Usuarios.Commands.CrearUsuario;
 
-public class CrearUsuarioCommandHandler : IRequestHandler<CrearUsuarioCommand, int>
+public sealed class CrearUsuarioCommandHandler : IRequestHandler<CrearUsuarioCommand, int>
 {
     private readonly ManejadorDocumentosCfdiDbContext _context;
 

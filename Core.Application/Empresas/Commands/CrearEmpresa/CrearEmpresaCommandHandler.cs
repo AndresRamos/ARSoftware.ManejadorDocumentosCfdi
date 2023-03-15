@@ -1,12 +1,10 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
-using Core.Domain.Entities;
+﻿using Core.Domain.Entities;
 using Infrastructure.Persistance;
 using MediatR;
 
 namespace Core.Application.Empresas.Commands.CrearEmpresa;
 
-public class CrearEmpresaCommandHandler : IRequestHandler<CrearEmpresaCommand, int>
+public sealed class CrearEmpresaCommandHandler : IRequestHandler<CrearEmpresaCommand, int>
 {
     private readonly ManejadorDocumentosCfdiDbContext _context;
 

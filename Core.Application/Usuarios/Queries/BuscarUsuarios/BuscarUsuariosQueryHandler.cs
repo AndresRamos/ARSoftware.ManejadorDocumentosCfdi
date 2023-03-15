@@ -1,8 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using System.Data.Entity;
 using Common.Models;
 using Core.Application.Roles.Models;
 using Core.Application.Usuarios.Models;
@@ -11,7 +7,7 @@ using MediatR;
 
 namespace Core.Application.Usuarios.Queries.BuscarUsuarios;
 
-public class BuscarUsuariosQueryHandler : IRequestHandler<BuscarUsuariosQuery, IEnumerable<UsuarioDto>>
+public sealed class BuscarUsuariosQueryHandler : IRequestHandler<BuscarUsuariosQuery, IEnumerable<UsuarioDto>>
 {
     private readonly ManejadorDocumentosCfdiDbContext _context;
 

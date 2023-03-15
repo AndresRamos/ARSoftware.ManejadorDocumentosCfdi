@@ -6,6 +6,11 @@
 		<Nullable>enable</Nullable>
 	</PropertyGroup>
 	<ItemGroup>
+	  <Compile Remove="Properties\**" />
+	  <EmbeddedResource Remove="Properties\**" />
+	  <None Remove="Properties\**" />
+	</ItemGroup>
+	<ItemGroup>
 		<ProjectReference Include="..\Core.Domain\Core.Domain.csproj" />
 	</ItemGroup>
 	<ItemGroup>
@@ -14,8 +19,5 @@
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions">
 			<Version>7.0.0</Version>
 		</PackageReference>
-	</ItemGroup>
-	<ItemGroup>
-		<Folder Include="Properties\" />
 	</ItemGroup>
 </Project>

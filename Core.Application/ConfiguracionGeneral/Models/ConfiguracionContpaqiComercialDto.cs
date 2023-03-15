@@ -22,9 +22,7 @@ public class ConfiguracionContpaqiComercialDto : INotifyPropertyChanged
         set
         {
             if (value == _contpaqiSqlConnectionString)
-            {
                 return;
-            }
 
             _contpaqiSqlConnectionString = value;
             OnPropertyChanged();
@@ -37,9 +35,7 @@ public class ConfiguracionContpaqiComercialDto : INotifyPropertyChanged
         set
         {
             if (Equals(value, _empresa))
-            {
                 return;
-            }
 
             _empresa = value;
             OnPropertyChanged();

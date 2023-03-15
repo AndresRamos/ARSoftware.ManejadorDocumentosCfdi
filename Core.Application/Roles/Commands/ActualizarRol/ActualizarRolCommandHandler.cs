@@ -7,7 +7,7 @@ using MediatR;
 
 namespace Core.Application.Roles.Commands.ActualizarRol;
 
-public class ActualizarRolCommandHandler : IRequestHandler<ActualizarRolCommand>
+public sealed class ActualizarRolCommandHandler : IRequestHandler<ActualizarRolCommand>
 {
     private readonly ManejadorDocumentosCfdiDbContext _context;
 

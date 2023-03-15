@@ -13,7 +13,7 @@ using NLog;
 
 namespace Core.Application.Solicitudes.Commands.ProcesarSolicitud;
 
-public class ProcesarSolicitudCommandHandler : IRequestHandler<ProcesarSolicitudCommand>
+public sealed class ProcesarSolicitudCommandHandler : IRequestHandler<ProcesarSolicitudCommand>
 {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
     private readonly ManejadorDocumentosCfdiDbContext _context;

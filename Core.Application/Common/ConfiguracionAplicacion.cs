@@ -1,7 +1,5 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
 using Core.Application.ConfiguracionGeneral.Models;
 using Core.Application.ConfiguracionGeneral.Queries.BuscarConfiguracionGeneral;
 using Core.Application.Empresas.Models;
@@ -28,9 +26,7 @@ public class ConfiguracionAplicacion : INotifyPropertyChanged
         private set
         {
             if (_empresa == value)
-            {
                 return;
-            }
 
             _empresa = value;
             OnPropertyChanged();
@@ -43,9 +39,7 @@ public class ConfiguracionAplicacion : INotifyPropertyChanged
         private set
         {
             if (Equals(value, _configuracionGeneral))
-            {
                 return;
-            }
 
             _configuracionGeneral = value;
             OnPropertyChanged();
@@ -58,9 +52,7 @@ public class ConfiguracionAplicacion : INotifyPropertyChanged
         private set
         {
             if (Equals(value, _usuario))
-            {
                 return;
-            }
 
             _usuario = value;
             OnPropertyChanged();
@@ -104,9 +96,7 @@ public class ConfiguracionAplicacion : INotifyPropertyChanged
     protected bool SetField<T>(ref T field, T value, [CallerMemberName] string propertyName = null)
     {
         if (EqualityComparer<T>.Default.Equals(field, value))
-        {
             return false;
-        }
 
         field = value;
         OnPropertyChanged(propertyName);

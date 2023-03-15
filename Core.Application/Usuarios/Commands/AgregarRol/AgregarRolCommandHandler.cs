@@ -5,7 +5,7 @@ using MediatR;
 
 namespace Core.Application.Usuarios.Commands.AgregarRol;
 
-public class AgregarRolCommandHandler : IRequestHandler<AgregarRolCommand>
+public sealed class AgregarRolCommandHandler : IRequestHandler<AgregarRolCommand>
 {
     private readonly ManejadorDocumentosCfdiDbContext _context;
 

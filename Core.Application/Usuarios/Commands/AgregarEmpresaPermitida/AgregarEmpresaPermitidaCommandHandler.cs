@@ -6,7 +6,7 @@ using MediatR;
 
 namespace Core.Application.Usuarios.Commands.AgregarEmpresaPermitida;
 
-public class AgregarEmpresaPermitidaCommandHandler : IRequestHandler<AgregarEmpresaPermitidaCommand>
+public sealed class AgregarEmpresaPermitidaCommandHandler : IRequestHandler<AgregarEmpresaPermitidaCommand>
 {
     private readonly ManejadorDocumentosCfdiDbContext _context;
 

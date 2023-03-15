@@ -1,8 +1,5 @@
 ﻿using System.Data.Entity;
 using System.Data.Entity.Core;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using ARSoftware.Cfdi.DescargaMasiva.Enumerations;
 using Core.Application.Paquetes.Models;
 using Core.Application.Solicitudes.Models;
@@ -12,7 +9,7 @@ using MediatR;
 
 namespace Core.Application.Solicitudes.Queries.BuscarSolicitudPorId;
 
-public class BuscarSolicitudPorIdQueryHandler : IRequestHandler<BuscarSolicitudPorIdQuery, SolicitudDto>
+public sealed class BuscarSolicitudPorIdQueryHandler : IRequestHandler<BuscarSolicitudPorIdQuery, SolicitudDto>
 {
     private readonly ManejadorDocumentosCfdiDbContext _context;
 
@@ -32,9 +29,7 @@ public class BuscarSolicitudPorIdQueryHandler : IRequestHandler<BuscarSolicitudP
             .SingleOrDefaultAsync(s => s.Id == request.SolicitudId, cancellationToken);
 
         if (solicitud == null)
-        {
             throw new ObjectNotFoundException($"No se encontro la solicitud con Id = {request.SolicitudId}");
-        }
 
         return new SolicitudDto(solicitud.Id,
             solicitud.FechaCreacionUtc,

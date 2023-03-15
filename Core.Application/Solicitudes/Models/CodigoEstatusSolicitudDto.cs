@@ -1,6 +1,6 @@
 ﻿namespace Core.Application.Solicitudes.Models;
 
-public class CodigoEstatusSolicitudDto
+public sealed class CodigoEstatusSolicitudDto
 {
     public CodigoEstatusSolicitudDto(int id, string codigo, string mensaje, string observaciones)
     {

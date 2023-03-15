@@ -6,7 +6,7 @@ using NLog;
 
 namespace Core.Application.Paquetes.Commands.ExportarArchivoZip;
 
-public class ExportarArchivoZipCommandHandler : IRequestHandler<ExportarArchivoZipCommand>
+public sealed class ExportarArchivoZipCommandHandler : IRequestHandler<ExportarArchivoZipCommand>
 {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
     private readonly ManejadorDocumentosCfdiDbContext _context;

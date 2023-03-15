@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Xml.Linq;
+﻿using System.Xml.Linq;
+using Core.Application.Cfdis.Models;
 using Core.Application.Comprobantes.Interfaces;
 using MediatR;
 
 namespace Core.Application.Cfdis.Queries.LeerEncabezadosCfdi;
 
-public class LeerEncabezadosCfdiQueryHandler : IRequestHandler<LeerEncabezadosCfdiQuery, IEnumerable<CfdiEncabezadoDto>>
+public sealed class LeerEncabezadosCfdiQueryHandler : IRequestHandler<LeerEncabezadosCfdiQuery, IEnumerable<CfdiEncabezadoDto>>
 {
     private readonly IComprobanteAddComercialRepository _comprobanteAddComercialRepository;
     private readonly IComprobanteAddContabilidadRepository _comprobanteAddContabilidadRepository;

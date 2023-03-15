@@ -1,9 +1,9 @@
 ﻿using System.IO.Compression;
 using MediatR;
 
-namespace Core.Application.Cfdis.ExtraerCfdi;
+namespace Core.Application.Cfdis.Commands.ExtraerCfdi;
 
-public class ExtraerCfdiCommandHandler : IRequestHandler<ExtraerCfdiCommand>
+public sealed class ExtraerCfdiCommandHandler : IRequestHandler<ExtraerCfdiCommand>
 {
     public Task Handle(ExtraerCfdiCommand request, CancellationToken cancellationToken)
     {

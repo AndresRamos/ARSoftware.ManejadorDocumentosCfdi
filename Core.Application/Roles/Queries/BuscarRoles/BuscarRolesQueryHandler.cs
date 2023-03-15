@@ -1,8 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using System.Data.Entity;
 using Common.Models;
 using Core.Application.Roles.Models;
 using Infrastructure.Persistance;
@@ -10,7 +6,7 @@ using MediatR;
 
 namespace Core.Application.Roles.Queries.BuscarRoles;
 
-public class BuscarRolesQueryHandler : IRequestHandler<BuscarRolesQuery, IEnumerable<RolDto>>
+public sealed class BuscarRolesQueryHandler : IRequestHandler<BuscarRolesQuery, IEnumerable<RolDto>>
 {
     private readonly ManejadorDocumentosCfdiDbContext _context;
 

@@ -6,7 +6,7 @@ using MediatR;
 
 namespace Core.Application.Empresas.Commands.EliminarEmpresa;
 
-public class EliminarEmpresaCommandHandler : IRequestHandler<EliminarEmpresaCommand>
+public sealed class EliminarEmpresaCommandHandler : IRequestHandler<EliminarEmpresaCommand>
 {
     private readonly ManejadorDocumentosCfdiDbContext _context;
 

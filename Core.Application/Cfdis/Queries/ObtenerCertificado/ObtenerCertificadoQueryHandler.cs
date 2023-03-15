@@ -3,7 +3,7 @@ using MediatR;
 
 namespace Core.Application.Cfdis.Queries.ObtenerCertificado;
 
-public class ObtenerCertificadoQueryHandler : IRequestHandler<ObtenerCertificadoQuery, X509Certificate2>
+public sealed class ObtenerCertificadoQueryHandler : IRequestHandler<ObtenerCertificadoQuery, X509Certificate2>
 {
     public Task<X509Certificate2> Handle(ObtenerCertificadoQuery request, CancellationToken cancellationToken)
     {

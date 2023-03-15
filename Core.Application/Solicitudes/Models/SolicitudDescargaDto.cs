@@ -1,8 +1,6 @@
-﻿using System;
+﻿namespace Core.Application.Solicitudes.Models;
 
-namespace Core.Application.Solicitudes.Models;
-
-public class SolicitudDescargaDto
+public sealed class SolicitudDescargaDto
 {
     public SolicitudDescargaDto(int id,
                                 DateTime fechaCreacionUtc,

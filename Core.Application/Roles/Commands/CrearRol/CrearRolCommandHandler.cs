@@ -1,14 +1,11 @@
-﻿using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using Common.Models;
+﻿using Common.Models;
 using Core.Domain.Entities;
 using Infrastructure.Persistance;
 using MediatR;
 
 namespace Core.Application.Roles.Commands.CrearRol;
 
-public class CrearRolCommandHandler : IRequestHandler<CrearRolCommand, int>
+public sealed class CrearRolCommandHandler : IRequestHandler<CrearRolCommand, int>
 {
     private readonly ManejadorDocumentosCfdiDbContext _context;
 

@@ -1,15 +1,11 @@
-﻿using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using System.Data.Entity;
 using Core.Application.Empresas.Models;
 using Infrastructure.Persistance;
 using MediatR;
 
 namespace Core.Application.Empresas.Queries.BuscarEmpresas;
 
-public class BuscarEmpresasQueryHandler : IRequestHandler<BuscarEmpresasQuery, IEnumerable<EmpresaPerfilDto>>
+public sealed class BuscarEmpresasQueryHandler : IRequestHandler<BuscarEmpresasQuery, IEnumerable<EmpresaPerfilDto>>
 {
     private readonly ManejadorDocumentosCfdiDbContext _context;
 

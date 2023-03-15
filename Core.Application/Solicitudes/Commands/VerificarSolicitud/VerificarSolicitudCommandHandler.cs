@@ -11,7 +11,7 @@ using NLog;
 
 namespace Core.Application.Solicitudes.Commands.VerificarSolicitud;
 
-public class VerificarSolicitudCommandHandler : IRequestHandler<VerificarSolicitudCommand>
+public sealed class VerificarSolicitudCommandHandler : IRequestHandler<VerificarSolicitudCommand>
 {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
     private readonly ManejadorDocumentosCfdiDbContext _context;

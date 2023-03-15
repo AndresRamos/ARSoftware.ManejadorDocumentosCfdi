@@ -6,7 +6,7 @@ using MediatR;
 
 namespace Core.Application.ConfiguracionGeneral.Queries.BuscarConfiguracionGeneral;
 
-public class BuscarConfiguracionGeneralQueryHandler : IRequestHandler<BuscarConfiguracionGeneralQuery, ConfiguracionGeneralDto>
+public sealed class BuscarConfiguracionGeneralQueryHandler : IRequestHandler<BuscarConfiguracionGeneralQuery, ConfiguracionGeneralDto>
 {
     private readonly ManejadorDocumentosCfdiDbContext _context;
 

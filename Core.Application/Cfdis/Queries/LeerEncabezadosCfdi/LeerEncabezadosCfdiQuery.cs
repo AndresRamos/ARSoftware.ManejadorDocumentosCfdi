@@ -1,14 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using Core.Application.Cfdis.Models;
 using MediatR;
 
 namespace Core.Application.Cfdis.Queries.LeerEncabezadosCfdi;
 
-public class LeerEncabezadosCfdiQuery : IRequest<IEnumerable<CfdiEncabezadoDto>>
-{
-    public LeerEncabezadosCfdiQuery(IEnumerable<string> archivosCfdi)
-    {
-        ArchivosCfdi = archivosCfdi;
-    }
-
-    public IEnumerable<string> ArchivosCfdi { get; }
-}
+public sealed record LeerEncabezadosCfdiQuery(IEnumerable<string> ArchivosCfdi) : IRequest<IEnumerable<CfdiEncabezadoDto>>;

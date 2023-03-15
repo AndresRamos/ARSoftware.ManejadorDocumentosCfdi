@@ -1,6 +1,6 @@
-﻿namespace Core.Application.Cfdis;
+﻿namespace Core.Application.Cfdis.Models;
 
-public class CfdiEncabezadoDto
+public sealed class CfdiEncabezadoDto
 {
     public string ComprobanteFecha { get; set; }
     public string ComprobanteTipo { get; set; }

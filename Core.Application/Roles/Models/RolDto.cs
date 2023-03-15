@@ -1,9 +1,8 @@
-﻿using System.Collections.Generic;
-using Common.Models;
+﻿using Common.Models;
 
 namespace Core.Application.Roles.Models;
 
-public class RolDto
+public sealed class RolDto
 {
     public RolDto(int id, string nombre, string descripcion, IEnumerable<PermisoAplicacionDto> permisos)
     {

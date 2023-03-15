@@ -6,7 +6,7 @@ using MediatR;
 
 namespace Core.Application.Empresas.Commands.ActualizarEmpresaPerfil;
 
-public class ActualizarEmpresaPerfilCommandHandler : IRequestHandler<ActualizarEmpresaPerfilCommand>
+public sealed class ActualizarEmpresaPerfilCommandHandler : IRequestHandler<ActualizarEmpresaPerfilCommand>
 {
     private readonly ManejadorDocumentosCfdiDbContext _context;
 

@@ -6,7 +6,7 @@ using MediatR;
 
 namespace Core.Application.Usuarios.Commands.RemoverEmpresaPermitida;
 
-public class RemoverEmpresaPermitidaCommandHandler : IRequestHandler<RemoverEmpresaPermitidaCommand>
+public sealed class RemoverEmpresaPermitidaCommandHandler : IRequestHandler<RemoverEmpresaPermitidaCommand>
 {
     private readonly ManejadorDocumentosCfdiDbContext _context;
 

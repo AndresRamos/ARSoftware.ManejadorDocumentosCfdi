@@ -11,7 +11,7 @@ using NLog;
 
 namespace Core.Application.Solicitudes.Commands.AutenticarSolicitud;
 
-public class AutenticarSolicitudCommandHandler : IRequestHandler<AutenticarSolicitudCommand>
+public sealed class AutenticarSolicitudCommandHandler : IRequestHandler<AutenticarSolicitudCommand>
 {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
     private readonly IAutenticacionService _autenticacionService;

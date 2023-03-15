@@ -31,9 +31,7 @@ public class ConfiguracionGeneralDto : INotifyPropertyChanged
         set
         {
             if (value == _id)
-            {
                 return;
-            }
 
             _id = value;
             OnPropertyChanged();
@@ -46,9 +44,7 @@ public class ConfiguracionGeneralDto : INotifyPropertyChanged
         set
         {
             if (Equals(value, _certificadoSat))
-            {
                 return;
-            }
 
             _certificadoSat = value;
             OnPropertyChanged();
@@ -61,9 +57,7 @@ public class ConfiguracionGeneralDto : INotifyPropertyChanged
         set
         {
             if (value == _rutaDirectorioDescargas)
-            {
                 return;
-            }
 
             _rutaDirectorioDescargas = value;
             OnPropertyChanged();
@@ -76,9 +70,7 @@ public class ConfiguracionGeneralDto : INotifyPropertyChanged
         set
         {
             if (Equals(value, _configuracionContpaqiComercial))
-            {
                 return;
-            }
 
             _configuracionContpaqiComercial = value;
             OnPropertyChanged();
@@ -91,9 +83,7 @@ public class ConfiguracionGeneralDto : INotifyPropertyChanged
         set
         {
             if (Equals(value, _configuracionContpaqiContabilidad))
-            {
                 return;
-            }
 
             _configuracionContpaqiContabilidad = value;
             OnPropertyChanged();

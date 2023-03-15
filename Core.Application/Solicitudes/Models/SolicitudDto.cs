@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using Core.Application.Paquetes.Models;
+﻿using Core.Application.Paquetes.Models;
 
 namespace Core.Application.Solicitudes.Models;
 
-public class SolicitudDto
+public sealed class SolicitudDto
 {
     public SolicitudDto(int id,
                         DateTime fechaCreacionUtc,

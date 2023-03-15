@@ -1,6 +1,6 @@
 ﻿namespace Core.Application.Paquetes.Models;
 
-public class PaqueteIdDto
+public sealed class PaqueteIdDto
 {
     public PaqueteIdDto(int id, string idPaquete, bool isDescargado)
     {

@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Data;
 using Caliburn.Micro;
-using Core.Application.Cfdis;
+using Core.Application.Cfdis.Models;
 using MahApps.Metro.Controls.Dialogs;
 using Microsoft.Win32;
 using OfficeOpenXml;
@@ -34,9 +30,7 @@ public sealed class ListaCfdisViewModel : Screen
         set
         {
             if (value == _filtro)
-            {
                 return;
-            }
 
             _filtro = value;
             NotifyOfPropertyChange(() => Filtro);
@@ -55,9 +49,7 @@ public sealed class ListaCfdisViewModel : Screen
         set
         {
             if (value == _comprobanteSeleccionado)
-            {
                 return;
-            }
 
             _comprobanteSeleccionado = value;
             NotifyOfPropertyChange(() => ComprobanteSeleccionado);
@@ -77,9 +69,7 @@ public sealed class ListaCfdisViewModel : Screen
     {
         var saveFileDialog = new SaveFileDialog { Filter = "Excel | *.xlsx", FileName = "CFDIs.xlsx" };
         if (saveFileDialog.ShowDialog() != true)
-        {
             return;
-        }
 
         ProgressDialogController progressDialogController = await _dialogCoordinator.ShowProgressAsync(this, "Exportando", "Exportando");
         progressDialogController.SetIndeterminate();
@@ -115,14 +105,10 @@ public sealed class ListaCfdisViewModel : Screen
     private bool ComprobantesView_Filter(object obj)
     {
         if (obj is null)
-        {
             throw new ArgumentNullException(nameof(obj));
-        }
 
         if (!(obj is CfdiEncabezadoDto comprobante))
-        {
             throw new ArgumentNullException(nameof(comprobante));
-        }
 
         return string.IsNullOrWhiteSpace(Filtro) ||
                comprobante.ComprobanteFecha?.IndexOf(Filtro, StringComparison.OrdinalIgnoreCase) >= 0 ||

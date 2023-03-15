@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.Reflection;
-using System.Threading;
-using System.Threading.Tasks;
 using Common.Models;
 using MediatR;
 
 namespace Core.Application.Permisos.Queries.BuscarPermisosAplicacion;
 
-public class BuscarPermisosAplicacionQueryHandler : IRequestHandler<BuscarPermisosAplicacionQuery, IEnumerable<PermisoAplicacionDto>>
+public sealed class BuscarPermisosAplicacionQueryHandler : IRequestHandler<BuscarPermisosAplicacionQuery, IEnumerable<PermisoAplicacionDto>>
 {
     public Task<IEnumerable<PermisoAplicacionDto>> Handle(BuscarPermisosAplicacionQuery request, CancellationToken cancellationToken)
     {
@@ -23,9 +19,7 @@ public class BuscarPermisosAplicacionQueryHandler : IRequestHandler<BuscarPermis
 
             var displayAttribute = member[0].GetCustomAttribute<DisplayAttribute>();
             if (displayAttribute == null)
-            {
                 continue;
-            }
 
             var permiso = (PermisosAplicacion)Enum.Parse(enumType, permissionName, false);
 

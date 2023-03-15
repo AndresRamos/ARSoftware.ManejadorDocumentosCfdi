@@ -3,12 +3,4 @@ using MediatR;
 
 namespace Core.Application.Empresas.Queries.BuscarEmpresaPorId;
 
-public class BuscarEmpresaPorIdQuery : IRequest<EmpresaPerfilDto>
-{
-    public BuscarEmpresaPorIdQuery(int empresaId)
-    {
-        EmpresaId = empresaId;
-    }
-
-    public int EmpresaId { get; }
-}
+public sealed record BuscarEmpresaPorIdQuery(int EmpresaId) : IRequest<EmpresaPerfilDto>;

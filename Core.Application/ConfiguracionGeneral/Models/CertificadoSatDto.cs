@@ -1,6 +1,6 @@
 ﻿namespace Core.Application.ConfiguracionGeneral.Models;
 
-public class CertificadoSatDto
+public sealed class CertificadoSatDto
 {
     public CertificadoSatDto(byte[] certificado, string contrasena, string rfc)
     {

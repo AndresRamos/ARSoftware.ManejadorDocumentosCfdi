@@ -5,7 +5,7 @@ using MediatR;
 
 namespace Core.Application.Usuarios.Commands.ActualizarPerfilUsuario;
 
-public class ActualizarPerfilUsuarioCommandHandler : IRequestHandler<ActualizarPerfilUsuarioCommand>
+public sealed class ActualizarPerfilUsuarioCommandHandler : IRequestHandler<ActualizarPerfilUsuarioCommand>
 {
     private readonly ManejadorDocumentosCfdiDbContext _context;
 

@@ -7,7 +7,7 @@ using MediatR;
 
 namespace Core.Application.Usuarios.Commands.CambiarContrasena;
 
-public class CambiarContrasenaCommandHandler : IRequestHandler<CambiarContrasenaCommand>
+public sealed class CambiarContrasenaCommandHandler : IRequestHandler<CambiarContrasenaCommand>
 {
     private readonly ManejadorDocumentosCfdiDbContext _context;
 

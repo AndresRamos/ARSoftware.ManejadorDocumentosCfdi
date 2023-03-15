@@ -12,7 +12,7 @@ using NLog;
 
 namespace Core.Application.Solicitudes.Commands.GenerarSolicitud;
 
-public class GenerarSolicitudCommandHandler : IRequestHandler<GenerarSolicitudCommand>
+public sealed class GenerarSolicitudCommandHandler : IRequestHandler<GenerarSolicitudCommand>
 {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
     private readonly ManejadorDocumentosCfdiDbContext _context;

@@ -6,7 +6,7 @@ using MediatR;
 
 namespace Core.Application.Roles.Commands.EliminarRol;
 
-public class EliminarRolCommandHandler : IRequestHandler<EliminarRolCommand>
+public sealed class EliminarRolCommandHandler : IRequestHandler<EliminarRolCommand>
 {
     private readonly ManejadorDocumentosCfdiDbContext _context;
 

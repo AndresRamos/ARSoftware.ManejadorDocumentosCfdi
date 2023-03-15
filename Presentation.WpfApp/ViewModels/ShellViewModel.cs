@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Threading.Tasks;
+﻿using System.Diagnostics;
 using Caliburn.Micro;
 using Common.Models;
-using Core.Application.Cfdis;
+using Core.Application.Cfdis.Models;
 using Core.Application.Cfdis.Queries.LeerEncabezadosCfdi;
 using Core.Application.Common;
 using Core.Application.Empresas.Queries.BuscarEmpresasPermitidasPorUsuario;
@@ -94,9 +91,7 @@ public sealed class ShellViewModel : Conductor<Screen>.Collection.OneActive
                 ConfiguracionAplicacion.SetUsuario(viewModel.Usuario);
 
                 if (CanAbrirEmpresaAsync)
-                {
                     await AbrirEmpresaAsync();
-                }
             }
         }
         catch (Exception e)
@@ -134,20 +129,14 @@ public sealed class ShellViewModel : Conductor<Screen>.Collection.OneActive
             var seleccionarEmpresaViewModel = IoC.Get<SeleccionarEmpresaViewModel>();
 
             if (ConfiguracionAplicacion.Usuario.TienePermiso(PermisosAplicacion.TodasLasEmpresasPermitidas))
-            {
                 await seleccionarEmpresaViewModel.InicializarAsync();
-            }
             else
-            {
                 seleccionarEmpresaViewModel.Inicializar(
                     await _mediator.Send(new BuscarEmpresasPermitidasPorUsuarioQuery(ConfiguracionAplicacion.Usuario.Id)));
-            }
 
             await _windowManager.ShowDialogAsync(seleccionarEmpresaViewModel);
             if (seleccionarEmpresaViewModel.SeleccionoEmpresa)
-            {
                 await ConfiguracionAplicacion.AbrirEmpresaAsync(seleccionarEmpresaViewModel.EmpresaSeleccionada);
-            }
         }
         catch (Exception e)
         {
@@ -195,9 +184,7 @@ public sealed class ShellViewModel : Conductor<Screen>.Collection.OneActive
         {
             var openFileDialog = new OpenFileDialog { Multiselect = true, Filter = "XML|*.xml" };
             if (openFileDialog.ShowDialog() != true)
-            {
                 return;
-            }
 
             ProgressDialogController progressDialogController = await _dialogCoordinator.ShowProgressAsync(this, "Cargando", "Cargando...");
             progressDialogController.SetIndeterminate();
@@ -336,9 +323,7 @@ public sealed class ShellViewModel : Conductor<Screen>.Collection.OneActive
         var viewModel = IoC.Get<ActualizacionAplicacionViewModel>();
         await viewModel.ChecarActualizacionDisponibleAsync();
         if (viewModel.ActualizacionAplicacion.ActualizacionDisponible)
-        {
             await _windowManager.ShowWindowAsync(viewModel);
-        }
     }
 
     private void RaiseGuards()

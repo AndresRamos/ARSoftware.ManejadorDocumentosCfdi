@@ -1,6 +1,6 @@
 ﻿namespace Core.Application.Paquetes.Models;
 
-public class PaqueteDto
+public sealed class PaqueteDto
 {
     public PaqueteDto(int id, string idSat, byte[] contenido)
     {

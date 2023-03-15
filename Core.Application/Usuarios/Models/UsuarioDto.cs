@@ -1,11 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Common.Models;
+﻿using Common.Models;
 using Core.Application.Roles.Models;
 
 namespace Core.Application.Usuarios.Models;
 
-public class UsuarioDto
+public sealed class UsuarioDto
 {
     public UsuarioDto(int id,
                       string primerNombre,

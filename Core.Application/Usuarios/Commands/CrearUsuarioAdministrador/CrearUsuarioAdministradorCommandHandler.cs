@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Data.Entity;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using System.Data.Entity;
 using Common.Infrastructure;
 using Common.Models;
 using Core.Domain.Entities;
@@ -10,7 +7,7 @@ using MediatR;
 
 namespace Core.Application.Usuarios.Commands.CrearUsuarioAdministrador;
 
-public class CrearUsuarioAdministradorCommandHandler : IRequestHandler<CrearUsuarioAdministradorCommand, Unit>
+public sealed class CrearUsuarioAdministradorCommandHandler : IRequestHandler<CrearUsuarioAdministradorCommand, Unit>
 {
     private readonly ManejadorDocumentosCfdiDbContext _context;
 

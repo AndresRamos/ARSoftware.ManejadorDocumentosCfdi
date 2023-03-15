@@ -1,13 +1,11 @@
 ﻿using System.Data.Entity;
-using System.Threading;
-using System.Threading.Tasks;
 using Core.Domain.Entities;
 using FluentValidation;
 using Infrastructure.Persistance;
 
 namespace Core.Application.Solicitudes.Commands.CrearSolicitud;
 
-public class CrearSolicitudCommandValidator : AbstractValidator<CrearSolicitudCommand>
+public sealed class CrearSolicitudCommandValidator : AbstractValidator<CrearSolicitudCommand>
 {
     private readonly ManejadorDocumentosCfdiDbContext _context;
 

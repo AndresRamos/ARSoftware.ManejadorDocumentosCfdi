@@ -1,8 +1,5 @@
 ﻿using System.Data.Entity;
 using System.Data.Entity.Core;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using Common.Models;
 using Core.Application.Roles.Models;
 using Core.Application.Usuarios.Models;
@@ -12,7 +9,7 @@ using MediatR;
 
 namespace Core.Application.Usuarios.Queries.BuscarUsuarioPorId;
 
-public class BuscarUsuarioPorIdQueryHandler : IRequestHandler<BuscarUsuarioPorIdQuery, UsuarioDto>
+public sealed class BuscarUsuarioPorIdQueryHandler : IRequestHandler<BuscarUsuarioPorIdQuery, UsuarioDto>
 {
     private readonly ManejadorDocumentosCfdiDbContext _context;
 
@@ -27,9 +24,7 @@ public class BuscarUsuarioPorIdQueryHandler : IRequestHandler<BuscarUsuarioPorId
             .SingleOrDefaultAsync(u => u.Id == request.UsuarioId, cancellationToken);
 
         if (usuario == null)
-        {
             throw new ObjectNotFoundException($"No se encontro el usuario con el Id {request.UsuarioId}");
-        }
 
         return new UsuarioDto(usuario.Id,
             usuario.PrimerNombre,

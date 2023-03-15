@@ -1,6 +1,6 @@
 ﻿namespace Core.Application.Rfcs.Models;
 
-public class RfcDto
+public sealed class RfcDto
 {
     public RfcDto(string codigo, string rfc, string razonSocial)
     {

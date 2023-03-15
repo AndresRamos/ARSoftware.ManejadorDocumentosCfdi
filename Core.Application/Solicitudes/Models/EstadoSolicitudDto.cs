@@ -1,6 +1,6 @@
 ﻿namespace Core.Application.Solicitudes.Models;
 
-public class EstadoSolicitudDto
+public sealed class EstadoSolicitudDto
 {
     public EstadoSolicitudDto(int id, string estado)
     {

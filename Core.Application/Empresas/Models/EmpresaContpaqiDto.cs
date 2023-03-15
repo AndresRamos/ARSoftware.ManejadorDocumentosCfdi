@@ -23,9 +23,7 @@ public class EmpresaContpaqiDto : INotifyPropertyChanged
         set
         {
             if (value == _nombre)
-            {
                 return;
-            }
 
             _nombre = value;
             OnPropertyChanged();
@@ -38,9 +36,7 @@ public class EmpresaContpaqiDto : INotifyPropertyChanged
         set
         {
             if (value == _baseDatos)
-            {
                 return;
-            }
 
             _baseDatos = value;
             OnPropertyChanged();
@@ -53,9 +49,7 @@ public class EmpresaContpaqiDto : INotifyPropertyChanged
         set
         {
             if (value == _guidAdd)
-            {
                 return;
-            }
 
             _guidAdd = value;
             OnPropertyChanged();

@@ -1,6 +1,6 @@
 ﻿namespace Core.Application.TiposSolicitud.Models;
 
-public class TipoSolicitudDto
+public sealed class TipoSolicitudDto
 {
     public TipoSolicitudDto(string name, int id)
     {

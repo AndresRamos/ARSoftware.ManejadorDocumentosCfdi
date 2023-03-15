@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using System.Data.Entity;
 using ARSoftware.Cfdi.DescargaMasiva.Enumerations;
 using Core.Application.Paquetes.Models;
 using Core.Application.Solicitudes.Models;
@@ -13,7 +8,8 @@ using MediatR;
 
 namespace Core.Application.Solicitudes.Queries.BuscarSolicitudesPorRangoFecha;
 
-public class BuscarSolicitudesPorRangoFechaQueryHandler : IRequestHandler<BuscarSolicitudesPorRangoFechaQuery, IEnumerable<SolicitudDto>>
+public sealed class
+    BuscarSolicitudesPorRangoFechaQueryHandler : IRequestHandler<BuscarSolicitudesPorRangoFechaQuery, IEnumerable<SolicitudDto>>
 {
     private readonly ManejadorDocumentosCfdiDbContext _context;
 
