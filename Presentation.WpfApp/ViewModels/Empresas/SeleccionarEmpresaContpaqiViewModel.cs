@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Threading.Tasks;
+﻿using System.ComponentModel;
 using System.Windows.Data;
 using Caliburn.Micro;
 using Core.Application.Empresas.Models;
@@ -26,9 +23,7 @@ public sealed class SeleccionarEmpresaContpaqiViewModel : Screen
         set
         {
             if (value == _filtro)
-            {
                 return;
-            }
 
             _filtro = value;
             NotifyOfPropertyChange(() => Filtro);
@@ -46,9 +41,7 @@ public sealed class SeleccionarEmpresaContpaqiViewModel : Screen
         set
         {
             if (Equals(value, _empresaSeleccionada))
-            {
                 return;
-            }
 
             _empresaSeleccionada = value;
             NotifyOfPropertyChange(() => EmpresaSeleccionada);
@@ -80,9 +73,7 @@ public sealed class SeleccionarEmpresaContpaqiViewModel : Screen
     private bool EmpresasView_Filter(object obj)
     {
         if (!(obj is EmpresaContpaqiDto empresa))
-        {
             throw new ArgumentNullException(nameof(obj));
-        }
 
         return string.IsNullOrEmpty(Filtro) || empresa.Nombre.IndexOf(Filtro, StringComparison.OrdinalIgnoreCase) >= 0;
     }

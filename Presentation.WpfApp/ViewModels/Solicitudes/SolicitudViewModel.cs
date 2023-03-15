@@ -18,9 +18,7 @@ public sealed class SolicitudViewModel : Screen
         private set
         {
             if (Equals(value, _solicitud))
-            {
                 return;
-            }
 
             _solicitud = value;
             NotifyOfPropertyChange(() => Solicitud);

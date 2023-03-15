@@ -1,5 +1,4 @@
-﻿using System;
-using Common.DateRanges;
+﻿using Common.DateRanges;
 
 namespace Presentation.ConsoleApp.Models;
 

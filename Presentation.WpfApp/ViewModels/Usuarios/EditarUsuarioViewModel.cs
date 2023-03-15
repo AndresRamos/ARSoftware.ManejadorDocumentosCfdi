@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Caliburn.Micro;
+﻿using Caliburn.Micro;
 using Core.Application.Empresas.Models;
 using Core.Application.Empresas.Queries.BuscarEmpresas;
 using Core.Application.Empresas.Queries.BuscarEmpresasPermitidasPorUsuario;
@@ -51,9 +47,7 @@ public sealed class EditarUsuarioViewModel : Screen
         set
         {
             if (value == _usuarioId)
-            {
                 return;
-            }
 
             _usuarioId = value;
             NotifyOfPropertyChange(() => UsuarioId);
@@ -66,9 +60,7 @@ public sealed class EditarUsuarioViewModel : Screen
         set
         {
             if (value == _primerNombre)
-            {
                 return;
-            }
 
             _primerNombre = value;
             NotifyOfPropertyChange(() => PrimerNombre);
@@ -81,9 +73,7 @@ public sealed class EditarUsuarioViewModel : Screen
         set
         {
             if (value == _apellido)
-            {
                 return;
-            }
 
             _apellido = value;
             NotifyOfPropertyChange(() => Apellido);
@@ -96,9 +86,7 @@ public sealed class EditarUsuarioViewModel : Screen
         set
         {
             if (value == _email)
-            {
                 return;
-            }
 
             _email = value;
             NotifyOfPropertyChange(() => Email);
@@ -111,9 +99,7 @@ public sealed class EditarUsuarioViewModel : Screen
         set
         {
             if (value == _nombreUsuario)
-            {
                 return;
-            }
 
             _nombreUsuario = value;
             NotifyOfPropertyChange(() => NombreUsuario);
@@ -126,9 +112,7 @@ public sealed class EditarUsuarioViewModel : Screen
         set
         {
             if (value == _contrasena)
-            {
                 return;
-            }
 
             _contrasena = value;
             NotifyOfPropertyChange(() => Contrasena);
@@ -144,9 +128,7 @@ public sealed class EditarUsuarioViewModel : Screen
         set
         {
             if (Equals(value, _rolSeleccionado))
-            {
                 return;
-            }
 
             _rolSeleccionado = value;
             NotifyOfPropertyChange(() => RolSeleccionado);
@@ -162,9 +144,7 @@ public sealed class EditarUsuarioViewModel : Screen
         set
         {
             if (_empresaPermitidaSeleccionada == value)
-            {
                 return;
-            }
 
             _empresaPermitidaSeleccionada = value;
             NotifyOfPropertyChange(() => EmpresaPermitidaSeleccionada);

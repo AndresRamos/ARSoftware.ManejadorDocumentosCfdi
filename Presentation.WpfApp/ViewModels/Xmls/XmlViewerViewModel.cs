@@ -1,8 +1,6 @@
-﻿using System;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.IO;
 using System.Text;
-using System.Threading.Tasks;
 using System.Xml;
 using Caliburn.Micro;
 using MahApps.Metro.Controls.Dialogs;
@@ -27,9 +25,7 @@ public sealed class XmlViewerViewModel : Screen
         private set
         {
             if (value == _contenido)
-            {
                 return;
-            }
 
             _contenido = value;
             NotifyOfPropertyChange(() => Contenido);

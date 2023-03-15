@@ -1,6 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
-using Caliburn.Micro;
+﻿using Caliburn.Micro;
 using Core.Application.Empresas.Commands.ActualizarEmpresaPerfil;
 using Core.Application.Empresas.Commands.CrearEmpresa;
 using Core.Application.Empresas.Models;
@@ -31,9 +29,7 @@ public sealed class EditarEmpresaViewModel : Screen
         set
         {
             if (_nombre == value)
-            {
                 return;
-            }
 
             _nombre = value;
             NotifyOfPropertyChange(() => Nombre);
@@ -58,13 +54,9 @@ public sealed class EditarEmpresaViewModel : Screen
         try
         {
             if (EmpresaId == null)
-            {
                 EmpresaId = await _mediator.Send(new CrearEmpresaCommand(Nombre));
-            }
             else
-            {
                 await _mediator.Send(new ActualizarEmpresaPerfilCommand(EmpresaId.Value, Nombre));
-            }
 
             await _dialogCoordinator.ShowMessageAsync(this, "Empresa Guardada", "La empresa se guardo exitosamente.");
         }

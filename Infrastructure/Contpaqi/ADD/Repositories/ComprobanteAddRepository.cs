@@ -1,7 +1,4 @@
-﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
-using ARSoftware.Contpaqi.Add.Sql.Contexts;
+﻿using ARSoftware.Contpaqi.Add.Sql.Contexts;
 using Core.Application.Comprobantes.Interfaces;
 using Microsoft.EntityFrameworkCore;
 

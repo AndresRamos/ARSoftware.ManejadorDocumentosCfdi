@@ -1,6 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
-using Caliburn.Micro;
+﻿using Caliburn.Micro;
 using Core.Application.Usuarios.Commands.CrearUsuario;
 using MahApps.Metro.Controls.Dialogs;
 using MediatR;
@@ -30,9 +28,7 @@ public sealed class CrearUsuarioViewModel : Screen
         set
         {
             if (value == _primerNombre)
-            {
                 return;
-            }
 
             _primerNombre = value;
             NotifyOfPropertyChange(() => PrimerNombre);
@@ -45,9 +41,7 @@ public sealed class CrearUsuarioViewModel : Screen
         set
         {
             if (value == _apellido)
-            {
                 return;
-            }
 
             _apellido = value;
             NotifyOfPropertyChange(() => Apellido);
@@ -60,9 +54,7 @@ public sealed class CrearUsuarioViewModel : Screen
         set
         {
             if (value == _email)
-            {
                 return;
-            }
 
             _email = value;
             NotifyOfPropertyChange(() => Email);
@@ -75,9 +67,7 @@ public sealed class CrearUsuarioViewModel : Screen
         set
         {
             if (value == _nombreUsuario)
-            {
                 return;
-            }
 
             _nombreUsuario = value;
             NotifyOfPropertyChange(() => NombreUsuario);
@@ -90,9 +80,7 @@ public sealed class CrearUsuarioViewModel : Screen
         set
         {
             if (value == _contrasena)
-            {
                 return;
-            }
 
             _contrasena = value;
             NotifyOfPropertyChange(() => Contrasena);

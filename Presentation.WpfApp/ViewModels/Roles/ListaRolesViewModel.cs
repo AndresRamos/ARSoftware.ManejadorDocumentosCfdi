@@ -1,6 +1,4 @@
-﻿using System;
-using System.ComponentModel;
-using System.Threading.Tasks;
+﻿using System.ComponentModel;
 using System.Windows.Data;
 using Caliburn.Micro;
 using Core.Application.Roles.Commands.EliminarRol;
@@ -35,9 +33,7 @@ public sealed class ListaRolesViewModel : Screen
         set
         {
             if (value == _filtro)
-            {
                 return;
-            }
 
             _filtro = value;
             NotifyOfPropertyChange(() => Filtro);
@@ -55,9 +51,7 @@ public sealed class ListaRolesViewModel : Screen
         set
         {
             if (Equals(value, _rolSeleccionado))
-            {
                 return;
-            }
 
             _rolSeleccionado = value;
             NotifyOfPropertyChange(() => RolSeleccionado);
@@ -128,9 +122,7 @@ public sealed class ListaRolesViewModel : Screen
                 MessageDialogStyle.AffirmativeAndNegative,
                 new MetroDialogSettings { AffirmativeButtonText = "Si", NegativeButtonText = "No" });
             if (messageDialogResult != MessageDialogResult.Affirmative)
-            {
                 return;
-            }
 
             await _mediator.Send(new EliminarRolCommand(RolSeleccionado.Id));
             await CargarRolesAsync();
@@ -154,9 +146,7 @@ public sealed class ListaRolesViewModel : Screen
     private bool RolesView_Filter(object obj)
     {
         if (!(obj is RolDto rol))
-        {
             throw new ArgumentNullException(nameof(obj));
-        }
 
         return string.IsNullOrEmpty(Filtro) ||
                rol.Nombre.IndexOf(Filtro, StringComparison.OrdinalIgnoreCase) >= 0 ||

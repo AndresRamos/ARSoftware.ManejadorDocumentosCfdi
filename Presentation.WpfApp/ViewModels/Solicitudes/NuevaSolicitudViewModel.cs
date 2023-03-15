@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Caliburn.Micro;
+﻿using Caliburn.Micro;
 using Common.DateRanges;
 using Core.Application.Common;
 using Core.Application.Rfcs.Queries.BuscarRfcsComercial;
@@ -51,9 +47,7 @@ public sealed class NuevaSolicitudViewModel : Screen
         set
         {
             if (_tipoRangoFechaSeleccionado == value)
-            {
                 return;
-            }
 
             _tipoRangoFechaSeleccionado = value;
             NotifyOfPropertyChange(() => TipoRangoFechaSeleccionado);
@@ -109,17 +103,13 @@ public sealed class NuevaSolicitudViewModel : Screen
         set
         {
             if (value.Equals(_fechaInicio))
-            {
                 return;
-            }
 
             _fechaInicio = value;
             NotifyOfPropertyChange(() => FechaInicio);
 
             if (TipoRangoFechaSeleccionado != TipoRangoFechaEnum.Custumizado)
-            {
                 TipoRangoFechaSeleccionado = TipoRangoFechaEnum.Custumizado;
-            }
         }
     }
 
@@ -129,17 +119,13 @@ public sealed class NuevaSolicitudViewModel : Screen
         set
         {
             if (value.Equals(_fechaFin))
-            {
                 return;
-            }
 
             _fechaFin = value;
             NotifyOfPropertyChange(() => FechaFin);
 
             if (TipoRangoFechaSeleccionado != TipoRangoFechaEnum.Custumizado)
-            {
                 TipoRangoFechaSeleccionado = TipoRangoFechaEnum.Custumizado;
-            }
         }
     }
 
@@ -149,9 +135,7 @@ public sealed class NuevaSolicitudViewModel : Screen
         set
         {
             if (value == _rfcEmisor)
-            {
                 return;
-            }
 
             _rfcEmisor = value;
             NotifyOfPropertyChange(() => RfcEmisor);
@@ -164,9 +148,7 @@ public sealed class NuevaSolicitudViewModel : Screen
         set
         {
             if (value == _rfcReceptor)
-            {
                 return;
-            }
 
             _rfcReceptor = value;
             NotifyOfPropertyChange(() => RfcReceptor);
@@ -179,9 +161,7 @@ public sealed class NuevaSolicitudViewModel : Screen
         set
         {
             if (value == _rfcSolicitante)
-            {
                 return;
-            }
 
             _rfcSolicitante = value;
             NotifyOfPropertyChange(() => RfcSolicitante);
@@ -196,9 +176,7 @@ public sealed class NuevaSolicitudViewModel : Screen
         set
         {
             if (value == _tipoSolicitudSeleccionado)
-            {
                 return;
-            }
 
             _tipoSolicitudSeleccionado = value;
             NotifyOfPropertyChange(() => TipoSolicitudSeleccionado);
@@ -247,9 +225,7 @@ public sealed class NuevaSolicitudViewModel : Screen
             viewModel.Inicializar(await _mediator.Send(new BuscarRfcsComercialQuery()));
             await _windowManager.ShowDialogAsync(viewModel);
             if (viewModel.SeleccionoRfc)
-            {
                 RfcEmisor = viewModel.RfcSeleccionado.Rfc;
-            }
         }
         catch (Exception e)
         {
@@ -265,9 +241,7 @@ public sealed class NuevaSolicitudViewModel : Screen
             viewModel.Inicializar(await _mediator.Send(new BuscarRfcsComercialQuery()));
             await _windowManager.ShowDialogAsync(viewModel);
             if (viewModel.SeleccionoRfc)
-            {
                 RfcReceptor = viewModel.RfcSeleccionado.Rfc;
-            }
         }
         catch (Exception e)
         {
@@ -283,9 +257,7 @@ public sealed class NuevaSolicitudViewModel : Screen
             viewModel.Inicializar(await _mediator.Send(new BuscarRfcsContabilidadQuery()));
             await _windowManager.ShowDialogAsync(viewModel);
             if (viewModel.SeleccionoRfc)
-            {
                 RfcEmisor = viewModel.RfcSeleccionado.Rfc;
-            }
         }
         catch (Exception e)
         {
@@ -301,9 +273,7 @@ public sealed class NuevaSolicitudViewModel : Screen
             viewModel.Inicializar(await _mediator.Send(new BuscarRfcsContabilidadQuery()));
             await _windowManager.ShowDialogAsync(viewModel);
             if (viewModel.SeleccionoRfc)
-            {
                 RfcReceptor = viewModel.RfcSeleccionado.Rfc;
-            }
         }
         catch (Exception e)
         {

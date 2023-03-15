@@ -1,6 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
-using Caliburn.Micro;
+﻿using Caliburn.Micro;
 using Core.Application.Autenticacion.Queries.ValidarCredencialesUsuario;
 using Core.Application.Usuarios.Commands.CrearUsuarioAdministrador;
 using Core.Application.Usuarios.Models;
@@ -29,9 +27,7 @@ public sealed class AutenticarUsuarioViewModel : Screen
         set
         {
             if (value == _nombreUsuario)
-            {
                 return;
-            }
 
             _nombreUsuario = value;
             NotifyOfPropertyChange(() => NombreUsuario);
@@ -45,9 +41,7 @@ public sealed class AutenticarUsuarioViewModel : Screen
         set
         {
             if (value == _contrasena)
-            {
                 return;
-            }
 
             _contrasena = value;
             NotifyOfPropertyChange(() => Contrasena);

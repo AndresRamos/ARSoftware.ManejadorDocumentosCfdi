@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Caliburn.Micro;
+﻿using Caliburn.Micro;
 using Core.Application.Paquetes.Commands.ExportarArchivoZip;
 using Core.Application.Paquetes.Models;
 using MahApps.Metro.Controls.Dialogs;
@@ -31,9 +28,7 @@ public sealed class SolicitudPaquetesViewModel : Screen
         set
         {
             if (Equals(value, _paqueteSeleccionado))
-            {
                 return;
-            }
 
             _paqueteSeleccionado = value;
             NotifyOfPropertyChange(() => PaqueteSeleccionado);
@@ -57,9 +52,7 @@ public sealed class SolicitudPaquetesViewModel : Screen
             saveFileDialog.Filter = "ZIP (.zip)|*.zip";
             saveFileDialog.FileName = $"{PaqueteSeleccionado.IdSat}.zip";
             if (saveFileDialog.ShowDialog() == true)
-            {
                 await _mediator.Send(new ExportarArchivoZipCommand(PaqueteSeleccionado.Id, saveFileDialog.FileName));
-            }
         }
         catch (Exception e)
         {

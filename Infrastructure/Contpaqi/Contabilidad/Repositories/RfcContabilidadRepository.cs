@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using ARSoftware.Contpaqi.Contabilidad.Sql.Contexts;
+﻿using ARSoftware.Contpaqi.Contabilidad.Sql.Contexts;
 using Core.Application.Rfcs.Interfaces;
 using Core.Application.Rfcs.Models;
 using Microsoft.EntityFrameworkCore;

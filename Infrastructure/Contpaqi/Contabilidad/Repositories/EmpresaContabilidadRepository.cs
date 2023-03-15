@@ -1,8 +1,4 @@
-﻿using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using ARSoftware.Contpaqi.Contabilidad.Sql.Contexts;
+﻿using ARSoftware.Contpaqi.Contabilidad.Sql.Contexts;
 using ARSoftware.Contpaqi.Contabilidad.Sql.Factories;
 using Core.Application.Empresas.Interfaces;
 using Core.Application.Empresas.Models;
@@ -38,9 +34,7 @@ public class EmpresaContabilidadRepository : IEmpresaContabilidadRepository
             using (var contabilidadEmpresaDbContext = new ContpaqiContabilidadEmpresaDbContext(empresaOptions))
             {
                 if (!await contabilidadEmpresaDbContext.Database.CanConnectAsync())
-                {
                     continue;
-                }
 
                 string guidAddEmpresaContabilidad = await contabilidadEmpresaDbContext.Parametros.Select(p => p.GuidDSL).FirstAsync();
 

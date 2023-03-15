@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using Caliburn.Micro;
+﻿using Caliburn.Micro;
 using Microsoft.Win32;
 using Presentation.WpfApp.Models;
 
@@ -21,9 +20,7 @@ public sealed class ActualizacionAplicacionViewModel : Screen
         set
         {
             if (Equals(value, _actualizacionAplicacion))
-            {
                 return;
-            }
 
             _actualizacionAplicacion = value;
             NotifyOfPropertyChange(() => ActualizacionAplicacion);
@@ -40,9 +37,7 @@ public sealed class ActualizacionAplicacionViewModel : Screen
         private set
         {
             if (value == _isDescargando)
-            {
                 return;
-            }
 
             _isDescargando = value;
             NotifyOfPropertyChange(() => IsDescargando);
@@ -66,9 +61,7 @@ public sealed class ActualizacionAplicacionViewModel : Screen
         };
 
         if (saveFileDialog.ShowDialog() == true)
-        {
             await ActualizacionAplicacion.DescargarActualizacionAsync(saveFileDialog.FileName);
-        }
 
         IsDescargando = false;
         await TryCloseAsync();

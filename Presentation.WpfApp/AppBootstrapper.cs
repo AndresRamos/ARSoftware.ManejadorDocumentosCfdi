@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Windows;
+﻿using System.Windows;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Caliburn.Micro;

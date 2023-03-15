@@ -1,6 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
-using Caliburn.Micro;
+﻿using Caliburn.Micro;
 using Core.Application.Solicitudes.Models;
 using Core.Application.Solicitudes.Queries.BuscarSolicitudPorId;
 using MahApps.Metro.Controls.Dialogs;
@@ -30,9 +28,7 @@ public sealed class DetalleSolicitudViewModel : Conductor<Screen>.Collection.One
         private set
         {
             if (Equals(value, _solicitud))
-            {
                 return;
-            }
 
             _solicitud = value;
             NotifyOfPropertyChange(() => Solicitud);

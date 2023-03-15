@@ -1,7 +1,5 @@
-﻿using System;
-using System.CommandLine;
+﻿using System.CommandLine;
 using System.CommandLine.Invocation;
-using System.Threading.Tasks;
 using Common.DateRanges;
 using Core.Application.Autenticacion.Queries.ValidarCredencialesUsuario;
 using Core.Application.Common;
@@ -92,16 +90,12 @@ public class Program
             await mediator.Send(new ValidarCredencialesUsuarioQuery(crearCommandOptions.UsuarioNombre,
                 crearCommandOptions.UsuarioContrasena));
         if (usuario == null)
-        {
             throw new ArgumentException("La credencales proporcionadas no son validas.", nameof(crearCommandOptions.UsuarioNombre));
-        }
 
         Logger.Info("Buscando empresa.");
         EmpresaPerfilDto empresa = await mediator.Send(new BuscarEmpresaPorNombreQuery(crearCommandOptions.EmpresaNombre));
         if (empresa == null)
-        {
             throw new ArgumentException("No se encontro la empresa.", nameof(crearCommandOptions.EmpresaNombre));
-        }
 
         Logger.Info("Buscando configuracion general.");
         ConfiguracionGeneralDto configuracionEmpresa = await mediator.Send(new BuscarConfiguracionGeneralQuery(empresa.Id));

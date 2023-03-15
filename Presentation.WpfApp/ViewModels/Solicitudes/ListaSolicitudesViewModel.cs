@@ -1,8 +1,4 @@
-﻿using System;
-using System.ComponentModel;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using System.ComponentModel;
 using System.Windows.Data;
 using Caliburn.Micro;
 using Common.Models;
@@ -46,9 +42,7 @@ public sealed class ListaSolicitudesViewModel : Screen
         set
         {
             if (value == _filtro)
-            {
                 return;
-            }
 
             _filtro = value;
             NotifyOfPropertyChange(() => Filtro);
@@ -62,9 +56,7 @@ public sealed class ListaSolicitudesViewModel : Screen
         set
         {
             if (value.Equals(_fechaInicio))
-            {
                 return;
-            }
 
             _fechaInicio = value;
             NotifyOfPropertyChange(() => FechaInicio);
@@ -78,9 +70,7 @@ public sealed class ListaSolicitudesViewModel : Screen
         set
         {
             if (value.Equals(_fechaFin))
-            {
                 return;
-            }
 
             _fechaFin = value;
             NotifyOfPropertyChange(() => FechaFin);
@@ -98,9 +88,7 @@ public sealed class ListaSolicitudesViewModel : Screen
         set
         {
             if (Equals(value, _solicitudSeleccionada))
-            {
                 return;
-            }
 
             _solicitudSeleccionada = value;
             NotifyOfPropertyChange(() => SolicitudSeleccionada);
@@ -177,9 +165,7 @@ public sealed class ListaSolicitudesViewModel : Screen
             MessageDialogStyle.AffirmativeAndNegative,
             new MetroDialogSettings { AffirmativeButtonText = "Si", NegativeButtonText = "No" });
         if (messageDialogResult != MessageDialogResult.Affirmative)
-        {
             return;
-        }
 
         using var cancellationTokenSource = new CancellationTokenSource();
 
@@ -245,9 +231,7 @@ public sealed class ListaSolicitudesViewModel : Screen
     private bool SolicitudesView_Filter(object obj)
     {
         if (!(obj is SolicitudDto solicitud))
-        {
             throw new ArgumentNullException(nameof(obj));
-        }
 
         return string.IsNullOrEmpty(Filtro) ||
                solicitud.Id.ToString().IndexOf(Filtro, StringComparison.OrdinalIgnoreCase) >= 0 ||

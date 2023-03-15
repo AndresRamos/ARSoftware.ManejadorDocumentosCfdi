@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Threading.Tasks;
+﻿using System.ComponentModel;
 using System.Windows.Data;
 using Caliburn.Micro;
 using Common.Models;
@@ -26,9 +23,7 @@ public sealed class SeleccionarPermisoAplicacionViewModel : Screen
         set
         {
             if (value == _filtro)
-            {
                 return;
-            }
 
             _filtro = value;
             NotifyOfPropertyChange(() => Filtro);
@@ -46,9 +41,7 @@ public sealed class SeleccionarPermisoAplicacionViewModel : Screen
         set
         {
             if (Equals(value, _permisoAplicacionSeleccionado))
-            {
                 return;
-            }
 
             _permisoAplicacionSeleccionado = value;
             NotifyOfPropertyChange(() => PermisoAplicacionSeleccionado);
@@ -87,9 +80,7 @@ public sealed class SeleccionarPermisoAplicacionViewModel : Screen
     private bool PermisosView_Filter(object obj)
     {
         if (!(obj is PermisoAplicacionDto permiso))
-        {
             throw new ArgumentNullException(nameof(obj));
-        }
 
         return string.IsNullOrEmpty(Filtro) ||
                permiso.Nombre?.IndexOf(Filtro, StringComparison.OrdinalIgnoreCase) >= 0 ||

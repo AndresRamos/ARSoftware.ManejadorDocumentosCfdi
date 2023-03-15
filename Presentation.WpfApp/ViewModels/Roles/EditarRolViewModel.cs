@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Caliburn.Micro;
+﻿using Caliburn.Micro;
 using Common.Models;
 using Core.Application.Permisos.Queries.BuscarPermisosAplicacion;
 using Core.Application.Roles.Commands.ActualizarRol;
@@ -39,9 +35,7 @@ public sealed class EditarRolViewModel : Screen
         set
         {
             if (value == _id)
-            {
                 return;
-            }
 
             _id = value;
             NotifyOfPropertyChange(() => Id);
@@ -54,9 +48,7 @@ public sealed class EditarRolViewModel : Screen
         set
         {
             if (value == _nombre)
-            {
                 return;
-            }
 
             _nombre = value;
             NotifyOfPropertyChange(() => Nombre);
@@ -69,9 +61,7 @@ public sealed class EditarRolViewModel : Screen
         set
         {
             if (value == _descripcion)
-            {
                 return;
-            }
 
             _descripcion = value;
             NotifyOfPropertyChange(() => Descripcion);
@@ -86,9 +76,7 @@ public sealed class EditarRolViewModel : Screen
         set
         {
             if (Equals(value, _permisoAplicacionSeleccionado))
-            {
                 return;
-            }
 
             _permisoAplicacionSeleccionado = value;
             NotifyOfPropertyChange(() => PermisoAplicacionSeleccionado);
@@ -120,13 +108,9 @@ public sealed class EditarRolViewModel : Screen
         try
         {
             if (Id == 0)
-            {
                 await _mediator.Send(new CrearRolCommand(Nombre, Descripcion, Permisos));
-            }
             else
-            {
                 await _mediator.Send(new ActualizarRolCommand(Id, Nombre, Descripcion, Permisos));
-            }
 
             await _dialogCoordinator.ShowMessageAsync(this, "Rol Guardado", "Rol guardado exitosamente.");
         }
@@ -151,9 +135,7 @@ public sealed class EditarRolViewModel : Screen
             viewModel.Inicializar(permisosUnicos);
             await _windowManager.ShowDialogAsync(viewModel);
             if (viewModel.SeleccionoPermiso)
-            {
                 Permisos.Add(viewModel.PermisoAplicacionSeleccionado);
-            }
         }
         catch (Exception e)
         {

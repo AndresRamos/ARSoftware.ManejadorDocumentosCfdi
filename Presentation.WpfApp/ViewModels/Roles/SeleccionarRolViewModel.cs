@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Threading.Tasks;
+﻿using System.ComponentModel;
 using System.Windows.Data;
 using Caliburn.Micro;
 using Core.Application.Roles.Models;
@@ -26,9 +23,7 @@ public sealed class SeleccionarRolViewModel : Screen
         set
         {
             if (value == _filtro)
-            {
                 return;
-            }
 
             _filtro = value;
             NotifyOfPropertyChange(() => Filtro);
@@ -46,9 +41,7 @@ public sealed class SeleccionarRolViewModel : Screen
         set
         {
             if (Equals(value, _rolSeleccionado))
-            {
                 return;
-            }
 
             _rolSeleccionado = value;
             NotifyOfPropertyChange(() => RolSeleccionado);
@@ -87,9 +80,7 @@ public sealed class SeleccionarRolViewModel : Screen
     private bool RolesView_Filter(object obj)
     {
         if (!(obj is RolDto rol))
-        {
             throw new ArgumentNullException(nameof(obj));
-        }
 
         return string.IsNullOrEmpty(Filtro) ||
                rol.Nombre.IndexOf(Filtro, StringComparison.OrdinalIgnoreCase) >= 0 ||

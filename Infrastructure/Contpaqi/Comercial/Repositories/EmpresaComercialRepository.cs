@@ -1,8 +1,4 @@
-﻿using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using ARSoftware.Contpaqi.Comercial.Sql.Contexts;
+﻿using ARSoftware.Contpaqi.Comercial.Sql.Contexts;
 using ARSoftware.Contpaqi.Comercial.Sql.Factories;
 using Core.Application.Empresas.Interfaces;
 using Core.Application.Empresas.Models;
@@ -39,9 +35,7 @@ public class EmpresaComercialRepository : IEmpresaComercialRepository
             using (var comercialEmpresaDbContext = new ContpaqiComercialEmpresaDbContext(empresaOptions))
             {
                 if (!await comercialEmpresaDbContext.Database.CanConnectAsync())
-                {
                     continue;
-                }
 
                 string guidAddEmpresaComercial = await comercialEmpresaDbContext.admParametros.Select(p => p.CGUIDDSL).FirstAsync();
 

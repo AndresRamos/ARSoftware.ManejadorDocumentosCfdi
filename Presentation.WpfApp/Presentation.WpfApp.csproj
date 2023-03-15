@@ -6,7 +6,6 @@
 		<UseWPF>True</UseWPF>
 		<PlatformTarget>AnyCPU</PlatformTarget>
 		<ImplicitUsings>enable</ImplicitUsings>
-		<Nullable>enable</Nullable>
 	</PropertyGroup>
 
 	<PropertyGroup>

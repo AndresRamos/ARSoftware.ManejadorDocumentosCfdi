@@ -1,8 +1,6 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Reflection;
 using System.Text;
-using System.Threading.Tasks;
 using Azure.Storage.Blobs;
 using Caliburn.Micro;
 
@@ -20,9 +18,7 @@ public class ActualizacionAplicacion : PropertyChangedBase
         set
         {
             if (value == _mensaje)
-            {
                 return;
-            }
 
             _mensaje = value;
             NotifyOfPropertyChange(() => Mensaje);

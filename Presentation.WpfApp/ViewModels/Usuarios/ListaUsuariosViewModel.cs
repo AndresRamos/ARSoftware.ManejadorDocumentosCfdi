@@ -1,6 +1,4 @@
-﻿using System;
-using System.ComponentModel;
-using System.Threading.Tasks;
+﻿using System.ComponentModel;
 using System.Windows.Data;
 using Caliburn.Micro;
 using Core.Application.Usuarios.Models;
@@ -34,9 +32,7 @@ public sealed class ListaUsuariosViewModel : Screen
         set
         {
             if (value == _filtro)
-            {
                 return;
-            }
 
             _filtro = value;
             NotifyOfPropertyChange(() => Filtro);
@@ -54,9 +50,7 @@ public sealed class ListaUsuariosViewModel : Screen
         set
         {
             if (Equals(value, _usuarioSeleccionado))
-            {
                 return;
-            }
 
             _usuarioSeleccionado = value;
             NotifyOfPropertyChange(() => UsuarioSeleccionado);
@@ -129,9 +123,7 @@ public sealed class ListaUsuariosViewModel : Screen
     private bool UsuariosView_Filter(object obj)
     {
         if (!(obj is UsuarioDto usuario))
-        {
             throw new ArgumentNullException(nameof(obj));
-        }
 
         return string.IsNullOrEmpty(Filtro) ||
                usuario.PrimerNombre.IndexOf(Filtro, StringComparison.OrdinalIgnoreCase) >= 0 ||

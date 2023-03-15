@@ -1,5 +1,4 @@
-﻿using System;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 
 namespace Presentation.WpfApp.Helpers;
@@ -42,19 +41,13 @@ public class PasswordHelper
         var passwordBox = sender as PasswordBox;
 
         if (passwordBox == null)
-        {
             return;
-        }
 
         if ((bool)e.OldValue)
-        {
             passwordBox.PasswordChanged -= PasswordChanged;
-        }
 
         if ((bool)e.NewValue)
-        {
             passwordBox.PasswordChanged += PasswordChanged;
-        }
     }
 
     private static bool GetIsUpdating(DependencyObject dp)
@@ -67,16 +60,12 @@ public class PasswordHelper
         var passwordBox = sender as PasswordBox;
 
         if (passwordBox is null)
-        {
             throw new ArgumentException("Sender is not a PasswordBox");
-        }
 
         passwordBox.PasswordChanged -= PasswordChanged;
 
         if (!GetIsUpdating(passwordBox))
-        {
             passwordBox.Password = (string)e.NewValue;
-        }
 
         passwordBox.PasswordChanged += PasswordChanged;
     }
@@ -85,9 +74,7 @@ public class PasswordHelper
     {
         var passwordBox = sender as PasswordBox;
         if (passwordBox is null)
-        {
             throw new ArgumentException("Sender is not a PasswordBox");
-        }
 
         SetIsUpdating(passwordBox, true);
         SetPassword(passwordBox, passwordBox.Password);
