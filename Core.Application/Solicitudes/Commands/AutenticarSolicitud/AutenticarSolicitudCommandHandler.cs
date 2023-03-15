@@ -1,8 +1,5 @@
-﻿using System;
-using System.Data.Entity;
+﻿using System.Data.Entity;
 using System.Security.Cryptography.X509Certificates;
-using System.Threading;
-using System.Threading.Tasks;
 using ARSoftware.Cfdi.DescargaMasiva.Helpers;
 using ARSoftware.Cfdi.DescargaMasiva.Interfaces;
 using ARSoftware.Cfdi.DescargaMasiva.Models;
@@ -14,7 +11,7 @@ using NLog;
 
 namespace Core.Application.Solicitudes.Commands.AutenticarSolicitud;
 
-public class AutenticarSolicitudCommandHandler : IRequestHandler<AutenticarSolicitudCommand, Unit>
+public class AutenticarSolicitudCommandHandler : IRequestHandler<AutenticarSolicitudCommand>
 {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
     private readonly IAutenticacionService _autenticacionService;
@@ -26,7 +23,7 @@ public class AutenticarSolicitudCommandHandler : IRequestHandler<AutenticarSolic
         _autenticacionService = autenticacionService;
     }
 
-    public async Task<Unit> Handle(AutenticarSolicitudCommand request, CancellationToken cancellationToken)
+    public async Task Handle(AutenticarSolicitudCommand request, CancellationToken cancellationToken)
     {
         Logger.WithProperty(LogPropertyConstants.SolicitudId, request.SolicitudId).Info("Autenticando solicitud {0}.", request.SolicitudId);
 
@@ -103,7 +100,5 @@ public class AutenticarSolicitudCommandHandler : IRequestHandler<AutenticarSolic
 
         Logger.WithProperty(LogPropertyConstants.SolicitudId, solicitud.Id).Info("Guardando cambios.");
         await _context.SaveChangesAsync(cancellationToken);
-
-        return Unit.Value;
     }
 }

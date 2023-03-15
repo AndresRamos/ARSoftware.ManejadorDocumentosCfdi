@@ -1,7 +1,4 @@
 ﻿using System.Data.Entity;
-using System.IO;
-using System.Threading;
-using System.Threading.Tasks;
 using Core.Domain.Entities;
 using Infrastructure.Persistance;
 using MediatR;
@@ -19,7 +16,7 @@ public class ExportarArchivoZipCommandHandler : IRequestHandler<ExportarArchivoZ
         _context = context;
     }
 
-    public async Task<Unit> Handle(ExportarArchivoZipCommand request, CancellationToken cancellationToken)
+    public async Task Handle(ExportarArchivoZipCommand request, CancellationToken cancellationToken)
     {
         Paquete paquete = await _context.Paquetes.SingleAsync(s => s.Id == request.PaquteId, cancellationToken);
 
@@ -28,7 +25,5 @@ public class ExportarArchivoZipCommandHandler : IRequestHandler<ExportarArchivoZ
         {
             fileStream.Write(paquete.Contenido, 0, paquete.Contenido.Length);
         }
-
-        return Unit.Value;
     }
 }

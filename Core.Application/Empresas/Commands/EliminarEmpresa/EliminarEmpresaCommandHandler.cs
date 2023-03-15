@@ -1,8 +1,5 @@
-﻿using System;
-using System.Data.Entity;
+﻿using System.Data.Entity;
 using System.Data.Entity.Core;
-using System.Threading;
-using System.Threading.Tasks;
 using Core.Domain.Entities;
 using Infrastructure.Persistance;
 using MediatR;
@@ -18,26 +15,20 @@ public class EliminarEmpresaCommandHandler : IRequestHandler<EliminarEmpresaComm
         _context = context;
     }
 
-    public async Task<Unit> Handle(EliminarEmpresaCommand request, CancellationToken cancellationToken)
+    public async Task Handle(EliminarEmpresaCommand request, CancellationToken cancellationToken)
     {
         Empresa empresa = await _context.Empresas.Include(e => e.ConfiguracionGeneral)
             .Include(e => e.Solicitudes)
             .SingleOrDefaultAsync(e => e.Id == request.EmpresaId, cancellationToken);
 
         if (empresa is null)
-        {
             throw new ObjectNotFoundException($"No se encontro la empresa con id {request.EmpresaId}.");
-        }
 
         if (!empresa.CanEliminar)
-        {
             throw new InvalidOperationException("No se puede eliminar la empresa.");
-        }
 
         _context.Empresas.Remove(empresa);
 
         await _context.SaveChangesAsync(cancellationToken);
-
-        return Unit.Value;
     }
 }

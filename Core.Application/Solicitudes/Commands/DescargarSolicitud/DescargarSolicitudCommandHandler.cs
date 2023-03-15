@@ -1,9 +1,5 @@
-﻿using System;
-using System.Data.Entity;
-using System.IO;
+﻿using System.Data.Entity;
 using System.Security.Cryptography.X509Certificates;
-using System.Threading;
-using System.Threading.Tasks;
 using ARSoftware.Cfdi.DescargaMasiva.Helpers;
 using ARSoftware.Cfdi.DescargaMasiva.Interfaces;
 using ARSoftware.Cfdi.DescargaMasiva.Models;
@@ -16,7 +12,7 @@ using NLog;
 
 namespace Core.Application.Solicitudes.Commands.DescargarSolicitud;
 
-public class DescargarSolicitudCommandHandler : IRequestHandler<DescargarSolicitudCommand, Unit>
+public class DescargarSolicitudCommandHandler : IRequestHandler<DescargarSolicitudCommand>
 {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
     private readonly ManejadorDocumentosCfdiDbContext _context;
@@ -30,7 +26,7 @@ public class DescargarSolicitudCommandHandler : IRequestHandler<DescargarSolicit
         _descargaService = descargaService;
     }
 
-    public async Task<Unit> Handle(DescargarSolicitudCommand request, CancellationToken cancellationToken)
+    public async Task Handle(DescargarSolicitudCommand request, CancellationToken cancellationToken)
     {
         Logger.WithProperty(LogPropertyConstants.SolicitudId, request.SolicitudId).Info("Descargando solicitud {0}", request.SolicitudId);
 
@@ -149,7 +145,5 @@ public class DescargarSolicitudCommandHandler : IRequestHandler<DescargarSolicit
 
             //todo Descomprimir
         }
-
-        return Unit.Value;
     }
 }

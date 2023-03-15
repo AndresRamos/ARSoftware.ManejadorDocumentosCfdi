@@ -1,13 +1,11 @@
 ﻿using System.Data.Entity;
-using System.Threading;
-using System.Threading.Tasks;
 using Core.Domain.Entities;
 using Infrastructure.Persistance;
 using MediatR;
 
 namespace Core.Application.Usuarios.Commands.AgregarRol;
 
-public class AgregarRolCommandHandler : IRequestHandler<AgregarRolCommand, Unit>
+public class AgregarRolCommandHandler : IRequestHandler<AgregarRolCommand>
 {
     private readonly ManejadorDocumentosCfdiDbContext _context;
 
@@ -16,7 +14,7 @@ public class AgregarRolCommandHandler : IRequestHandler<AgregarRolCommand, Unit>
         _context = context;
     }
 
-    public async Task<Unit> Handle(AgregarRolCommand request, CancellationToken cancellationToken)
+    public async Task Handle(AgregarRolCommand request, CancellationToken cancellationToken)
     {
         Usuario usuario = await _context.Usuarios.Include(u => u.Roles).FirstAsync(u => u.Id == request.UsuarioId, cancellationToken);
         Rol rol = await _context.Roles.FirstAsync(r => r.Id == request.RolId, cancellationToken);
@@ -24,7 +22,5 @@ public class AgregarRolCommandHandler : IRequestHandler<AgregarRolCommand, Unit>
         usuario.Roles.Add(rol);
 
         await _context.SaveChangesAsync(cancellationToken);
-
-        return Unit.Value;
     }
 }

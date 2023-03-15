@@ -1,6 +1,4 @@
 ﻿using System.Data.Entity;
-using System.Threading;
-using System.Threading.Tasks;
 using Core.Domain.ValueObjects;
 using Infrastructure.Persistance;
 using MediatR;
@@ -16,7 +14,7 @@ public class ActualizarConfiguracionContpaqiContabilidadCommandHandler : IReques
         _context = context;
     }
 
-    public async Task<Unit> Handle(ActualizarConfiguracionContpaqiContabilidadCommand request, CancellationToken cancellationToken)
+    public async Task Handle(ActualizarConfiguracionContpaqiContabilidadCommand request, CancellationToken cancellationToken)
     {
         Domain.Entities.ConfiguracionGeneral configuracionGeneral = await _context.ConfiguracionGeneral.FirstAsync(cancellationToken);
 
@@ -27,7 +25,5 @@ public class ActualizarConfiguracionContpaqiContabilidadCommandHandler : IReques
                 request.ConfiguracionContpaqiContabilidad.Empresa.GuidAdd));
 
         await _context.SaveChangesAsync(cancellationToken);
-
-        return Unit.Value;
     }
 }

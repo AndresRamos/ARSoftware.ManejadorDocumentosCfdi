@@ -1,8 +1,5 @@
-﻿using System;
-using System.Data.Entity;
+﻿using System.Data.Entity;
 using System.Security.Cryptography.X509Certificates;
-using System.Threading;
-using System.Threading.Tasks;
 using ARSoftware.Cfdi.DescargaMasiva.Enumerations;
 using ARSoftware.Cfdi.DescargaMasiva.Helpers;
 using ARSoftware.Cfdi.DescargaMasiva.Interfaces;
@@ -15,7 +12,7 @@ using NLog;
 
 namespace Core.Application.Solicitudes.Commands.GenerarSolicitud;
 
-public class GenerarSolicitudCommandHandler : IRequestHandler<GenerarSolicitudCommand, Unit>
+public class GenerarSolicitudCommandHandler : IRequestHandler<GenerarSolicitudCommand>
 {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
     private readonly ManejadorDocumentosCfdiDbContext _context;
@@ -27,7 +24,7 @@ public class GenerarSolicitudCommandHandler : IRequestHandler<GenerarSolicitudCo
         _solicitudService = solicitudService;
     }
 
-    public async Task<Unit> Handle(GenerarSolicitudCommand request, CancellationToken cancellationToken)
+    public async Task Handle(GenerarSolicitudCommand request, CancellationToken cancellationToken)
     {
         Logger.WithProperty(LogPropertyConstants.SolicitudId, request.SolicitudId).Info("Generando solicitud {0}", request.SolicitudId);
 
@@ -131,7 +128,5 @@ public class GenerarSolicitudCommandHandler : IRequestHandler<GenerarSolicitudCo
 
         Logger.WithProperty(LogPropertyConstants.SolicitudId, solicitud.Id).Info("Guardando cambios.");
         await _context.SaveChangesAsync(cancellationToken);
-
-        return Unit.Value;
     }
 }

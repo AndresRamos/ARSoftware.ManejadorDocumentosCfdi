@@ -1,9 +1,5 @@
-﻿using System;
-using System.Data.Entity;
-using System.Linq;
+﻿using System.Data.Entity;
 using System.Security.Cryptography.X509Certificates;
-using System.Threading;
-using System.Threading.Tasks;
 using ARSoftware.Cfdi.DescargaMasiva.Helpers;
 using ARSoftware.Cfdi.DescargaMasiva.Interfaces;
 using ARSoftware.Cfdi.DescargaMasiva.Models;
@@ -15,7 +11,7 @@ using NLog;
 
 namespace Core.Application.Solicitudes.Commands.VerificarSolicitud;
 
-public class VerificarSolicitudCommandHandler : IRequestHandler<VerificarSolicitudCommand, Unit>
+public class VerificarSolicitudCommandHandler : IRequestHandler<VerificarSolicitudCommand>
 {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
     private readonly ManejadorDocumentosCfdiDbContext _context;
@@ -27,7 +23,7 @@ public class VerificarSolicitudCommandHandler : IRequestHandler<VerificarSolicit
         _verificacionService = verificacionService;
     }
 
-    public async Task<Unit> Handle(VerificarSolicitudCommand request, CancellationToken cancellationToken)
+    public async Task Handle(VerificarSolicitudCommand request, CancellationToken cancellationToken)
     {
         Logger.WithProperty(LogPropertyConstants.SolicitudId, request.SolicitudId).Info("Verificando solicitud {0}", request.SolicitudId);
 
@@ -127,7 +123,5 @@ public class VerificarSolicitudCommandHandler : IRequestHandler<VerificarSolicit
 
         Logger.WithProperty(LogPropertyConstants.SolicitudId, solicitud.Id).Info("Guardando cambios.");
         await _context.SaveChangesAsync(cancellationToken);
-
-        return Unit.Value;
     }
 }

@@ -7,10 +7,10 @@
 	</PropertyGroup>
 	<ItemGroup>
 		<PackageReference Include="ARSoftware.Contpaqi.Add.Sql" Version="2.0.0" />
-		<PackageReference Include="ARSoftware.Contpaqi.Comercial.Sql" Version="3.2.0" />
-		<PackageReference Include="ARSoftware.Contpaqi.Contabilidad.Sql" Version="2.1.0" />
+		<PackageReference Include="ARSoftware.Contpaqi.Comercial.Sql" Version="3.3.0" />
+		<PackageReference Include="ARSoftware.Contpaqi.Contabilidad.Sql" Version="2.3.0" />
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions">
-			<Version>6.0.0</Version>
+			<Version>7.0.0</Version>
 		</PackageReference>
 	</ItemGroup>
 	<ItemGroup>

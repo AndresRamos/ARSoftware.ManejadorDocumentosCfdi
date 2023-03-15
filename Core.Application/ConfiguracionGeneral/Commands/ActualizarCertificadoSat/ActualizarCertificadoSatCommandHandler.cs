@@ -1,13 +1,11 @@
 ﻿using System.Data.Entity;
-using System.Threading;
-using System.Threading.Tasks;
 using Core.Domain.ValueObjects;
 using Infrastructure.Persistance;
 using MediatR;
 
 namespace Core.Application.ConfiguracionGeneral.Commands.ActualizarCertificadoSat;
 
-public class ActualizarCertificadoSatCommandHandler : IRequestHandler<ActualizarCertificadoSatCommand, Unit>
+public class ActualizarCertificadoSatCommandHandler : IRequestHandler<ActualizarCertificadoSatCommand>
 {
     private readonly ManejadorDocumentosCfdiDbContext _context;
 
@@ -16,7 +14,7 @@ public class ActualizarCertificadoSatCommandHandler : IRequestHandler<Actualizar
         _context = context;
     }
 
-    public async Task<Unit> Handle(ActualizarCertificadoSatCommand request, CancellationToken cancellationToken)
+    public async Task Handle(ActualizarCertificadoSatCommand request, CancellationToken cancellationToken)
     {
         Domain.Entities.ConfiguracionGeneral configuracionGeneral = await _context.ConfiguracionGeneral.FirstAsync(cancellationToken);
 
@@ -25,7 +23,5 @@ public class ActualizarCertificadoSatCommandHandler : IRequestHandler<Actualizar
         configuracionGeneral.RutaDirectorioDescargas = request.RutaDirectorioDescargas;
 
         await _context.SaveChangesAsync(cancellationToken);
-
-        return Unit.Value;
     }
 }

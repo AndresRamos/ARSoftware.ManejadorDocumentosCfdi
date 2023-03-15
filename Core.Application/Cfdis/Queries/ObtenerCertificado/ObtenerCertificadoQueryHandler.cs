@@ -3,12 +3,12 @@ using MediatR;
 
 namespace Core.Application.Cfdis.Queries.ObtenerCertificado;
 
-public class ObtenerCertificadoQueryHandler : RequestHandler<ObtenerCertificadoQuery, X509Certificate2>
+public class ObtenerCertificadoQueryHandler : IRequestHandler<ObtenerCertificadoQuery, X509Certificate2>
 {
-    protected override X509Certificate2 Handle(ObtenerCertificadoQuery request)
+    public Task<X509Certificate2> Handle(ObtenerCertificadoQuery request, CancellationToken cancellationToken)
     {
-        return new X509Certificate2(request.Bytes,
+        return Task.FromResult(new X509Certificate2(request.Bytes,
             request.Password,
-            X509KeyStorageFlags.MachineKeySet | X509KeyStorageFlags.PersistKeySet | X509KeyStorageFlags.Exportable);
+            X509KeyStorageFlags.MachineKeySet | X509KeyStorageFlags.PersistKeySet | X509KeyStorageFlags.Exportable));
     }
 }

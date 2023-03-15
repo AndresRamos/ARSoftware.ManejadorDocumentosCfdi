@@ -1,8 +1,5 @@
-﻿using System;
-using System.Data.Entity;
+﻿using System.Data.Entity;
 using System.Data.Entity.Core;
-using System.Threading;
-using System.Threading.Tasks;
 using Common;
 using Common.Models;
 using Core.Application.Solicitudes.Commands.AutenticarSolicitud;
@@ -28,7 +25,7 @@ public class ProcesarSolicitudCommandHandler : IRequestHandler<ProcesarSolicitud
         _context = context;
     }
 
-    public async Task<Unit> Handle(ProcesarSolicitudCommand request, CancellationToken cancellationToken)
+    public async Task Handle(ProcesarSolicitudCommand request, CancellationToken cancellationToken)
     {
         Logger.WithProperty(LogPropertyConstants.SolicitudId, request.SolicitudId).Info("Procesando solicitud {0}", request.SolicitudId);
 
@@ -36,14 +33,10 @@ public class ProcesarSolicitudCommandHandler : IRequestHandler<ProcesarSolicitud
             .SingleOrDefaultAsync(u => u.Id == request.UsuarioId, cancellationToken);
 
         if (usuario is null)
-        {
             throw new ObjectNotFoundException("No se encontro el usuario.");
-        }
 
         if (!usuario.TienePermiso(PermisosAplicacion.PuedeProcesarSolicitud))
-        {
             throw new InvalidOperationException("El usuario no tiene permiso de crear solicitudes.");
-        }
 
         Solicitud solicitud = await BuscarSolicitudAsync(request.SolicitudId, cancellationToken);
 
@@ -69,7 +62,6 @@ public class ProcesarSolicitudCommandHandler : IRequestHandler<ProcesarSolicitud
         if (solicitud.SolicitudAutenticacion.IsTokenValido &&
             solicitud.SolicitudSolicitud.IsValid &&
             (solicitud.SolicitudVerificacion == null || !solicitud.SolicitudVerificacion.IsValid))
-        {
             do
             {
                 await Task.Delay(30000, cancellationToken);
@@ -79,7 +71,6 @@ public class ProcesarSolicitudCommandHandler : IRequestHandler<ProcesarSolicitud
                 tries++;
             } while ((solicitud.SolicitudVerificacion.EstadoSolicitud == "1" || solicitud.SolicitudVerificacion.EstadoSolicitud == "2") &&
                      tries < 3);
-        }
 
         // Descargar Solicitud
         solicitud = await BuscarSolicitudAsync(solicitud.Id, cancellationToken);
@@ -94,8 +85,6 @@ public class ProcesarSolicitudCommandHandler : IRequestHandler<ProcesarSolicitud
         }
 
         Logger.WithProperty(LogPropertyConstants.SolicitudId, solicitud.Id).Info("La solicitud {0} fue procesada.", solicitud.Id);
-
-        return Unit.Value;
     }
 
     private async Task<Solicitud> BuscarSolicitudAsync(int solicitudId, CancellationToken cancellationToken)
