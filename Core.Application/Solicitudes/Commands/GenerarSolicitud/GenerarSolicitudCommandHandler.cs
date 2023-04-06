@@ -55,15 +55,23 @@ public sealed class GenerarSolicitudCommandHandler : IRequestHandler<GenerarSoli
 
         Logger.WithProperty(LogPropertyConstants.SolicitudId, solicitud.Id).Info("Generando XML SOAP de solicitud.");
 
-        var solicitudRequest = SolicitudRequest.CreateInstance(solicitud.FechaInicio,
-            solicitud.FechaFin,
-            solicitud.TipoSolicitud == TipoSolicitud.Cfdi.Name ? TipoSolicitud.Cfdi :
-            solicitud.TipoSolicitud == TipoSolicitud.Metadata.Name ? TipoSolicitud.Metadata :
-            throw new ArgumentException("El tipo de solicitud no es un tipo valido."),
-            solicitud.RfcEmisor ?? "",
-            solicitud.Receptores,
-            solicitud.RfcSolicitante,
-            AccessToken.CreateInstance(solicitud.SolicitudAutenticacion.Token));
+        SolicitudRequest solicitudRequest;
+
+        if (!string.IsNullOrWhiteSpace(solicitud.Uuid))
+            // Buscar solicitud por UUID
+            solicitudRequest = SolicitudRequest.CreateInstance(solicitud.Uuid,
+                solicitud.RfcSolicitante,
+                AccessToken.CreateInstance(solicitud.SolicitudAutenticacion.Token));
+        else
+            solicitudRequest = SolicitudRequest.CreateInstance(solicitud.FechaInicio,
+                solicitud.FechaFin,
+                solicitud.TipoSolicitud == TipoSolicitud.Cfdi.Name ? TipoSolicitud.Cfdi :
+                solicitud.TipoSolicitud == TipoSolicitud.Metadata.Name ? TipoSolicitud.Metadata :
+                throw new ArgumentException("El tipo de solicitud no es un tipo valido."),
+                solicitud.RfcEmisor ?? "",
+                solicitud.Receptores,
+                solicitud.RfcSolicitante,
+                AccessToken.CreateInstance(solicitud.SolicitudAutenticacion.Token));
 
         string soapRequestEnvelopeXml = _solicitudService.GenerateSoapRequestEnvelopeXmlContent(solicitudRequest, certificadoSat);
         Logger.WithProperty(LogPropertyConstants.SolicitudId, solicitud.Id).Info("SoapRequestEnvelopeXml: {0}", soapRequestEnvelopeXml);
