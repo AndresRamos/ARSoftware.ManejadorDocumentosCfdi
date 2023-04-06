@@ -1,12 +1,11 @@
 ﻿using System.ComponentModel;
 using System.Diagnostics;
-using System.IO;
 using System.Windows.Data;
 using Caliburn.Micro;
+using ClosedXML.Excel;
 using Core.Application.Cfdis.Models;
 using MahApps.Metro.Controls.Dialogs;
 using Microsoft.Win32;
-using OfficeOpenXml;
 
 namespace Presentation.WpfApp.ViewModels.Cfdis;
 
@@ -77,12 +76,11 @@ public sealed class ListaCfdisViewModel : Screen
 
         try
         {
-            using (var excelPackage = new ExcelPackage(new FileInfo(saveFileDialog.FileName)))
+            using (var workbook = new XLWorkbook())
             {
-                ExcelWorksheet excelWorksheet = excelPackage.Workbook.Worksheets.Add("CFDIs");
-                excelWorksheet.Cells.LoadFromCollection(ComprobantesView.Cast<CfdiEncabezadoDto>(), true);
-                excelWorksheet.Cells.AutoFitColumns();
-                excelPackage.Save();
+                IXLWorksheet worksheet = workbook.Worksheets.Add("CFDIs");
+                worksheet.Cell(1, 1).InsertData(ComprobantesView.Cast<CfdiEncabezadoDto>().AsEnumerable());
+                workbook.SaveAs(saveFileDialog.FileName);
             }
 
             Process.Start(new ProcessStartInfo(saveFileDialog.FileName) { UseShellExecute = true });

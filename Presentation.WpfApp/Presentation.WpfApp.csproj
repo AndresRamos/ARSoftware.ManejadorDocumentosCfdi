@@ -44,7 +44,7 @@
 		<PackageReference Include="Autofac.Extensions.DependencyInjection" Version="8.0.0" />
 		<PackageReference Include="Azure.Storage.Blobs" Version="12.15.1" />
 		<PackageReference Include="Caliburn.Micro" Version="4.0.212" />
-		<PackageReference Include="EPPlus" Version="4.5.3.3" />
+		<PackageReference Include="ClosedXML" Version="0.100.3" />
 		<PackageReference Include="MahApps.Metro" Version="2.4.9" />
 		<PackageReference Include="MahApps.Metro.IconPacks.FontAwesome" Version="4.11.0" />
 		<PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.1" />
