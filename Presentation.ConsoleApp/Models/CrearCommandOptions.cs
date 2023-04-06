@@ -11,5 +11,6 @@ public class CrearCommandOptions
     public DateTime FechaInicio { get; set; }
     public DateTime FechaFin { get; set; }
     public TipoSolicitudEnum TipoSolicitud { get; set; }
+    public string Uuid { get; set; }
     public bool Procesar { get; set; }
 }

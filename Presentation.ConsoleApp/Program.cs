@@ -168,7 +168,8 @@ public class Program
             rfcEmisor,
             rfcReceptor,
             configuracionEmpresa.CertificadoSat.Rfc,
-            "CFDI"));
+            "CFDI",
+            crearCommandOptions.Uuid));
 
         if (solicitudId != 0 && crearCommandOptions.Procesar)
         {
