@@ -39,6 +39,7 @@ public sealed class BuscarSolicitudPorIdQueryHandler : IRequestHandler<BuscarSol
             solicitud.RfcReceptor,
             solicitud.RfcSolicitante,
             solicitud.TipoSolicitud,
+            solicitud.Uuid,
             solicitud.SolicitudAutenticacion != null
                 ? new SolicitudAutenticacionDto(solicitud.SolicitudAutenticacion.Id,
                     solicitud.SolicitudAutenticacion.FechaCreacionUtc,

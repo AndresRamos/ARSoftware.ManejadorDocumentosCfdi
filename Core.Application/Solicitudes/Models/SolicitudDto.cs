@@ -12,6 +12,7 @@ public sealed class SolicitudDto
                         string rfcReceptor,
                         string rfcSolicitante,
                         string tipoSolicitud,
+                        string uuid,
                         SolicitudAutenticacionDto solicitudAutenticacion,
                         SolicitudSolicitudDto solicitudSolicitud,
                         SolicitudVerificacionDto solicitudVerificacion,
@@ -31,6 +32,7 @@ public sealed class SolicitudDto
         RfcReceptor = rfcReceptor;
         RfcSolicitante = rfcSolicitante;
         TipoSolicitud = tipoSolicitud;
+        Uuid = uuid;
         SolicitudAutenticacion = solicitudAutenticacion;
         SolicitudSolicitud = solicitudSolicitud;
         SolicitudVerificacion = solicitudVerificacion;
@@ -51,6 +53,7 @@ public sealed class SolicitudDto
     public string RfcReceptor { get; set; }
     public string RfcSolicitante { get; set; }
     public string TipoSolicitud { get; set; }
+    public string Uuid { get; set; }
     public SolicitudAutenticacionDto SolicitudAutenticacion { get; set; }
     public SolicitudSolicitudDto SolicitudSolicitud { get; set; }
     public SolicitudVerificacionDto SolicitudVerificacion { get; set; }

@@ -21,6 +21,7 @@ public class Solicitud
     public string RfcReceptor { get; set; }
     public string RfcSolicitante { get; set; }
     public string TipoSolicitud { get; set; }
+    public string Uuid { get; set; }
 
     public IEnumerable<string> Receptores => RfcReceptor.Split('|');
 
@@ -53,7 +54,8 @@ public class Solicitud
                                       string rfcEmisor,
                                       string rfcReceptor,
                                       string rfcSolicitante,
-                                      string tipoSolicitud)
+                                      string tipoSolicitud,
+                                      string uuid)
     {
         var solicitud = new Solicitud
         {
@@ -65,8 +67,10 @@ public class Solicitud
             RfcEmisor = rfcEmisor,
             RfcReceptor = rfcReceptor,
             RfcSolicitante = rfcSolicitante,
-            TipoSolicitud = tipoSolicitud
+            TipoSolicitud = tipoSolicitud,
+            Uuid = uuid
         };
+
         return solicitud;
     }
 }

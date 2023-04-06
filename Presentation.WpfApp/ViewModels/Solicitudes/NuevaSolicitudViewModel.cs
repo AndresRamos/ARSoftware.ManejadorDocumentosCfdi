@@ -25,6 +25,7 @@ public sealed class NuevaSolicitudViewModel : Screen
     private string _rfcSolicitante = string.Empty;
     private TipoRangoFechaEnum _tipoRangoFechaSeleccionado;
     private TipoSolicitudDto _tipoSolicitudSeleccionado;
+    private string _uuid;
 
     public NuevaSolicitudViewModel(ConfiguracionAplicacion configuracionAplicacion,
                                    IMediator mediator,
@@ -183,6 +184,12 @@ public sealed class NuevaSolicitudViewModel : Screen
         }
     }
 
+    public string Uuid
+    {
+        get => _uuid;
+        set => Set(ref _uuid, value);
+    }
+
     public async Task InicializarAsync()
     {
         RfcReceptor = _configuracionAplicacion.ConfiguracionGeneral.CertificadoSat.Rfc;
@@ -208,7 +215,8 @@ public sealed class NuevaSolicitudViewModel : Screen
                 RfcEmisor,
                 RfcReceptor,
                 RfcSolicitante,
-                TipoSolicitudSeleccionado.Name));
+                TipoSolicitudSeleccionado.Name,
+                Uuid));
             await TryCloseAsync();
         }
         catch (Exception e)

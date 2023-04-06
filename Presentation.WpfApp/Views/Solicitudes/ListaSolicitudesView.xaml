@@ -125,6 +125,8 @@
                                     Binding="{Binding RfcSolicitante}" />
                 <DataGridTextColumn Header="Tipo Solicitud"
                                     Binding="{Binding TipoSolicitud}" />
+                <DataGridTextColumn Header="UUID"
+                                    Binding="{Binding Uuid}" />
                 <DataGridTextColumn Header="Solicitud Coigo"
                                     Binding="{Binding SolicitudSolicitud.CodEstatus}" />
                 <DataGridTextColumn Header="Solicitud Mensaje"
