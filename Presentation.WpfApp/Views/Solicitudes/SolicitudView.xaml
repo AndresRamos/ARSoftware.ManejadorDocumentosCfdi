@@ -34,6 +34,7 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
@@ -148,6 +149,18 @@
             <TextBlock Grid.Row="7"
                        Grid.Column="1"
                        Text="{Binding Solicitud.TipoSolicitud}"
+                       VerticalAlignment="Center"
+                       Margin="5" />
+            <Label Grid.Row="8"
+                   Grid.Column="0"
+                   Content="UUID:"
+                   FontWeight="Bold"
+                   VerticalAlignment="Center"
+                   HorizontalAlignment="Right"
+                   Margin="5" />
+            <TextBlock Grid.Row="8"
+                       Grid.Column="1"
+                       Text="{Binding Solicitud.Uuid}"
                        VerticalAlignment="Center"
                        Margin="5" />
         </Grid>
