@@ -13,7 +13,7 @@
 	</ItemGroup>
 	
 	<ItemGroup>
-		<PackageReference Include="ARSoftware.Cfdi.DescargaMasiva" Version="2.0.0" />
+		<PackageReference Include="ARSoftware.Cfdi.DescargaMasiva" Version="3.0.0" />
 		<PackageReference Include="EntityFramework" Version="6.4.4" />
 		<PackageReference Include="FluentValidation" Version="11.5.1" />
 		<PackageReference Include="MediatR" Version="12.0.1" />
