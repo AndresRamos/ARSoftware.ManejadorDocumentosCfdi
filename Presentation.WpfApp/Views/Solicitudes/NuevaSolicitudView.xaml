@@ -50,6 +50,7 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
@@ -171,6 +172,18 @@
                       DisplayMemberPath="Name"
                       VerticalAlignment="Center"
                       Margin="5" />
+            <Label Grid.Row="7"
+                   Grid.Column="0"
+                   Content="UUID:"
+                   FontWeight="Bold"
+                   VerticalAlignment="Center"
+                   HorizontalAlignment="Right"
+                   Margin="5" />
+            <TextBox Grid.Row="7"
+                     Grid.Column="1"
+                     Text="{Binding Uuid, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                     VerticalAlignment="Center"
+                     Margin="5" />
         </Grid>
     </Grid>
 </controls:MetroWindow>
