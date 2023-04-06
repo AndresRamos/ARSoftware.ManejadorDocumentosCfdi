@@ -34,7 +34,8 @@ public sealed class CrearSolicitudCommandHandler : IRequestHandler<CrearSolicitu
             request.RfcEmisor,
             request.RfcReceptor,
             request.RfcSolicitante,
-            request.TipoSolicitud);
+            request.TipoSolicitud,
+            request.Uuid);
 
         _context.Entry(nuevaSolicitud).State = EntityState.Added;
 

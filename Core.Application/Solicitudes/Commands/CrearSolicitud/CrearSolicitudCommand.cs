@@ -9,4 +9,5 @@ public sealed record CrearSolicitudCommand(int EmpresaId,
                                            string RfcEmisor,
                                            string RfcReceptor,
                                            string RfcSolicitante,
-                                           string TipoSolicitud) : IRequest<int>;
+                                           string TipoSolicitud,
+                                           string Uuid) : IRequest<int>;
