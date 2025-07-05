@@ -75,7 +75,7 @@
                             ToolTip="Buscar"
                             VerticalAlignment="Center"
                             Margin="5">
-                        <iconPacks:FontAwesome Kind="SearchSolid" />
+                        <iconPacks:FontAwesome Kind="MagnifyingGlassSolid" />
                     </Button>
                     <Label Grid.Row="1"
                            Grid.Column="0"
@@ -168,7 +168,7 @@
                             ToolTip="Buscar Empresa"
                             VerticalAlignment="Center"
                             Margin="5">
-                        <iconPacks:FontAwesome Kind="SearchSolid" />
+                        <iconPacks:FontAwesome Kind="MagnifyingGlassSolid" />
                     </Button>
                     <Label Grid.Row="2"
                            Grid.Column="0"
@@ -238,7 +238,7 @@
                             ToolTip="Buscar Empresa"
                             VerticalAlignment="Center"
                             Margin="5">
-                        <iconPacks:FontAwesome Kind="SearchSolid" />
+                        <iconPacks:FontAwesome Kind="MagnifyingGlassSolid" />
                     </Button>
                     <Label Grid.Row="2"
                            Grid.Column="0"
